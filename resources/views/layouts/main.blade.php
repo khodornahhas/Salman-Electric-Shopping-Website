@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salman Electric</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<style>
+        body {
+             font-family: "Roboto Flex", sans-serif;
+             padding-top: 108px; 
+        }
+     .sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .scrolled-header {
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            background-color: rgba(255,255,255,0.95);
+        }
+</style>
+<body>
+    <div class="sticky-header">
+    <div class="bg-gray-100 py-2 text-sm">
+        <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between">
+                <div class="text-gray-700">
+                    <div class="bg-blue-50 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                        <i class='bx bx-package text-blue-500'></i>
+                        <span class="text-blue-600">Free Delivery</span> on Orders Over <span class="text-blue-800">$30</span>
+                    </div>
+                </div>
+        <div class="flex items-center space-x-4">
+            <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors"><i class='bx bxl-facebook'></i></a>
+            <a href="#" class="text-gray-600 hover:text-blue-400 transition-colors"><i class='bx bxl-twitter'></i></a>
+            <a href="#" class="text-gray-600 hover:text-pink-500 transition-colors"><i class='bx bxl-instagram'></i></a>
+            <a href="#" class="text-gray-600 hover:text-red-500 transition-colors"><i class='bx bxl-youtube'></i></a>
+        </div>
+    </div>
+</div>
+</div>
+
+    <header class="bg-white shadow-sm">
+        <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-20 items-center justify-between">
+                <div class="flex items-center gap-8">
+                    <a href="/" aria-label="Home" class="flex items-center"><img src="{{ asset('images/salmanLogo2.png') }}" alt="Salman Electric Logo" class="h-10 w-auto"  ></a>
+                        <nav aria-label="Global" class="hidden md:block">
+                            <ul class="flex items-center gap-6 text-sm font-bold ">
+                                <li>
+                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="#">HOME</a>
+                                </li>
+                                <li>
+                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="#">SHOP</a>
+                                </li>
+                                <li>
+                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="#">ABOUT</a>
+                                </li>
+                                <li>
+                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="#">CONTACT</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <div class="relative hidden md:block">
+                            <input 
+                                type="text" 
+                                placeholder="Search products..." 
+                                class="w-64 px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                            <button class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+                                <i class='bx bx-search text-xl'></i>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <a href="#" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Wishlist">
+                                <i class='bx bx-heart text-2xl'></i>
+                                <span class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                            </a>
+
+                            <a href="#" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Cart">
+                                <i class='bx bx-cart text-2xl'></i>
+                                <span class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                            </a>
+
+                            <div class="relative" x-data="{ open: false }">
+                                <button 
+                                    @click="open = !open" 
+                                    class="p-2 text-gray-700 hover:text-blue-600 transition-colors" 
+                                    aria-label="Account"
+                                >
+                                    <i class='bx bx-user text-2xl'></i>
+                                </button>
+                                
+                                <div 
+                                    x-show="open" 
+                                    @click.outside="open = false"
+                                    class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200"
+                                    x-transition:enter="transition ease-out duration-100"
+                                    x-transition:enter-start="transform opacity-0 scale-95"
+                                    x-transition:enter-end="transform opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-75"
+                                    x-transition:leave-start="transform opacity-100 scale-100"
+                                    x-transition:leave-end="transform opacity-0 scale-95">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Login</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Register</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="block md:hidden">
+                            <button class="rounded-sm bg-gray-100 p-2 text-gray-700 transition hover:text-blue-600" aria-label="Menu">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <main>
+        @yield('content')
+    </main>
+</body>
+</html>
