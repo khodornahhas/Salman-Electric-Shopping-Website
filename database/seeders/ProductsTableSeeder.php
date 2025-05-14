@@ -22,6 +22,8 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => true,
                 'is_on_sale' => false,
+                'is_latest' => false,
+
             ],
             [
                 'name' => 'Ibanez Professional Classical Guitar',
@@ -33,6 +35,8 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => true,
                 'is_on_sale' => false,
+                'is_latest' => false,
+
             ],
             [
                 'name' => 'Moon Aroma Diffuser',
@@ -44,6 +48,8 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => true,
                 'is_on_sale' => false,
+                'is_latest' => false,
+
             ],
             [
                 'name' => 'Vintage Vinyl Record Player',
@@ -55,6 +61,8 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => true,
                 'is_on_sale' => false,
+                'is_latest' => false,
+
             ],
             [
                 'name' => 'Ibanez Professional Classical Guitar',
@@ -66,6 +74,8 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => true,
                 'is_on_sale' => false,
+                'is_latest' => false,
+
             ],
             [
                 'name' => 'Vintage Vinyl Record Player',
@@ -77,6 +87,8 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => true,
                 'is_on_sale' => false,
+                'is_latest' => false,
+
             ],
             [
                 'name' => ' Vinyl Record Player',
@@ -88,6 +100,8 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => false,
                 'is_on_sale' => true,
+                'is_latest' => false,
+
             ],
               [
                 'name' => ' Aroma Diffuser',
@@ -99,6 +113,8 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => false,
                 'is_on_sale' => true,
+                'is_latest' => false,
+
             ],
             [
                 'name' => ' Vinyl Record Player',
@@ -110,6 +126,8 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => false,
                 'is_on_sale' => true,
+                'is_latest' => false,
+
             ],
             [
                 'name' => ' Professional Classical Guitar',
@@ -121,6 +139,7 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => false,
                 'is_on_sale' => true,
+                'is_latest' => false,
             ],
             [
                 'name' => ' Professional Classical Guitar',
@@ -132,6 +151,7 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => false,
                 'is_on_sale' => true,
+                'is_latest' => false,
             ],
             [
                 'name' => ' Professional Classical Guitar',
@@ -143,6 +163,79 @@ class ProductsTableSeeder extends Seeder
                 'is_available' => true,
                 'is_featured' => false,
                 'is_on_sale' => true,
+                'is_latest' => false,
+            ],
+            [
+                'name' => ' Vinyl Record Player',
+                'description' => 'Retro-style turntable with modern features',
+                'price' => 60.00,
+                'sale_price' => 45.00,
+                'quantity' => 5,
+                'image' => 'images/pack1.png',
+                'is_available' => true,
+                'is_featured' => false,
+                'is_on_sale' => false,
+                'is_latest' => true,
+            ],
+              [
+                'name' => ' Aroma Diffuser',
+                'description' => 'Elegant ultrasonic essential oil diffuser',
+                'price' => 10.00,
+                'sale_price' => 5.00,
+                'quantity' => 25,
+                'image' => 'images/Pack-charge.png',
+                'is_available' => true,
+                'is_featured' => false,
+                'is_on_sale' => false,
+                'is_latest' => true,
+            ],
+            [
+                'name' => ' Vinyl Record Player',
+                'description' => 'Retro-style turntable with modern features',
+                'price' => 60.00,
+                'sale_price' => 40.00,
+                'quantity' => 5,
+                'image' => 'images/pack1.png',
+               'is_available' => true,
+                'is_featured' => false,
+                'is_on_sale' => false,
+                'is_latest' => true,
+            ],
+            [
+                'name' => ' Professional Classical Guitar',
+                'description' => 'High-quality classical guitar with rich tone',
+                'price' => 150.00,
+                'sale_price' => 135.00,
+                'quantity' => 8,
+                'image' => 'images/pack2.png',
+               'is_available' => true,
+                'is_featured' => false,
+                'is_on_sale' => false,
+                'is_latest' => true,
+            ],
+            [
+                'name' => ' Professional Classical Guitar',
+                'description' => 'High-quality classical guitar with rich tone',
+                'price' => 150.00,
+                'sale_price' => 135.00,
+                'quantity' => 8,
+                'image' => 'images/pack2.png',
+                'is_available' => true,
+                'is_featured' => false,
+                'is_on_sale' => false,
+                'is_latest' => true,
+            ],
+            [
+                'name' => ' Professional Classical Guitar',
+                'description' => 'High-quality classical guitar with rich tone',
+                'price' => 150.00,
+                'sale_price' => 135.00,
+                'quantity' => 8,
+                'image' => 'images/pack2.png',
+               'is_available' => true,
+                'is_featured' => false,
+                'is_on_sale' => false,
+                'is_latest' => true,
             ],
         ];
 

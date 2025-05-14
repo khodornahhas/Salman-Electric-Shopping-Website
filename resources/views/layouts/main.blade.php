@@ -139,5 +139,94 @@
     <main>
         @yield('content')
     </main>
+  <div class="fixed bottom-6 right-6 z-50">
+    <a href="https://wa.me/yourphonenumber" target="_blank">
+        <img src="{{ asset('images/whatsapp.png') }}" alt="WhatsApp" class="w-10 h-10">
+    </a>
+</div>
 </body>
+    <footer class="px-4 bg-gray-100 text-gray-800">
+    <div class="container flex flex-col justify-between py-10 mx-auto space-y-8 lg:flex-row lg:space-y-0">
+        <div class="lg:w-1/3 flex justify-center lg:justify-start mb-16"style="margin-bottom:90px;">
+            <a href="/" class="flex items-center">
+                <img 
+                    src="{{ asset('images/SalmanLogo2.png') }}" 
+                    alt="Salman Electric Logo" 
+                    class="h-14 w-auto"  
+                >
+            </a>
+        </div>
+
+        <div class="grid grid-cols-2 text-sm sm:grid-cols-3 mx-auto gap-12"> 
+            <div class="space-y-4"> 
+                <h3 class="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4">Stay In Touch</h3>
+                <ul class="space-y-3 text-base"> 
+                    <li>
+                        <a href="#" class="hover:text-blue-600 transition-colors">Contact Us</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:text-blue-600 transition-colors">About Us</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4">Company</h3>
+                <ul class="space-y-3 text-base">
+                    <li>
+                        <a href="#" class="hover:text-blue-600 transition-colors">Privacy Policy</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:text-blue-600 transition-colors">Return and Exchange Policy</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4">Reach Out</h3>
+                <ul class="space-y-3 text-base">
+                    <li>
+                        <a href="#" class="hover:text-blue-600 transition-colors">+961 76 765 561</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:text-blue-600 transition-colors">+961 81 966 742</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:text-blue-600 transition-colors">walidsalman@gmail.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lg:w-1/3 flex flex-col items-center lg:items-end space-y-4 mt-4">
+    <h3 class="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4">Our Socials</h3>
+    
+    <div class="flex space-x-5">
+        <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-2xl">
+            <i class='bx bxl-facebook'></i>
+        </a>
+        <a href="#" class="text-gray-600 hover:text-blue-400 transition-colors text-2xl">
+            <i class='bx bxl-twitter'></i>
+        </a>
+        <a href="#" class="text-gray-600 hover:text-pink-500 transition-colors text-2xl">
+            <i class='bx bxl-instagram'></i>
+        </a>
+        <a href="#" class="text-gray-600 hover:text-red-600 transition-colors text-2xl">
+            <i class='bx bxl-youtube'></i>
+        </a>
+    </div>
+    
+    <a href="https://maps.google.com/?q=Your+Business+Address" 
+       target="_blank" 
+       class="flex items-center text-gray-600 hover:text-blue-600 transition-colors mt-4">
+        <i class='bx bx-map text-2xl mr-2'></i>
+        <span class="text-sm">Our Location</span>
+    </a>
+</div>
+    </div>
+    
+  <div class="py-6 text-base text-center text-gray-600 border-t border-gray-200 mt-8">
+    © {{ date('Y') }} Salman Electric. All rights reserved.
+</div>
+</footer>
 </html>

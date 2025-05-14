@@ -1,6 +1,8 @@
 @extends('layouts.main')
 @section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
 <style>
     .animate-float {
         animation: float 3s ease-in-out infinite;
@@ -112,6 +114,8 @@
     transform: scale(1.2);
 }
 </style>
+
+<!-- Image Slider (Display) -->
 <div x-data="{
     activeSlide: 0,
     slides: [
@@ -155,7 +159,7 @@
     }
 }" class="relative overflow-hidden pb-8"> 
     
-    <div class="relative h-[32rem]">
+    <div class="relative h-[30rem]">
         <template x-for="(slide, index) in slides" :key="slide.id">
             <div 
                 x-show="activeSlide === index"
@@ -232,11 +236,9 @@
                     </template>
                 </div>
             </div>
-        </template>
+        </template>    
     </div>
-    
-    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[100%] h-px bg-gray-300 z-10"></div>
-    
+        
     <button @click="prev()" 
         class="absolute left-4 top-1/2 -translate-y-1/2 bg-transparent text-white p-3 rounded-full hover:bg-black/20 transition-all z-20">
     <i class='bx bx-chevron-left text-2xl'></i>
@@ -256,10 +258,51 @@
     </div>
 </div>
 
+<!-- Category Slider Section -->
+@php
+    $imageMap = [
+        'Lamps and lightning' => 'images/light.png',
+        'Cables' => 'images/cables.png',
+        'Electricity essentials' => 'images/e.png',
+        'EV charging' => 'images/EV-charging.png',
+        'Connectors' => 'images/Connectors.png',
+    ];
+@endphp
 
+<div class="bg-white ">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            @foreach ($categories as $category)
+                <a href="" 
+                   class="group flex flex-col items-center p-3 hover:bg-gray-50 rounded transition-colors">
+                    <img src="{{ asset($imageMap[$category->name] ?? 'images/default.png') }}" alt="{{ $category->name }}" class="w-12 h-auto mb-2 object-contain">
+                    <span class="text-gray-800 text-sm text-center font-medium">
+                        {{ $category->name }}
+                    </span>
+                </a>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+<section class="bg-blue-900 py-10"style="margin-top:15px;">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md flex justify-center items-center gap-10 overflow-x-auto">
+        @foreach ($brands as $brand)
+            <div class="flex flex-col items-center min-w-[100px]">
+                <img src="{{ asset('images/' . $brand->image) }}" alt="{{ $brand->name }}"class="h-16 object-contain mb-2 transition-transform duration-300 cursor-pointer ">
+            </div>
+        @endforeach
+    </div>
+</section>
+
+
+
+
+<!-- Featured Products Section -->
 <section class="bg-white py-12">
     <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl font-bold mb-10">Featured Items</h2>
+        <h2 class="text-4xl mb-10" style="font-family: 'Open Sans', sans-serif;">Featured Items</h2>
+
 
         <div x-data="{
             activeSlide: 0,
@@ -267,9 +310,8 @@
             visibleSlides: 4,
             sliding: false,
             interval: null,
-            isHovered: false, // New state for hover tracking
+            isHovered: false, 
             
-            // Clone first few items at end for seamless looping
             get slidesWithClones() {
                 if (this.slides.length <= this.visibleSlides) return this.slides;
                 return [
@@ -283,9 +325,7 @@
                 this.sliding = true;
                 
                 if (this.activeSlide === 0) {
-                    // Jump to cloned items at end for infinite effect
                     this.activeSlide = this.slides.length;
-                    // Immediately reset position without animation
                     setTimeout(() => {
                         this.activeSlide = this.slides.length - 1;
                         this.sliding = false;
@@ -300,7 +340,6 @@
                 if (this.sliding || this.slides.length <= this.visibleSlides || this.isHovered) return;
                 this.sliding = true;
                 
-                // If we're at the cloned items, reset to beginning
                 if (this.activeSlide >= this.slides.length) {
                     this.activeSlide = 1; // Small jump for smooth reset
                     setTimeout(() => {
@@ -350,12 +389,10 @@
                 this.updateVisibleSlides();
                 window.addEventListener('resize', () => this.updateVisibleSlides());
                 
-                // Autoplay
                 this.interval = setInterval(() => {
                     this.next();
                 }, 5000);
                 
-                // Cleanup on component removal
                 this.$el.addEventListener('alpine:destroy', () => {
                     clearInterval(this.interval);
                     window.removeEventListener('resize', this.updateVisibleSlides);
@@ -364,11 +401,9 @@
         }" 
         x-init="init()"
         class="relative">
-            <!-- Slider Container -->
             <div class="relative overflow-hidden pb-2"
                  @mouseenter="pauseAutoplay()"
                  @mouseleave="resumeAutoplay()">
-                <!-- Slider Track -->
                 <div class="flex transition-transform duration-500 ease-in-out"
                      :style="`transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
                     <template x-for="(product, index) in slidesWithClones" :key="index">
@@ -381,7 +416,6 @@
                              }">
                             <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col 
           shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
-                                <!-- Product Image -->
                                 <div class="relative h-64 p-0 flex items-center justify-center bg-white">
                                     <template x-if="product.image">
                                         <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
@@ -402,16 +436,11 @@
                                     </template>
                                 </div>
 
-                                <!-- Product Info -->
-                                <div class="p-5 flex-grow flex flex-col">
-                                    <!-- Top line -->
+                                <div class="p-4 flex-grow flex flex-col">
                                     <div class="border-t border-gray-200 mb-4"></div>
                                     
-                                    <h3 class="font-medium text-gray-800 text-center mb-4" x-text="product.name"></h3>
-                                    
-                                    <!-- Bottom line -->
-                                    <div class="border-t border-gray-200 mt-auto mb-4"></div>
-                                    
+                                    <h3 class="font-medium text-gray-800 text-center mb-4" style="font-family: 'Open Sans', sans-serif; font-size:17px;"x-text="product.name"></h3>    
+                                    <div class="border-t border-gray-200 mt-auto mb-4"></div>                                  
                                     <div class="flex justify-center items-center">
                                         <template x-if="product.is_on_sale">
                                             <div class="text-center">
@@ -430,7 +459,6 @@
                 </div>
             </div>
 
-            <!-- Dot Indicators -->
             <div class="flex justify-center mt-12 space-x-2" x-show="slides.length > visibleSlides">
                 <template x-for="(_, index) in totalSlideGroups" :key="index">
                     <button @click="goToSlideGroup(index)" 
@@ -453,9 +481,10 @@
     </div>
 </section>
 
+<!-- On Sale Products Section -->
 <section class="bg-white py-12">
     <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl font-bold mt-6 mb-10">On Sale</h2>
+        <h2 class="text-4xl  mt-6 mb-10"style="font-family: 'Open Sans', sans-serif;">On Sale</h2>
 
         <div x-data="{
             activeSlide: 0,
@@ -463,9 +492,8 @@
             visibleSlides: 4,
             sliding: false,
             interval: null,
-            isHovered: false, // New state for hover tracking
+            isHovered: false, 
             
-            // Clone first few items at end for seamless looping
             get slidesWithClones() {
                 if (this.slides.length <= this.visibleSlides) return this.slides;
                 return [
@@ -479,9 +507,7 @@
                 this.sliding = true;
                 
                 if (this.activeSlide === 0) {
-                    // Jump to cloned items at end for infinite effect
                     this.activeSlide = this.slides.length;
-                    // Immediately reset position without animation
                     setTimeout(() => {
                         this.activeSlide = this.slides.length - 1;
                         this.sliding = false;
@@ -496,7 +522,6 @@
                 if (this.sliding || this.slides.length <= this.visibleSlides || this.isHovered) return;
                 this.sliding = true;
                 
-                // If we're at the cloned items, reset to beginning
                 if (this.activeSlide >= this.slides.length) {
                     this.activeSlide = 1; // Small jump for smooth reset
                     setTimeout(() => {
@@ -546,12 +571,10 @@
                 this.updateVisibleSlides();
                 window.addEventListener('resize', () => this.updateVisibleSlides());
                 
-                // Autoplay
                 this.interval = setInterval(() => {
                     this.next();
                 }, 5000);
                 
-                // Cleanup on component removal
                 this.$el.addEventListener('alpine:destroy', () => {
                     clearInterval(this.interval);
                     window.removeEventListener('resize', this.updateVisibleSlides);
@@ -560,11 +583,9 @@
         }" 
         x-init="init()"
         class="relative">
-            <!-- Slider Container -->
             <div class="relative overflow-hidden pb-2"
                  @mouseenter="pauseAutoplay()"
                  @mouseleave="resumeAutoplay()">
-                <!-- Slider Track -->
                 <div class="flex transition-transform duration-500 ease-in-out"
                      :style="`transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
                     <template x-for="(product, index) in slidesWithClones" :key="index">
@@ -577,7 +598,6 @@
                              }">
                             <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col 
           shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
-                                <!-- Product Image -->
                                 <div class="relative h-64 p-0 flex items-center justify-center bg-white">
                                     <template x-if="product.image">
                                         <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
@@ -598,14 +618,9 @@
                                     </template>
                                 </div>
 
-                                <!-- Product Info -->
                                 <div class="p-5 flex-grow flex flex-col">
-                                    <!-- Top line -->
-                                    <div class="border-t border-gray-200 mb-4"></div>
-                                    
-                                    <h3 class="font-medium text-gray-800 text-center mb-4" x-text="product.name"></h3>
-                                    
-                                    <!-- Bottom line -->
+                                    <div class="border-t border-gray-200 mb-4"></div>           
+                                    <h3 class="font-medium text-gray-800 text-center mb-4"style="font-family: 'Open Sans', sans-serif;font-size:17px;" x-text="product.name"></h3>                                  
                                     <div class="border-t border-gray-200 mt-auto mb-4"></div>
                                     
                                     <div class="flex justify-center items-center">
@@ -626,7 +641,6 @@
                 </div>
             </div>
 
-            <!-- Dot Indicators -->
             <div class="flex justify-center mt-12 space-x-2" x-show="slides.length > visibleSlides">
                 <template x-for="(_, index) in totalSlideGroups" :key="index">
                     <button @click="goToSlideGroup(index)" 
@@ -649,4 +663,188 @@
     </div>
 </section>
 
+<!-- Latest Products Section -->
+<section class="bg-white py-12">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl mb-10 latest-heading"style="font-family: 'Open Sans', sans-serif;">Latest Items</h2>
+
+        <div x-data="{
+            activeSlide: 0,
+             slides: {{ $latestProducts->toJson() }}, 
+            visibleSlides: 4,
+            sliding: false,
+            interval: null,
+            isHovered: false, 
+            
+            get slidesWithClones() {
+                if (this.slides.length <= this.visibleSlides) return this.slides;
+                return [
+                    ...this.slides,
+                    ...this.slides.slice(0, this.visibleSlides)
+                ];
+            },
+            
+            prev() {
+                if (this.sliding || this.slides.length <= this.visibleSlides) return;
+                this.sliding = true;
+                
+                if (this.activeSlide === 0) {
+                   
+                    this.activeSlide = this.slides.length;
+                    setTimeout(() => {
+                        this.activeSlide = this.slides.length - 1;
+                        this.sliding = false;
+                    }, 10);
+                } else {
+                    this.activeSlide--;
+                    setTimeout(() => this.sliding = false, 500);
+                }
+            },
+            
+            next() {
+                if (this.sliding || this.slides.length <= this.visibleSlides || this.isHovered) return;
+                this.sliding = true;
+                
+                if (this.activeSlide >= this.slides.length) {
+                    this.activeSlide = 1; // Small jump for smooth reset
+                    setTimeout(() => {
+                        this.activeSlide = 0;
+                        this.sliding = false;
+                    }, 500);
+                } else {
+                    this.activeSlide++;
+                    setTimeout(() => this.sliding = false, 500);
+                }
+            },
+            
+            get totalSlideGroups() {
+                return Math.ceil(this.slides.length / this.visibleSlides);
+            },
+            
+            get currentSlideGroup() {
+                if (this.activeSlide >= this.slides.length) {
+                    return 0; // When showing cloned items
+                }
+                return Math.floor(this.activeSlide / this.visibleSlides);
+            },
+            
+            goToSlideGroup(groupIndex) {
+                this.activeSlide = groupIndex * this.visibleSlides;
+            },
+            
+            updateVisibleSlides() {
+                this.visibleSlides = window.innerWidth < 640 ? 1 : 
+                                    window.innerWidth < 768 ? 2 :
+                                    window.innerWidth < 1024 ? 3 : 4;
+            },
+            
+            pauseAutoplay() {
+                this.isHovered = true;
+                clearInterval(this.interval);
+            },
+            
+            resumeAutoplay() {
+                this.isHovered = false;
+                this.interval = setInterval(() => {
+                    this.next();
+                }, 5000);
+            },
+            
+            init() {
+                this.updateVisibleSlides();
+                window.addEventListener('resize', () => this.updateVisibleSlides());
+                
+                this.interval = setInterval(() => {
+                    this.next();
+                }, 5000);
+                
+                this.$el.addEventListener('alpine:destroy', () => {
+                    clearInterval(this.interval);
+                    window.removeEventListener('resize', this.updateVisibleSlides);
+                });
+            }
+        }" 
+        x-init="init()"
+        class="relative">
+            <div class="relative overflow-hidden pb-2"
+                 @mouseenter="pauseAutoplay()"
+                 @mouseleave="resumeAutoplay()">
+                <div class="flex transition-transform duration-500 ease-in-out"
+                     :style="`transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
+                    <template x-for="(product, index) in slidesWithClones" :key="index">
+                        <div class="flex-shrink-0 px-3 transition-all duration-300"
+                             :class="{
+                                 'w-full': visibleSlides === 1,
+                                 'w-1/2': visibleSlides === 2,
+                                 'w-1/3': visibleSlides === 3,
+                                 'w-1/4': visibleSlides === 4
+                             }">
+                            <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col 
+          shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+                                <div class="relative h-64 p-0 flex items-center justify-center bg-white">
+                                    <template x-if="product.image">
+                                        <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
+                                             class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
+                                    </template>
+                                    <template x-if="!product.image">
+                                        <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                            <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </div>
+                                    </template>
+
+                                    <template x-if="product.is_on_sale">
+                                        <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                            SALE
+                                        </div>
+                                    </template>
+                                </div>
+
+                                <div class="p-5 flex-grow flex flex-col">
+                                    <div class="border-t border-gray-200 mb-4"></div>
+                                    
+                                    <h3 class="font-medium text-gray-800 text-center mb-4" style="font-family: 'Open Sans', sans-serif;font-size:17px;"x-text="product.name"></h3>
+                                    
+                                    <div class="border-t border-gray-200 mt-auto mb-4"></div>
+                                    
+                                    <div class="flex justify-center items-center">
+                                        <template x-if="product.is_on_sale">
+                                            <div class="text-center">
+                                                <span class="text-gray-400 line-through text-sm" x-text="'$' + (product.price / 100).toFixed(2)"></span>
+                                                <span class="text-[#B70113] font-bold text-lg ml-2" x-text="'$' + (product.sale_price / 100).toFixed(2)"></span>
+                                            </div>
+                                        </template>
+                                        <template x-if="!product.is_on_sale">
+                                            <span class="text-[#B70113] font-bold text-lg" x-text="'$' + (product.price / 100).toFixed(2)"></span>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="flex justify-center mt-12 space-x-2" x-show="slides.length > visibleSlides">
+                <template x-for="(_, index) in totalSlideGroups" :key="index">
+                    <button @click="goToSlideGroup(index)" 
+                            class="w-3 h-3 rounded-full transition-all"
+                            :class="{
+                                'bg-amber-500': currentSlideGroup === index, 
+                                'bg-gray-300': currentSlideGroup !== index
+                            }"
+                            :aria-label="'Go to slide ' + (index + 1)">
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="#" class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-md">
+                Show More
+            </a>
+        </div>
+    </div>
+</section>
 @endsection
