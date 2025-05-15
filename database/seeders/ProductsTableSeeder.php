@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Brand;
 class ProductsTableSeeder extends Seeder
 {
     public function run()
@@ -16,6 +17,11 @@ class ProductsTableSeeder extends Seeder
         $ev = Category::where('name', 'EV charging')->firstOrFail();
         $connectors = Category::where('name', 'Connectors')->firstOrFail();
 
+        $panasonic = Brand::where('name', 'Panasonic')->first();
+        $felicity = Brand::where('name', 'Felicity')->first();
+        $osram = Brand::where('name', 'Osram')->first();
+        $hyundai = Brand::where('name', 'Hyundai')->first();
+        $schneider = Brand::where('name', 'Schneider')->first();
 
         Product::truncate();
 
@@ -32,6 +38,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => false,
                 'category_id' => $cables->id,
+                 'brand_id' => $panasonic->id,
 
             ],
             [
@@ -46,6 +53,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => false,
                 'category_id' => $cables->id,
+                'brand_id' => $panasonic->id,
 
             ],
             [
@@ -60,6 +68,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => false,
                 'category_id' => $cables->id,
+                 'brand_id' => $panasonic->id,
 
             ],
             [
@@ -74,7 +83,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => false,
                 'category_id' => $connectors->id,
-
+                'brand_id' => $felicity->id,
             ],
             [
                 'name' => 'Ibanez Professional Classical Guitar',
@@ -88,7 +97,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => false,
                 'category_id' => $connectors->id,
-
+                'brand_id' => $felicity->id,
             ],
             [
                 'name' => 'Vintage Vinyl Record Player',
@@ -102,6 +111,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => false,
                 'category_id' => $essentials->id,
+                'brand_id' => $felicity->id,
 
             ],
             [
@@ -116,6 +126,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => true,
                 'is_latest' => false,
                 'category_id' => $essentials->id,
+                'brand_id' => $osram->id,
 
             ],
               [
@@ -130,6 +141,8 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => true,
                 'is_latest' => false,
                 'category_id' => $essentials->id,
+                'brand_id' => $osram->id,
+
 
             ],
             [
@@ -144,6 +157,8 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => true,
                 'is_latest' => false,
                 'category_id' => $lamps->id,
+                'brand_id' => $osram->id,
+
 
             ],
             [
@@ -158,6 +173,8 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => true,
                 'is_latest' => false,
                 'category_id' => $lamps->id,
+                'brand_id' => $hyundai->id,
+                
 
             ],
             [
@@ -172,6 +189,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => true,
                 'is_latest' => false,
                 'category_id' => $lamps->id,
+                'brand_id' => $hyundai->id,
 
             ],
             [
@@ -186,6 +204,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => true,
                 'is_latest' => false,
                 'category_id' => $lamps->id,
+                'brand_id' => $hyundai->id,
 
             ],
             [
@@ -200,6 +219,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => true,
                 'category_id' => $ev->id,
+                'brand_id' => $hyundai->id,
 
             ],
               [
@@ -214,6 +234,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => true,
                 'category_id' => $ev->id,
+                'brand_id' => $hyundai->id,
 
             ],
             [
@@ -228,6 +249,7 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => true,
                 'category_id' => $ev->id,
+                'brand_id' => $schneider->id,
 
             ],
             [
@@ -242,6 +264,8 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => true,
                 'category_id' => $ev->id,
+                'brand_id' => $schneider->id,
+
 
             ],
             [
@@ -256,6 +280,8 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => true,
                 'category_id' => $ev->id,
+                'brand_id' => $schneider->id,
+
 
             ],
             [
@@ -270,6 +296,8 @@ class ProductsTableSeeder extends Seeder
                 'is_on_sale' => false,
                 'is_latest' => true,
                 'category_id' => $ev->id,
+                'brand_id' => $schneider->id,
+
 
             ],
         ];

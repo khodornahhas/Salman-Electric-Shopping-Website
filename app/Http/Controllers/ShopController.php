@@ -36,6 +36,18 @@ public function index(Request $request)
     if ($request->has('category') && !empty($request->category)) {
         $query->where('category_id', $request->category);
     }
+    if ($request->has('brands')) {
+        $brandIds = $request->brands;
+
+        if (in_array('all', $brandIds)) {
+            $brandIds = [];
+        }
+
+        if (!empty($brandIds)) {
+            $query->whereIn('brand_id', $brandIds);
+        }
+    }
+
 
     if ($request->sort == 'low_high') {
         $query->orderByRaw('CASE WHEN is_on_sale = 1 THEN sale_price ELSE price END ASC');

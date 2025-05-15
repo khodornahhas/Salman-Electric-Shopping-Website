@@ -36,96 +36,88 @@
     <div class="flex flex-col md:flex-row">
     <div class="w-full md:w-64 lg:w-72 xl:w-80 pr-0 md:pr-6 mb-6 md:mb-0">
     <div class="bg-white p-6 rounded-lg shadow-sm max-h-screen overflow-y-auto">
-        <h2 class="text-xl font-bold mb-6">Filters</h2>
+  <form action="{{ route('shop') }}" method="GET">
 
-<form action="{{ route('shop') }}" method="GET">
-    <div class="mb-6">
-        <h3 class="font-semibold mb-3">Price ($)</h3>
-        <div class="flex justify-between text-sm text-gray-700 mb-2">
-            <span>Min: $<span id="min-val">10</span></span>
-            <span>Max: $<span id="max-val">1000</span></span>
-        </div>
-
-        <div class="relative h-10">
-            <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-300 rounded transform -translate-y-1/2"></div>
-            <div id="slider-track" class="absolute top-1/2 h-1 bg-blue-500 rounded transform -translate-y-1/2 z-10"></div>
-            <input id="min-range" type="range" min="0" max="1000" value="{{ request('min_price', 10) }}" step="10"
-                class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
-            <input id="max-range" type="range" min="0" max="1000" value="{{ request('max_price', 1000) }}" step="10"
-                class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
-
-            <input type="hidden" name="min_price" id="min-price-input" value="{{ request('min_price', 10) }}">
-            <input type="hidden" name="max_price" id="max-price-input" value="{{ request('max_price', 1000) }}">
-        </div>
-    </div>
-
-<div>
-    <h3 class="font-semibold mb-3">Category</h3>
-    <div class="space-y-2">
-        <div class="flex items-center">
-            <input 
-                type="radio" 
-                name="category" 
-                value="" 
-                id="cat-all"
-                {{ request()->get('category') == null ? 'checked' : '' }}
-                class="hidden"
-            >
-            <label 
-                for="cat-all" 
-                class="cursor-pointer block px-4 py-2 rounded 
-                       {{ request()->get('category') == null ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800' }}
-                       hover:bg-blue-500 hover:text-white transition"
-            >
-                All
-            </label>
-        </div>
-
-        @foreach($categories as $category)
-            <div class="flex items-center">
-                <input 
-                    type="radio" 
-                    name="category" 
-                    value="{{ $category->id }}"
-                    id="cat-{{ $category->id }}"
-                    {{ request()->get('category') == $category->id ? 'checked' : '' }}
-                    class="hidden"
-                >
-                <label 
-                    for="cat-{{ $category->id }}" 
-                    class="cursor-pointer block px-4 py-2 rounded 
-                           {{ request()->get('category') == $category->id ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800' }}
-                           hover:bg-blue-500 hover:text-white transition"
-                >
-                    {{ $category->name }}
-                </label>
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold">Filters</h2>
+            <div class="flex gap-2">
+                <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">
+                    Apply Filters
+                </button>
+                <a href="{{ route('shop') }}" class="bg-gray-300 text-gray-800 px-3 py-1 rounded hover:bg-gray-400 text-sm">
+                    Clear Filters
+                </a>
             </div>
-        @endforeach
-    </div>
-</div>
+        </div>
 
+        <div class="mb-6">
+            <h3 class="font-semibold mb-3">Price ($)</h3>
+            <div class="flex justify-between text-sm text-gray-700 mb-2">
+                <span>Min: $<span id="min-val">10</span></span>
+                <span>Max: $<span id="max-val">1000</span></span>
+            </div>
+            <div class="relative h-10">
+                <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-300 rounded transform -translate-y-1/2"></div>
+                <div id="slider-track" class="absolute top-1/2 h-1 bg-blue-500 rounded transform -translate-y-1/2 z-10"></div>
+                <input id="min-range" type="range" min="0" max="1000" value="{{ request('min_price', 10) }}" step="10"
+                    class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
+                <input id="max-range" type="range" min="0" max="1000" value="{{ request('max_price', 1000) }}" step="10"
+                    class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
 
+                <input type="hidden" name="min_price" id="min-price-input" value="{{ request('min_price', 10) }}">
+                <input type="hidden" name="max_price" id="max-price-input" value="{{ request('max_price', 1000) }}">
+            </div>
+        </div>
 
-    <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        Apply Filters
-    </button>
-</form>
-
-<div class="mb-6">
-            <h3 class="font-semibold mb-3">Brand</h3>
+        <div class="mb-6">
+            <h3 class="font-semibold mb-3">Category</h3>
             <div class="space-y-2">
                 <div class="flex items-center">
-                    <input type="checkbox" id="all-brands" class="mr-2" checked>
-                    <label for="all-brands">All Brands</label>
+                    <input type="radio" name="category" value="" id="cat-all"
+                        {{ request()->get('category') == null ? 'checked' : '' }} class="hidden">
+                    <label for="cat-all"
+                        class="cursor-pointer block px-4 py-2 rounded {{ request()->get('category') == null ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800' }}
+                        hover:bg-blue-500 hover:text-white transition">
+                        All
+                    </label>
                 </div>
-                @foreach($brands as $brand)
-                <div class="flex items-center">
-                    <input type="checkbox" id="brand-{{ $brand->id }}" class="mr-2">
-                    <label for="brand-{{ $brand->id }}">{{ $brand->name }}</label>
-                </div>
+                @foreach($categories as $category)
+                    <div class="flex items-center">
+                        <input type="radio" name="category" value="{{ $category->id }}" id="cat-{{ $category->id }}"
+                            {{ request()->get('category') == $category->id ? 'checked' : '' }} class="hidden">
+                        <label for="cat-{{ $category->id }}"
+                            class="cursor-pointer block px-4 py-2 rounded {{ request()->get('category') == $category->id ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800' }}
+                            hover:bg-blue-500 hover:text-white transition">
+                            {{ $category->name }}
+                        </label>
+                    </div>
                 @endforeach
             </div>
         </div>
+
+        <div class="mb-6">
+            <h3 class="font-semibold mb-3">Brand</h3>
+            <div class="space-y-2">
+                <div class="flex items-center">
+                    <input type="checkbox" name="brands[]" value="all" id="brand-all" class="mr-2"
+                        {{ empty(request('brands')) || in_array('all', (array)request('brands')) ? 'checked' : '' }}
+                        onclick="toggleAllBrands(this)">
+                    <label for="brand-all">All Brands</label>
+                </div>
+                @foreach($brands as $brand)
+                    <div class="flex items-center">
+                        <input type="checkbox" name="brands[]" value="{{ $brand->id }}" id="brand-{{ $brand->id }}"
+                            class="mr-2 brand-checkbox"
+                            {{ is_array(request('brands')) && in_array($brand->id, request('brands')) ? 'checked' : '' }}>
+                        <label for="brand-{{ $brand->id }}">{{ $brand->name }}</label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+    </form>
+
+
     </div>
 </div>
 
@@ -147,18 +139,15 @@
             </form>
         </div>
 
-        <form method="GET" action="{{ route('shop') }}" class="flex flex-wrap items-center justify-end gap-4 w-full sm:w-auto">
-    {{-- Preserve search if applied --}}
+    <form method="GET" action="{{ route('shop') }}" class="flex flex-wrap items-center justify-end gap-4 w-full sm:w-auto">
     @if(request('search'))
         <input type="hidden" name="search" value="{{ request('search') }}">
     @endif
 
-    {{-- Preserve category if selected --}}
     @if(request('category'))
         <input type="hidden" name="category" value="{{ request('category') }}">
     @endif
 
-    {{-- Preserve price filters if applied --}}
     @if(request('min_price'))
         <input type="hidden" name="min_price" value="{{ request('min_price') }}">
     @endif
@@ -166,7 +155,12 @@
         <input type="hidden" name="max_price" value="{{ request('max_price') }}">
     @endif
 
-    {{-- Show limit buttons --}}
+    @if(request()->has('brands') && is_array(request('brands')))
+        @foreach(request('brands') as $brandId)
+            <input type="hidden" name="brands[]" value="{{ $brandId }}">
+        @endforeach
+    @endif
+
     <div class="flex items-center gap-2 text-sm">
         <span class="text-gray-700 font-medium">Show:</span>
         @foreach([6, 12, 32, 'all'] as $limit)
@@ -180,7 +174,6 @@
         @endforeach
     </div>
 
-    {{-- Sort dropdown --}}
     <div>
         <select name="sort" onchange="this.form.submit()" class="p-2 border rounded text-sm">
             <option value="">Default</option>
@@ -190,6 +183,7 @@
         </select>
     </div>
 </form>
+
 
     </div>
 
@@ -277,6 +271,19 @@
 
     updateSlider({target: minRange});
     
+    function toggleAllBrands(allCheckbox) {
+        const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
+        if (allCheckbox.checked) {
+            brandCheckboxes.forEach(cb => cb.checked = false);
+        }
+    }
+
+    document.querySelectorAll('.brand-checkbox').forEach(cb => {
+        cb.addEventListener('change', () => {
+            document.getElementById('brand-all').checked = false;
+        });
+    });
+
 </script>
 
 @endsection

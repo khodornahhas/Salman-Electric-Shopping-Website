@@ -19,11 +19,17 @@ class Product extends Model
         'is_available',
         'is_featured',
         'is_on_sale',
-        'is_latest'
+        'is_latest',
+        'brand_id',
     ];
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
 
 }
