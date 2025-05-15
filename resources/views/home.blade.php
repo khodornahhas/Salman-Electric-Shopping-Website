@@ -358,7 +358,7 @@
             
             get currentSlideGroup() {
                 if (this.activeSlide >= this.slides.length) {
-                    return 0; // When showing cloned items
+                    return 0; 
                 }
                 return Math.floor(this.activeSlide / this.visibleSlides);
             },
@@ -442,14 +442,18 @@
                                     <h3 class="font-medium text-gray-800 text-center mb-4" style="font-family: 'Open Sans', sans-serif; font-size:17px;"x-text="product.name"></h3>    
                                     <div class="border-t border-gray-200 mt-auto mb-4"></div>                                  
                                     <div class="flex justify-center items-center">
-                                        <template x-if="product.is_on_sale">
+                                    <div class="flex justify-center items-center">
+                                        <template x-if="product.is_on_sale && product.sale_price !== null">
                                             <div class="text-center">
-                                                <span class="text-gray-400 line-through text-sm" x-text="'$' + (product.price / 100).toFixed(2)"></span>
-                                                <span class="text-[#B70113] font-bold text-lg ml-2" x-text="'$' + (product.sale_price / 100).toFixed(2)"></span>
+                                                <span class="text-gray-400 line-through text-sm" 
+                                                    x-text="'$' + product.price"></span>
+                                                <span class="text-[#B70113] font-bold text-lg ml-2" 
+                                                    x-text="'$' + product.sale_price"></span>
                                             </div>
                                         </template>
-                                        <template x-if="!product.is_on_sale">
-                                            <span class="text-[#B70113] font-bold text-lg" x-text="'$' + (product.price / 100).toFixed(2)"></span>
+                                        <template x-if="!product.is_on_sale || product.sale_price === null">
+                                            <span class="text-[#B70113] font-bold text-lg" 
+                                                x-text="'$' + product.price"></span>
                                         </template>
                                     </div>
                                 </div>
@@ -624,15 +628,15 @@
                                     <div class="border-t border-gray-200 mt-auto mb-4"></div>
                                     
                                     <div class="flex justify-center items-center">
-                                        <template x-if="product.is_on_sale">
-                                            <div class="text-center">
-                                                <span class="text-gray-400 line-through text-sm" x-text="'$' + (product.price / 100).toFixed(2)"></span>
-                                                <span class="text-[#B70113] font-bold text-lg ml-2" x-text="'$' + (product.sale_price / 100).toFixed(2)"></span>
-                                            </div>
-                                        </template>
-                                        <template x-if="!product.is_on_sale">
-                                            <span class="text-[#B70113] font-bold text-lg" x-text="'$' + (product.price / 100).toFixed(2)"></span>
-                                        </template>
+                                    <template x-if="product.is_on_sale && product.sale_price !== null">
+                                        <div class="text-center">
+                                            <span class="text-gray-400 line-through text-sm" x-text="'$' + Number(product.price).toFixed(2)"></span>
+                                            <span class="text-[#B70113] font-bold text-lg ml-2" x-text="'$' + Number(product.sale_price).toFixed(2)"></span>
+                                        </div>
+                                    </template>
+                                    <template x-if="!product.is_on_sale || product.sale_price === null">
+                                        <span class="text-[#B70113] font-bold text-lg" x-text="'$' + Number(product.price).toFixed(2)"></span>
+                                    </template>
                                     </div>
                                 </div>
                             </div>
@@ -809,16 +813,16 @@
                                     <div class="border-t border-gray-200 mt-auto mb-4"></div>
                                     
                                     <div class="flex justify-center items-center">
-                                        <template x-if="product.is_on_sale">
-                                            <div class="text-center">
-                                                <span class="text-gray-400 line-through text-sm" x-text="'$' + (product.price / 100).toFixed(2)"></span>
-                                                <span class="text-[#B70113] font-bold text-lg ml-2" x-text="'$' + (product.sale_price / 100).toFixed(2)"></span>
-                                            </div>
-                                        </template>
-                                        <template x-if="!product.is_on_sale">
-                                            <span class="text-[#B70113] font-bold text-lg" x-text="'$' + (product.price / 100).toFixed(2)"></span>
-                                        </template>
-                                    </div>
+                                    <template x-if="product.is_on_sale && product.sale_price !== null">
+                                        <div class="text-center">
+                                            <span class="text-gray-400 line-through text-sm" x-text="'$' + Number(product.price).toFixed(2)"></span>
+                                            <span class="text-[#B70113] font-bold text-lg ml-2" x-text="'$' + Number(product.sale_price).toFixed(2)"></span>
+                                        </div>
+                                    </template>
+                                    <template x-if="!product.is_on_sale || product.sale_price === null">
+                                        <span class="text-[#B70113] font-bold text-lg" x-text="'$' + Number(product.price).toFixed(2)"></span>
+                                    </template>
+                                </div>
                                 </div>
                             </div>
                         </div>
