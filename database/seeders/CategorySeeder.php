@@ -8,7 +8,7 @@ use App\Models\Category;
 class CategorySeeder extends Seeder
 {
     public function run(): void
-    {
+    {    
          Category::truncate();
 
         $categories = [

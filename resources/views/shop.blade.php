@@ -38,50 +38,80 @@
     <div class="bg-white p-6 rounded-lg shadow-sm max-h-screen overflow-y-auto">
         <h2 class="text-xl font-bold mb-6">Filters</h2>
 
- <form action="{{ route('shop') }}" method="GET"> 
-
-
-  <div class="mb-6">
-      <h3 class="font-semibold mb-3">Price ($)</h3>
-      <div class="flex justify-between text-sm text-gray-700 mb-2">
-          <span>Min: $<span id="min-val">10</span></span>
-          <span>Max: $<span id="max-val">1000</span></span>
-      </div>
-
-      <div class="relative h-10">
-          <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-300 rounded transform -translate-y-1/2"></div>
-          <div id="slider-track" class="absolute top-1/2 h-1 bg-blue-500 rounded transform -translate-y-1/2 z-10"></div>
-          <input id="min-range" type="range" min="0" max="1000" value="{{ request('min_price', 10) }}" step="10" class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
-          <input id="max-range" type="range" min="0" max="1000" value="{{ request('max_price', 1000) }}" step="10" class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
-
-          <input type="hidden" name="min_price" id="min-price-input" value="{{ request('min_price', 10) }}">
-          <input type="hidden" name="max_price" id="max-price-input" value="{{ request('max_price', 1000) }}">
-      </div>
-  </div>
-
-
-  <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Filter</button>
-</form>
-
-
-
-        <div class="mb-6">
-            <h3 class="font-semibold mb-3">Category</h3>
-            <div class="space-y-2">
-                <div class="flex items-center">
-                    <input type="checkbox" id="all-items" class="mr-2" checked>
-                    <label for="all-items">All Items</label>
-                </div>
-                @foreach($categories as $category)
-                <div class="flex items-center">
-                    <input type="checkbox" id="cat-{{ $category->id }}" class="mr-2">
-                    <label for="cat-{{ $category->id }}">{{ $category->name }}</label>
-                </div>
-                @endforeach
-            </div>
+<form action="{{ route('shop') }}" method="GET">
+    <div class="mb-6">
+        <h3 class="font-semibold mb-3">Price ($)</h3>
+        <div class="flex justify-between text-sm text-gray-700 mb-2">
+            <span>Min: $<span id="min-val">10</span></span>
+            <span>Max: $<span id="max-val">1000</span></span>
         </div>
 
-        <div class="mb-6">
+        <div class="relative h-10">
+            <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-300 rounded transform -translate-y-1/2"></div>
+            <div id="slider-track" class="absolute top-1/2 h-1 bg-blue-500 rounded transform -translate-y-1/2 z-10"></div>
+            <input id="min-range" type="range" min="0" max="1000" value="{{ request('min_price', 10) }}" step="10"
+                class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
+            <input id="max-range" type="range" min="0" max="1000" value="{{ request('max_price', 1000) }}" step="10"
+                class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
+
+            <input type="hidden" name="min_price" id="min-price-input" value="{{ request('min_price', 10) }}">
+            <input type="hidden" name="max_price" id="max-price-input" value="{{ request('max_price', 1000) }}">
+        </div>
+    </div>
+
+<div>
+    <h3 class="font-semibold mb-3">Category</h3>
+    <div class="space-y-2">
+        <div class="flex items-center">
+            <input 
+                type="radio" 
+                name="category" 
+                value="" 
+                id="cat-all"
+                {{ request()->get('category') == null ? 'checked' : '' }}
+                class="hidden"
+            >
+            <label 
+                for="cat-all" 
+                class="cursor-pointer block px-4 py-2 rounded 
+                       {{ request()->get('category') == null ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800' }}
+                       hover:bg-blue-500 hover:text-white transition"
+            >
+                All
+            </label>
+        </div>
+
+        @foreach($categories as $category)
+            <div class="flex items-center">
+                <input 
+                    type="radio" 
+                    name="category" 
+                    value="{{ $category->id }}"
+                    id="cat-{{ $category->id }}"
+                    {{ request()->get('category') == $category->id ? 'checked' : '' }}
+                    class="hidden"
+                >
+                <label 
+                    for="cat-{{ $category->id }}" 
+                    class="cursor-pointer block px-4 py-2 rounded 
+                           {{ request()->get('category') == $category->id ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800' }}
+                           hover:bg-blue-500 hover:text-white transition"
+                >
+                    {{ $category->name }}
+                </label>
+            </div>
+        @endforeach
+    </div>
+</div>
+
+
+
+    <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        Apply Filters
+    </button>
+</form>
+
+<div class="mb-6">
             <h3 class="font-semibold mb-3">Brand</h3>
             <div class="space-y-2">
                 <div class="flex items-center">
@@ -99,9 +129,7 @@
     </div>
 </div>
 
-
 <div class="flex-1">
-
     <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
         <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
             <div class="text-sm text-gray-500">{{ $products->count() }} items</div>
@@ -120,32 +148,49 @@
         </div>
 
         <form method="GET" action="{{ route('shop') }}" class="flex flex-wrap items-center justify-end gap-4 w-full sm:w-auto">
-            @if(request('search'))
-                <input type="hidden" name="search" value="{{ request('search') }}">
-            @endif
+    {{-- Preserve search if applied --}}
+    @if(request('search'))
+        <input type="hidden" name="search" value="{{ request('search') }}">
+    @endif
 
-            <div class="flex items-center gap-2 text-sm">
-                <span class="text-gray-700 font-medium">Show:</span>
-                @foreach([6, 12, 32, 'all'] as $limit)
-                    <button 
-                        type="submit" 
-                        name="limit" 
-                        value="{{ $limit }}" 
-                        class="px-2 py-1 rounded border hover:bg-gray-200 transition text-gray-700 {{ request('limit') == $limit ? 'bg-gray-300 font-semibold' : '' }}">
-                        {{ $limit === 'all' ? 'All' : $limit }}
-                    </button>
-                @endforeach
-            </div>
+    {{-- Preserve category if selected --}}
+    @if(request('category'))
+        <input type="hidden" name="category" value="{{ request('category') }}">
+    @endif
 
-            <div>
-                <select name="sort" onchange="this.form.submit()" class="p-2 border rounded text-sm">
-                    <option value="">Default</option>
-                    <option value="low_high" {{ request('sort') == 'low_high' ? 'selected' : '' }}>Price: Low to High</option>
-                    <option value="high_low" {{ request('sort') == 'high_low' ? 'selected' : '' }}>Price: High to Low</option>
-                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
-                </select>
-            </div>
-        </form>
+    {{-- Preserve price filters if applied --}}
+    @if(request('min_price'))
+        <input type="hidden" name="min_price" value="{{ request('min_price') }}">
+    @endif
+    @if(request('max_price'))
+        <input type="hidden" name="max_price" value="{{ request('max_price') }}">
+    @endif
+
+    {{-- Show limit buttons --}}
+    <div class="flex items-center gap-2 text-sm">
+        <span class="text-gray-700 font-medium">Show:</span>
+        @foreach([6, 12, 32, 'all'] as $limit)
+            <button 
+                type="submit" 
+                name="limit" 
+                value="{{ $limit }}" 
+                class="px-2 py-1 rounded border hover:bg-gray-200 transition text-gray-700 {{ request('limit') == $limit ? 'bg-gray-300 font-semibold' : '' }}">
+                {{ $limit === 'all' ? 'All' : $limit }}
+            </button>
+        @endforeach
+    </div>
+
+    {{-- Sort dropdown --}}
+    <div>
+        <select name="sort" onchange="this.form.submit()" class="p-2 border rounded text-sm">
+            <option value="">Default</option>
+            <option value="low_high" {{ request('sort') == 'low_high' ? 'selected' : '' }}>Price: Low to High</option>
+            <option value="high_low" {{ request('sort') == 'high_low' ? 'selected' : '' }}>Price: High to Low</option>
+            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
+        </select>
+    </div>
+</form>
+
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

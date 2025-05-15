@@ -4,11 +4,19 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Product;
-
+use App\Models\Category;
 class ProductsTableSeeder extends Seeder
 {
     public function run()
     {
+       
+        $lamps = Category::where('name', 'Lamps and lightning')->firstOrFail();
+        $cables = Category::where('name', 'Cables')->firstOrFail();
+        $essentials = Category::where('name', 'Electricity essentials')->firstOrFail();
+        $ev = Category::where('name', 'EV charging')->firstOrFail();
+        $connectors = Category::where('name', 'Connectors')->firstOrFail();
+
+
         Product::truncate();
 
         $products = [
@@ -23,6 +31,7 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => true,
                 'is_on_sale' => false,
                 'is_latest' => false,
+                'category_id' => $cables->id,
 
             ],
             [
@@ -36,6 +45,7 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => true,
                 'is_on_sale' => false,
                 'is_latest' => false,
+                'category_id' => $cables->id,
 
             ],
             [
@@ -49,6 +59,7 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => true,
                 'is_on_sale' => false,
                 'is_latest' => false,
+                'category_id' => $cables->id,
 
             ],
             [
@@ -62,6 +73,7 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => true,
                 'is_on_sale' => false,
                 'is_latest' => false,
+                'category_id' => $connectors->id,
 
             ],
             [
@@ -75,6 +87,7 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => true,
                 'is_on_sale' => false,
                 'is_latest' => false,
+                'category_id' => $connectors->id,
 
             ],
             [
@@ -88,6 +101,7 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => true,
                 'is_on_sale' => false,
                 'is_latest' => false,
+                'category_id' => $essentials->id,
 
             ],
             [
@@ -101,6 +115,7 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => true,
                 'is_latest' => false,
+                'category_id' => $essentials->id,
 
             ],
               [
@@ -114,6 +129,7 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => true,
                 'is_latest' => false,
+                'category_id' => $essentials->id,
 
             ],
             [
@@ -127,6 +143,7 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => true,
                 'is_latest' => false,
+                'category_id' => $lamps->id,
 
             ],
             [
@@ -140,6 +157,8 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => true,
                 'is_latest' => false,
+                'category_id' => $lamps->id,
+
             ],
             [
                 'name' => ' Professional Classical Guitar',
@@ -152,6 +171,8 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => true,
                 'is_latest' => false,
+                'category_id' => $lamps->id,
+
             ],
             [
                 'name' => ' Professional Classical Guitar',
@@ -164,6 +185,8 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => true,
                 'is_latest' => false,
+                'category_id' => $lamps->id,
+
             ],
             [
                 'name' => ' Vinyl Record Player',
@@ -176,6 +199,8 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => false,
                 'is_latest' => true,
+                'category_id' => $ev->id,
+
             ],
               [
                 'name' => ' Aroma Diffuser',
@@ -188,6 +213,8 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => false,
                 'is_latest' => true,
+                'category_id' => $ev->id,
+
             ],
             [
                 'name' => ' Vinyl Record Player',
@@ -200,6 +227,8 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => false,
                 'is_latest' => true,
+                'category_id' => $ev->id,
+
             ],
             [
                 'name' => ' Professional Classical Guitar',
@@ -212,6 +241,8 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => false,
                 'is_latest' => true,
+                'category_id' => $ev->id,
+
             ],
             [
                 'name' => ' Professional Classical Guitar',
@@ -224,6 +255,8 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => false,
                 'is_latest' => true,
+                'category_id' => $ev->id,
+
             ],
             [
                 'name' => ' Professional Classical Guitar',
@@ -236,6 +269,8 @@ class ProductsTableSeeder extends Seeder
                 'is_featured' => false,
                 'is_on_sale' => false,
                 'is_latest' => true,
+                'category_id' => $ev->id,
+
             ],
         ];
 

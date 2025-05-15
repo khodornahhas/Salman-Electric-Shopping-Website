@@ -20,19 +20,22 @@ public function index(Request $request)
     }
 
     if ($request->has('min_price') && $request->has('max_price')) {
-    $min = (float) $request->min_price;
-    $max = (float) $request->max_price;
+        $min = (float) $request->min_price;
+        $max = (float) $request->max_price;
 
-    $query->where(function($q) use ($min, $max) {
-    $q->whereRaw('
-        CASE 
-            WHEN is_on_sale = 1 AND sale_price IS NOT NULL THEN sale_price 
-            ELSE price 
-        END BETWEEN ? AND ?
-    ', [$min, $max]);
-    });
+        $query->where(function($q) use ($min, $max) {
+            $q->whereRaw('
+                CASE 
+                    WHEN is_on_sale = 1 AND sale_price IS NOT NULL THEN sale_price 
+                    ELSE price 
+                END BETWEEN ? AND ?
+            ', [$min, $max]);
+        });
+    }
 
-}
+    if ($request->has('category') && !empty($request->category)) {
+        $query->where('category_id', $request->category);
+    }
 
     if ($request->sort == 'low_high') {
         $query->orderByRaw('CASE WHEN is_on_sale = 1 THEN sale_price ELSE price END ASC');
@@ -44,12 +47,12 @@ public function index(Request $request)
     if ($limit == 'all') {
         $products = $query->get(); 
     } else {
-       $perPage = is_numeric($limit) ? (int)$limit : 1000; 
-    $products = $query->paginate($perPage)->withQueryString();
+        $perPage = is_numeric($limit) ? (int)$limit : 1000; 
+        $products = $query->paginate($perPage)->withQueryString();
+    }
+    return view('shop', compact('categories', 'brands', 'products'));
     }
 
-    return view('shop', compact('categories', 'brands', 'products'));
-}
 
 
 }

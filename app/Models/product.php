@@ -21,4 +21,9 @@ class Product extends Model
         'is_on_sale',
         'is_latest'
     ];
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 }
