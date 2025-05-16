@@ -186,18 +186,39 @@
         @endforeach
     @endif
 
-    <div class="flex items-center gap-2 text-sm">
+    <div class="flex items-center justify-between flex-wrap gap-4 text-sm">
+    <div class="flex items-center gap-2">
         <span class="text-gray-700 font-medium">Show:</span>
         @foreach([6, 12, 32, 'all'] as $limit)
-            <button 
-                type="submit" 
-                name="limit" 
-                value="{{ $limit }}" 
-                class="px-2 py-1 rounded border hover:bg-gray-200 transition text-gray-700 {{ request('limit') == $limit ? 'bg-gray-300 font-semibold' : '' }}">
-                {{ $limit === 'all' ? 'All' : $limit }}
-            </button>
+            <form method="GET" action="{{ url()->current() }}">
+                @foreach(request()->except('limit', 'page') as $key => $value)
+                    @if(is_array($value))
+                        @foreach($value as $v)
+                            <input type="hidden" name="{{ $key }}[]" value="{{ $v }}">
+                        @endforeach
+                    @else
+                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                    @endif
+                @endforeach
+                <button 
+                    type="submit" 
+                    name="limit" 
+                    value="{{ $limit }}" 
+                    class="px-2 py-1 rounded border hover:bg-gray-200 transition text-gray-700 {{ request('limit') == $limit ? 'bg-gray-300 font-semibold' : '' }}">
+                    {{ $limit === 'all' ? 'All' : $limit }}
+                </button>
+            </form>
         @endforeach
     </div>
+
+    {{-- Pagination (top) --}}
+    @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
+        <div class="mt-1">
+            {{ $products->onEachSide(1)->links('pagination::tailwind') }}
+        </div>
+    @endif
+</div>
+
 
     <div>
         <select name="sort" onchange="this.form.submit()" class="p-2 border rounded text-sm">
@@ -207,6 +228,7 @@
             <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
         </select>
     </div>
+    
 </form>
 </div>
 

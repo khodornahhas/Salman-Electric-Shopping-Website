@@ -58,15 +58,13 @@ public function index(Request $request)
 
     $limit = $request->limit;
     if ($limit == 'all') {
-        $products = $query->get(); 
+    $products = $query->paginate(100000)->withQueryString();
     } else {
-        $perPage = is_numeric($limit) ? (int)$limit : 1000; 
+        $perPage = is_numeric($limit) ? (int)$limit : 12;
         $products = $query->paginate($perPage)->withQueryString();
     }
     return view('shop', compact('categories', 'brands', 'products'));
     }
-
-
 
 }
 
