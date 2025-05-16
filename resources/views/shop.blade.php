@@ -24,36 +24,95 @@
     cursor: pointer;
     pointer-events: all;
     }
+    
 </style>
 
     <div class="bg-blue-600 text-white font-bold py-4 pl-32 text-left mb-6" style="margin-top: 30px; font-size: 20px; font-family: 'Open Sans', sans-serif;">
         <span style="opacity: 0.4;">Home</span> <span style="opacity: 0.4;">&gt;</span> <span style="opacity: 0.4;">Shop</span>
     </div>
 
-<div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8">
     
 
     <div class="flex flex-col md:flex-row">
     <div class="w-full md:w-64 lg:w-72 xl:w-80 pr-0 md:pr-6 mb-6 md:mb-0">
-    <div class="bg-white p-6 rounded-lg shadow-sm max-h-screen overflow-y-auto">
-  <form action="{{ route('shop') }}" method="GET">
+    <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
 
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold">Filters</h2>
-            <div class="flex gap-2">
-                <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">
-                    Apply Filters
-                </button>
-                <a href="{{ route('shop') }}" class="bg-gray-300 text-gray-800 px-3 py-1 rounded hover:bg-gray-400 text-sm">
-                    Clear Filters
-                </a>
-            </div>
+
+    <form id="filter-form" action="{{ route('shop') }}" method="GET"style="font-family: 'Open Sans', sans-serif;">
+
+    <div class="flex items-center justify-between mb-1 relative">      
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="font-bold z-10 bg-white pr-2"style="font-size:25px; margin-right:22px;font-family: 'Open Sans', sans-serif;">Filters</h2>
+        <div class="flex gap-2 z-10 bg-white pl-2">
+           <a href="{{ route('shop') }}"class="bg-white border border-gray-300 text-gray-800 px-3 py-1.5 rounded-md hover:bg-gray-100 hover:border-gray-400 transition duration-200 text-sm font-medium shadow-sm"style="font-family: 'Open Sans', sans-serif;">
+                Clear Filters
+            </a>
+        </div>
+    </div>
+    </div>
+    <div class="border-b border-gray-300 mb-6"></div>
+        <div class="mb-6">
+    <h3 class="font-semibold mb-3"style="color:#004BA8">Categories</h3>
+    <div class="space-y-2 text-sm">
+        <div>
+            <input type="radio" name="category" value="" id="cat-all" class="hidden peer"
+                {{ request()->get('category') == null ? 'checked' : '' }}>
+            <label for="cat-all"
+                class="uppercase cursor-pointer block transition-all duration-200 peer-checked:font-semibold peer-checked:text-blue-600
+                       hover:underline">
+                ▪ All Categories
+            </label>
         </div>
 
-        <div class="mb-6">
-            <h3 class="font-semibold mb-3">Price ($)</h3>
+        @foreach($categories as $category)
+            <div>
+                <input type="radio" name="category" value="{{ $category->id }}" id="cat-{{ $category->id }}" class="hidden peer"
+                    {{ request()->get('category') == $category->id ? 'checked' : '' }}>
+                <label for="cat-{{ $category->id }}"
+                    class="uppercase cursor-pointer block transition-all duration-200 peer-checked:font-semibold peer-checked:text-blue-600
+                           hover:underline">
+                    ▪ {{ $category->name }}
+                </label>
+            </div>
+        @endforeach
+    </div>
+</div>
+
+
+    <div class="mb-6">
+    <h3 class="font-semibold mb-3"style="color:#004BA8">Brands</h3>
+    <div class="space-y-2 text-sm">
+        <div class="flex items-center gap-2">
+            <input type="checkbox" name="brands[]" value="all" id="brand-all"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                {{ empty(request('brands')) || in_array('all', (array)request('brands')) ? 'checked' : '' }}
+                onclick="toggleAllBrands(this)">
+            <label for="brand-all" class="cursor-pointer text-gray-800">All Brands</label>
+        </div>
+
+        @foreach($brands as $brand)
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" name="brands[]" value="{{ $brand->id }}" id="brand-{{ $brand->id }}"
+                        class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 brand-checkbox"
+                        {{ is_array(request('brands')) && in_array($brand->id, request('brands')) ? 'checked' : '' }}>
+                    <label for="brand-{{ $brand->id }}" class="cursor-pointer text-gray-800">
+                        {{ $brand->name }}
+                    </label>
+                </div>
+                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                    {{ $brand->products_count ?? 0 }}
+                </span>
+            </div>
+        @endforeach
+        </div>
+    </div>
+
+     <div class="mb-2">
+            <h3 class="font-semibold mb-3"style="font-family: 'Open Sans', sans-serif;color:#004BA8">Price ($)</h3>
             <div class="flex justify-between text-sm text-gray-700 mb-2">
-                <span>Min: $<span id="min-val">10</span></span>
+                <span>Min: $<span id="min-val">0</span></span>
                 <span>Max: $<span id="max-val">1000</span></span>
             </div>
             <div class="relative h-10">
@@ -67,57 +126,23 @@
                 <input type="hidden" name="min_price" id="min-price-input" value="{{ request('min_price', 10) }}">
                 <input type="hidden" name="max_price" id="max-price-input" value="{{ request('max_price', 1000) }}">
             </div>
-        </div>
-
-        <div class="mb-6">
-            <h3 class="font-semibold mb-3">Category</h3>
-            <div class="space-y-2">
-                <div class="flex items-center">
-                    <input type="radio" name="category" value="" id="cat-all"
-                        {{ request()->get('category') == null ? 'checked' : '' }} class="hidden">
-                    <label for="cat-all"
-                        class="cursor-pointer block px-4 py-2 rounded {{ request()->get('category') == null ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800' }}
-                        hover:bg-blue-500 hover:text-white transition">
-                        All
-                    </label>
-                </div>
-                @foreach($categories as $category)
-                    <div class="flex items-center">
-                        <input type="radio" name="category" value="{{ $category->id }}" id="cat-{{ $category->id }}"
-                            {{ request()->get('category') == $category->id ? 'checked' : '' }} class="hidden">
-                        <label for="cat-{{ $category->id }}"
-                            class="cursor-pointer block px-4 py-2 rounded {{ request()->get('category') == $category->id ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800' }}
-                            hover:bg-blue-500 hover:text-white transition">
-                            {{ $category->name }}
-                        </label>
-                    </div>
-                @endforeach
+            <div class="flex items-center gap-2 mt-4">
+            <input 
+                type="number" 
+                placeholder="0" 
+                class="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-400" 
+                name="min_price_manual"
+            />
+            <span class="text-gray-500 text-sm">to</span>
+            <input 
+                type="number" 
+                placeholder="1000" 
+                class="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-400" 
+                name="max_price_manual"
+            />
             </div>
         </div>
-
-        <div class="mb-6">
-            <h3 class="font-semibold mb-3">Brand</h3>
-            <div class="space-y-2">
-                <div class="flex items-center">
-                    <input type="checkbox" name="brands[]" value="all" id="brand-all" class="mr-2"
-                        {{ empty(request('brands')) || in_array('all', (array)request('brands')) ? 'checked' : '' }}
-                        onclick="toggleAllBrands(this)">
-                    <label for="brand-all">All Brands</label>
-                </div>
-                @foreach($brands as $brand)
-                    <div class="flex items-center">
-                        <input type="checkbox" name="brands[]" value="{{ $brand->id }}" id="brand-{{ $brand->id }}"
-                            class="mr-2 brand-checkbox"
-                            {{ is_array(request('brands')) && in_array($brand->id, request('brands')) ? 'checked' : '' }}>
-                        <label for="brand-{{ $brand->id }}">{{ $brand->name }}</label>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-
     </form>
-
-
     </div>
 </div>
 
@@ -183,9 +208,7 @@
         </select>
     </div>
 </form>
-
-
-    </div>
+</div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @foreach($products as $product)
@@ -228,7 +251,6 @@
         </a>
         @endforeach
     </div>
-
 </div>
 
 
@@ -240,7 +262,11 @@
     const sliderTrack = document.getElementById('slider-track');
     const minPriceInput = document.getElementById('min-price-input');
     const maxPriceInput = document.getElementById('max-price-input');
+    const minInputBox = document.querySelector('input[name="min_price_manual"]');
+    const maxInputBox = document.querySelector('input[name="max_price_manual"]');
+    const form = document.getElementById('filter-form');
 
+    // update the slider as the user will scroll 
     function updateSlider(event) {
         let min = parseInt(minRange.value);
         let max = parseInt(maxRange.value);
@@ -255,6 +281,41 @@
             }
         }
 
+        // update both the slider & the 2 inputs we have (the min and the max)
+        minVal.textContent = min;
+        maxVal.textContent = max;
+        minPriceInput.value = min;
+        maxPriceInput.value = max;
+
+        minInputBox.value = min;
+        maxInputBox.value = max;
+
+        const percent1 = (min / 1000) * 100;
+        const percent2 = (max / 1000) * 100;
+        sliderTrack.style.left = percent1 + "%";
+        sliderTrack.style.right = (100 - percent2) + "%";
+    }
+
+    // when the inputs change this updates the slider so it syncs with the input
+    function updateSliderFromInput() {
+        let min = parseInt(minInputBox.value) || 0;
+        let max = parseInt(maxInputBox.value) || 1000;
+
+        min = Math.max(0, Math.min(min, 1000));
+        max = Math.max(0, Math.min(max, 1000));
+
+        if (max - min < 50) {
+            if (minInputBox === document.activeElement) {
+                min = max - 50;
+                minInputBox.value = min;
+            } else {
+                max = min + 50;
+                maxInputBox.value = max;
+            }
+        }
+
+        minRange.value = min;
+        maxRange.value = max;
         minVal.textContent = min;
         maxVal.textContent = max;
         minPriceInput.value = min;
@@ -266,11 +327,42 @@
         sliderTrack.style.right = (100 - percent2) + "%";
     }
 
+    let debounceTimerSlider;
+    let debounceTimerInput;
+
+    // time limit after the user uses the slider price range (0.5 seconds for now may increase in future)
+    const debounceSubmitSlider = () => {
+        clearTimeout(debounceTimerSlider);
+        debounceTimerSlider = setTimeout(() => {
+            form.submit();
+        }, 500); 
+    };
+    // time limit after the user inputs the number in both min and max boxes (1.7 seconds)
+    const debounceSubmitInput = () => {
+        clearTimeout(debounceTimerInput);
+        debounceTimerInput = setTimeout(() => {
+            form.submit();
+        }, 1700);
+    };
+
+    // All event listeners for sliders and the number input
     minRange.addEventListener('input', updateSlider);
     maxRange.addEventListener('input', updateSlider);
 
-    updateSlider({target: minRange});
-    
+    minRange.addEventListener('change', debounceSubmitSlider);
+    maxRange.addEventListener('change', debounceSubmitSlider);
+
+    minInputBox.addEventListener('input', () => {
+        updateSliderFromInput();
+        debounceSubmitInput();
+    });
+
+    maxInputBox.addEventListener('input', () => {
+        updateSliderFromInput();
+        debounceSubmitInput();
+    });
+    updateSlider({ target: minRange });
+
     function toggleAllBrands(allCheckbox) {
         const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
         if (allCheckbox.checked) {
@@ -284,6 +376,23 @@
         });
     });
 
+    document.querySelectorAll('input[name="category"]').forEach(input => {
+        input.addEventListener('change', () => {
+            form.submit();
+        });
+    });
+
+    document.querySelectorAll('.brand-checkbox').forEach(cb => {
+        cb.addEventListener('change', () => {
+            document.getElementById('brand-all').checked = false;
+            form.submit();
+        });
+    });
+
+    document.getElementById('brand-all').addEventListener('change', () => {
+        form.submit();
+    });
 </script>
+
 
 @endsection

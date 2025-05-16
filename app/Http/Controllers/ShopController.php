@@ -13,6 +13,7 @@ public function index(Request $request)
 {
     $categories = Category::all();
     $brands = Brand::all();
+    $brands = Brand::withCount('products')->get();
     $query = Product::query();
 
     if ($request->has('search') && !empty($request->search)) {
