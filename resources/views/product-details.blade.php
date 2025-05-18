@@ -5,7 +5,7 @@
 
 <div class="container mx-auto px-4 py-10">
     <div class="flex flex-col md:flex-row gap-10">
-        
+
         <div class="w-full md:w-1/2 relative" style="margin-left:160px;">
             <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="w-full rounded-lg shadow-md" id="mainImage">
             <div class="absolute top-4 right-4 flex gap-3">
@@ -56,7 +56,7 @@
     <div class="mt-12">
         <h2 class="text-xl font-bold mb-4">Product Information</h2>
         <p class="text-gray-600 leading-relaxed">
-            {{ $product->description }}
+            {{ $product->information }}
         </p>
     </div>
 </div>

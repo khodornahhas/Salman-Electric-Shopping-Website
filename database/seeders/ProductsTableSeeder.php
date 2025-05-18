@@ -29,6 +29,7 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => 'PSS Slim Console',
                 'description' => 'Compact console for professional audio mixing',
+                'information' => 'This is just a test',
                 'price' => 25.00,
                 'sale_price' => null,
                 'quantity' => 15,
@@ -44,6 +45,7 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => 'Ibanez Professional Classical Guitar',
                 'description' => 'High-quality classical guitar with rich tone',
+                'information' => 'This is just a test',
                 'price' => 150.00,
                 'sale_price' => null,
                 'quantity' => 8,
@@ -59,6 +61,7 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => 'Moon Aroma Diffuser',
                 'description' => 'Elegant ultrasonic essential oil diffuser',
+                'information' => 'This is just a test',
                 'price' => 10.00,
                 'sale_price' => null,
                 'quantity' => 25,
@@ -74,6 +77,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => 'Vintage Vinyl Record Player',
                 'description' => 'Retro-style turntable with modern features',
+                                'information' => 'This is just a test',
+
                 'price' => 60.00,
                 'sale_price' => null,
                 'quantity' => 5,
@@ -88,6 +93,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => 'Ibanez Professional Classical Guitar',
                 'description' => 'High-quality classical guitar with rich tone',
+                                'information' => 'This is just a test',
+
                 'price' => 150.00,
                 'sale_price' => null,
                 'quantity' => 8,
@@ -102,6 +109,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => 'Vintage Vinyl Record Player',
                 'description' => 'Retro-style turntable with modern features',
+                                'information' => 'This is just a test',
+
                 'price' => 60.00,
                 'sale_price' => null,
                 'quantity' => 5,
@@ -117,6 +126,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => ' Vinyl Record Player',
                 'description' => 'Retro-style turntable with modern features',
+                                'information' => 'This is just a test',
+
                 'price' => 60.00,
                 'sale_price' => 45.00,
                 'quantity' => 5,
@@ -132,6 +143,8 @@ class ProductsTableSeeder extends Seeder
               [
                 'name' => ' Aroma Diffuser',
                 'description' => 'Elegant ultrasonic essential oil diffuser',
+                                'information' => 'This is just a test',
+
                 'price' => 10.00,
                 'sale_price' => 5.00,
                 'quantity' => 25,
@@ -148,6 +161,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => ' Vinyl Record Player',
                 'description' => 'Retro-style turntable with modern features',
+                                'information' => 'This is just a test',
+
                 'price' => 60.00,
                 'sale_price' => 40.00,
                 'quantity' => 5,
@@ -164,6 +179,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => ' Professional Classical Guitar',
                 'description' => 'High-quality classical guitar with rich tone',
+                                'information' => 'This is just a test',
+
                 'price' => 150.00,
                 'sale_price' => 135.00,
                 'quantity' => 8,
@@ -180,6 +197,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => ' Professional Classical Guitar',
                 'description' => 'High-quality classical guitar with rich tone',
+                                'information' => 'This is just a test',
+
                 'price' => 150.00,
                 'sale_price' => 135.00,
                 'quantity' => 8,
@@ -195,6 +214,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => ' Professional Classical Guitar',
                 'description' => 'High-quality classical guitar with rich tone',
+                                'information' => 'This is just a test',
+
                 'price' => 150.00,
                 'sale_price' => 135.00,
                 'quantity' => 8,
@@ -210,6 +231,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => ' Vinyl Record Player',
                 'description' => 'Retro-style turntable with modern features',
+                                'information' => 'This is just a test',
+
                 'price' => 60.00,
                 'sale_price' => 45.00,
                 'quantity' => 5,
@@ -225,6 +248,8 @@ class ProductsTableSeeder extends Seeder
               [
                 'name' => ' Aroma Diffuser',
                 'description' => 'Elegant ultrasonic essential oil diffuser',
+                                'information' => 'This is just a test',
+
                 'price' => 10.00,
                 'sale_price' => 5.00,
                 'quantity' => 25,
@@ -240,6 +265,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => ' Vinyl Record Player',
                 'description' => 'Retro-style turntable with modern features',
+                                'information' => 'This is just a test',
+
                 'price' => 60.00,
                 'sale_price' => 40.00,
                 'quantity' => 5,
@@ -255,6 +282,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => ' Professional Classical Guitar',
                 'description' => 'High-quality classical guitar with rich tone',
+                                'information' => 'This is just a test',
+
                 'price' => 150.00,
                 'sale_price' => 135.00,
                 'quantity' => 8,
@@ -271,6 +300,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => ' Professional Classical Guitar',
                 'description' => 'High-quality classical guitar with rich tone',
+                                'information' => 'This is just a test',
+
                 'price' => 150.00,
                 'sale_price' => 135.00,
                 'quantity' => 8,
@@ -287,6 +318,8 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => ' Professional Classical Guitar',
                 'description' => 'High-quality classical guitar with rich tone',
+                                'information' => 'This is just a test',
+
                 'price' => 150.00,
                 'sale_price' => 135.00,
                 'quantity' => 8,
