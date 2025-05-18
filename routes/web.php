@@ -10,6 +10,9 @@ Route::get('/home', [ProductController::class, 'index']);
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 
+Route::get('/product-details/{id}', [ProductController::class, 'show'])->name('product.details');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

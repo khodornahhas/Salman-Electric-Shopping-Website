@@ -9,8 +9,8 @@ use App\Models\Product;
 
 class ShopController extends Controller
 {
-public function index(Request $request)
-{
+    public function index(Request $request){
+
     $categories = Category::all();
     $brands = Brand::all();
     $brands = Brand::withCount('products')->get();

@@ -27,4 +27,11 @@ class ProductController extends Controller
     ));
     }
 
+  public function show($id)
+    {
+      $product = Product::findOrFail($id);
+      $product = Product::with(['category', 'brand'])->findOrFail($id);
+      return view('product-details', compact('product'));
+    }
+
 }
