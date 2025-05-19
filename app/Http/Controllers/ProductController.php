@@ -28,10 +28,12 @@ class ProductController extends Controller
     }
 
   public function show($id)
-    {
-      $product = Product::findOrFail($id);
+  {
       $product = Product::with(['category', 'brand'])->findOrFail($id);
-      return view('product-details', compact('product'));
-    }
+      $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)
+      ->inRandomOrder()->take(3)->get();
+
+      return view('product-details', compact('product', 'relatedProducts'));
+  }
 
 }

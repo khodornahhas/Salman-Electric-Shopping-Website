@@ -115,6 +115,52 @@
     </p>
 </div>
 <div class="w-full border-b border-gray-300"></div>
+@if($relatedProducts->count())
+    <div class="mt-16 px-8 md:px-32">
+        <h2 class="mb-6 text-gray-800" style="font-size: 29px; font-family: 'Open Sans', sans-serif;">You Might Also Like</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach($relatedProducts as $related)
+                <div class="relative bg-white rounded-xl overflow-hidden shadow-sm transition border border-gray-100 flex flex-col h-[420px]">
+                    <div class="absolute top-2 right-2 z-10 cursor-pointer">
+                        <i class='bx bx-heart text-gray-400 text-2xl hover:text-red-500 transition'></i>
+                    </div>
+
+                    @if($related->is_on_sale)
+                    <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                        On Sale
+                    </div>
+                    @endif
+
+                    <a href="{{ route('product.details', $related->id) }}" class="w-full h-56 bg-white flex items-center justify-center overflow-hidden">
+                        <img src="{{ asset($related->image) }}"
+                             alt="{{ $related->name }}"
+                             class="w-full h-full object-contain transform transition-transform duration-300 hover:scale-105 cursor-pointer" />
+                    </a>
+
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center"
+                            style="font-family: 'Open Sans', sans-serif; font-size: 15px;">
+                            {{ $related->name }}
+                        </h3>
+
+                        <div class="mt-0 text-center">
+                            @if($related->is_on_sale && $related->sale_price)
+                                <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
+                                <p class="text-red-600 text-lg font-bold underline">${{ number_format($related->sale_price, 2) }}</p>
+                            @else
+                                <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
+                            @endif
+
+                            <button class="mt-2 w-full bg-gray-100 text-gray-800 text-sm font-medium py-2 rounded hover:bg-gray-200 transition">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+@endif
 </div>
 
 <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
