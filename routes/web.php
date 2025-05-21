@@ -6,11 +6,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 
-Route::get('/home', [ProductController::class, 'index']);
+Route::get('/home', [ProductController::class, 'index'])->name('home');
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 
 Route::get('/product-details/{id}', [ProductController::class, 'show'])->name('product.details');
+
+Route::get('/account', function () {
+    return view('auth.account');
+})->name('account');
 
 
 Route::get('/dashboard', function () {
