@@ -10,6 +10,7 @@ use App\Http\Controllers\AccountController;
 Route::middleware(['auth'])->group(function () {
     Route::get('/account', [AccountController::class, 'show'])->name('account');
     Route::post('/account', [AccountController::class, 'update'])->name('account.update');
+    Route::put('/account', [AccountController::class, 'update'])->name('account.update');
     Route::delete('/account', [AccountController::class, 'destroy'])->name('account.delete');
 });
 
