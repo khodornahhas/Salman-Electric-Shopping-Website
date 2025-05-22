@@ -99,6 +99,7 @@
                             </a>
 
                             @auth
+                            <a href="{{ route('profile.edit') }}">
                                 <div class="flex flex-col items-center text-sm text-center">
                                     <span class="text-gray-700">Welcome</span>
                                     <div class="flex items-center gap-2">
@@ -110,6 +111,7 @@
                                         <button type="submit" class="text-red-500 hover:underline text-sm">Log out</button>
                                     </form>
                                 </div>
+                            </a>
                             @else
                                 <a href="{{ route('account') }}" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
                                     <i class='bx bx-user text-2xl'></i>
