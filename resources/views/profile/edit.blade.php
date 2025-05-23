@@ -72,13 +72,11 @@
         </p>
     </div>
 
-    <!-- Delete Button -->
     <button @click="showModal = true"
         class="px-5 py-2 bg-gradient-to-r from-red-600 to-red-800 text-white rounded-md font-semibold shadow hover:from-red-700 hover:to-red-900 transition">
         DELETE ACCOUNT
     </button>
 
-    <!-- Modal -->
     <div x-show="showModal" x-cloak class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
             <div class="flex justify-center gap-3">

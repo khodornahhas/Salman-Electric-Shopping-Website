@@ -265,9 +265,13 @@
                     @else
                     <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
                     @endif
+                    <form method="POST" action="{{ route('cart.add', $product->id) }}">
+                    @csrf
+                    <input type="hidden" name="quantity" value="1">
                     <button class="mt-2 w-full bg-gray-100 text-gray-800 text-sm font-medium py-2 rounded hover:bg-gray-200 transition">
                         Add to Cart
                     </button>
+                    </form>
                 </div>
             </div>
         </a>
