@@ -270,9 +270,10 @@
                     <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, 1)">+</button>
                 </div>
 
-                <div class="product-price" id="price-{{ $item->product->id }}">
-                    ${{ number_format($item->product->price * $item->quantity, 2) }}
+                <div class="product-price">
+                    ${{ number_format($item->product->price, 2) }}
                 </div>
+
 
                 <div class="delete-icon">
                     <form method="POST" action="{{ route('cart.remove', $item->product->id) }}">
@@ -302,7 +303,7 @@
             <div class="summary-details">
                 <div class="summary-row total-row">
                     <span>Total</span>
-                    <span>${{ number_format($total, 2) }}</span>
+                    <span class="product-subtotal" id="subtotal-{{ $item->product->id }}"> ${{ number_format($item->product->price * $item->quantity, 2) }}</span>
                 </div>
             </div>
 
@@ -314,28 +315,37 @@
     </div>
 </div>
 <script>
-function updateQuantity(productId, change) {
-    fetch(`/cart/update/${productId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': "{{ csrf_token() }}"
-        },
-        body: JSON.stringify({ change: change })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            if (data.deleted) {
-                const item = document.getElementById(`cart-item-${productId}`);
-                if (item) item.remove();
-            } else {
-                document.getElementById(`qty-${productId}`).innerText = data.quantity;
-                document.getElementById(`price-${productId}`).innerText = `$${data.price}`;
+    function updateQuantity(productId, change) {
+        fetch(`/cart/update/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ change: change })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (data.deleted) {
+                    const item = document.getElementById(`cart-item-${productId}`);
+                    if (item) item.remove();
+                } else {
+                    document.getElementById(`qty-${productId}`).innerText = data.quantity;
+                    document.getElementById(`subtotal-${productId}`).innerText = `$${data.price}`;
+                }
+                updateCartTotal();
             }
+        });
+
+        function updateCartTotal() {
+        fetch('/cart/total')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('cart-total').innerText = `$${data.total}`;
+            });
         }
-    });
-}
+    }
 </script>
 
 @endsection

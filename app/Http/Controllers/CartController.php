@@ -46,7 +46,6 @@ class CartController extends Controller
         }
 
       return response()->json(['success' => true, 'message' => 'Product added to cart!']);
-
     }
 
     public function index()
@@ -94,6 +93,23 @@ class CartController extends Controller
             'success' => true,
             'quantity' => $item->quantity ?? 0,
             'price' => number_format(($item->product->price ?? 0) * ($item->quantity ?? 0), 2),
+        ]);
+    }
+
+    public function total()
+    {
+        if (Auth::check()) {
+            $total = CartItem::where('user_id', Auth::id())
+                ->with('product')
+                ->get()
+                ->sum(fn($item) => $item->product->price * $item->quantity);
+        } else {
+            $cart = session()->get('cart', []);
+            $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+        }
+
+        return response()->json([
+            'total' => number_format($total, 2)
         ]);
     }
 
