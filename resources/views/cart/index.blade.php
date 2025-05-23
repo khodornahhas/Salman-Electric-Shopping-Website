@@ -209,6 +209,27 @@
     </div>
 </div>
 
+<div class="flex items-center justify-center my-6 space-x-6">
+  <div class="flex items-center space-x-2">
+    <div class="flex items-center justify-center w-8 h-8 text-white bg-blue-800 rounded-full">1</div>
+    <span class="text-blue-800 font-medium">Cart</span>
+  </div>
+
+  <span class="text-gray-400">›</span>
+
+  <div class="flex items-center space-x-2">
+    <div class="flex items-center justify-center w-8 h-8 border border-blue-300 text-blue-800 rounded-full bg-white">2</div>
+    <span class="text-gray-500">Checkout</span>
+  </div>
+
+  <span class="text-gray-400">›</span>
+
+  <div class="flex items-center space-x-2">
+    <div class="flex items-center justify-center w-8 h-8 border border-blue-300 text-blue-800 rounded-full bg-white">3</div>
+    <span class="text-gray-500">Order</span>
+  </div>
+</div>
+
 <div class="cart-container" style="font-family: 'Open Sans', sans-serif;">
     <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid grey; width: 100%; margin-bottom: 20px;">
     <h3 style="margin: 0;">Your Cart</h3>
