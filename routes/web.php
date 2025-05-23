@@ -16,11 +16,11 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');
 Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
 Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+Route::post('/cart/update/{productId}', [CartController::class, 'update'])->name('cart.update');
 
 
 Route::get('/home', [ProductController::class, 'index'])->name('home');

@@ -2,6 +2,17 @@
 @section('content')
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style>
+    .delete-header {
+        flex: 0.5;
+    }
+
+    .delete-icon {
+        flex: 0.5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .cart-container {
         max-width: 1400px;
         margin: 0 auto;
@@ -238,9 +249,10 @@
     <div class="cart-layout">
         <div class="cart-items-section">
             <div class="cart-header">
-                <span class="product-header">Product</span>
-                <span class="qty-header">QTY</span>
-                <span class="price-header">Price</span>
+                <div class="product-header">Product</div>
+                <div class="qty-header">QTY</div>
+                <div class="price-header">Price</div>
+                <div class="delete-header"></div> 
             </div>
 
             @forelse($cartItems as $item)
@@ -253,13 +265,23 @@
                 </div>
 
                 <div class="quantity-controls">
-                    <button class="quantity-btn">-</button>
+                    <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, -1)">-</button>
                     <span class="quantity-value">{{ $item->quantity }}</span>
-                    <button class="quantity-btn">+</button>
+                    <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, 1)">+</button>
                 </div>
 
                 <div class="product-price">
                     ${{ number_format($item->product->price, 2) }}
+                </div>
+
+                <div class="delete-icon">
+                    <form method="POST" action="{{ route('cart.remove', $item->product->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" title="Remove item">
+                            <i class='bx bx-trash text-red-600 text-xl hover:text-red-800'></i>
+                        </button>
+                    </form>
                 </div>
             </div>
             @empty
@@ -291,4 +313,23 @@
         </div>
     </div>
 </div>
+<script>
+    function updateQuantity(productId, change) {
+        fetch(`/cart/update/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ change: change })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload(); 
+            }
+        });
+    }
+</script>
+
 @endsection

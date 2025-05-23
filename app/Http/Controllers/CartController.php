@@ -63,6 +63,57 @@ class CartController extends Controller
 
         return view('cart.index', compact('cartItems'));
     }
+    public function update(Request $request, $productId)
+    {
+        $change = $request->input('change', 0);
+        $user = Auth::user();
+
+        if ($user) {
+            $item = CartItem::where('user_id', $user->id)->where('product_id', $productId)->first();
+            if ($item) {
+                $item->quantity += $change;
+                if ($item->quantity < 1) {
+                    $item->delete();
+                } else {
+                    $item->save();
+                }
+            }
+        } else {
+            $cart = session()->get('cart', []);
+            if (isset($cart[$productId])) {
+                $cart[$productId]['quantity'] += $change;
+                if ($cart[$productId]['quantity'] < 1) {
+                    unset($cart[$productId]);
+                }
+            }
+            session()->put('cart', $cart);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    public function updateQuantity(Request $request)
+{
+    $productId = $request->input('product_id');
+    $change = $request->input('change');
+
+    if (Auth::check()) {
+        $item = CartItem::where('user_id', Auth::id())
+                        ->where('product_id', $productId)
+                        ->first();
+
+        if ($item) {
+            $item->quantity += $change;
+            $item->quantity = max($item->quantity, 1); // Prevent zero or negative
+            $item->save();
+            return response()->json(['success' => true, 'quantity' => $item->quantity]);
+        }
+    }
+
+    return response()->json(['success' => false], 400);
+}
+
+
 
     public function remove($productId)
     {
