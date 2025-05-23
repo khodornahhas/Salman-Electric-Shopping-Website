@@ -266,12 +266,12 @@
 
                 <div class="quantity-controls">
                     <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, -1)">-</button>
-                    <span class="quantity-value">{{ $item->quantity }}</span>
+                    <span class="quantity-value" id="qty-{{ $item->product->id }}">{{ $item->quantity }}</span>
                     <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, 1)">+</button>
                 </div>
 
-                <div class="product-price">
-                    ${{ number_format($item->product->price, 2) }}
+                <div class="product-price" id="price-{{ $item->product->id }}">
+                    ${{ number_format($item->product->price * $item->quantity, 2) }}
                 </div>
 
                 <div class="delete-icon">
@@ -314,22 +314,28 @@
     </div>
 </div>
 <script>
-    function updateQuantity(productId, change) {
-        fetch(`/cart/update/${productId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-            },
-            body: JSON.stringify({ change: change })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload(); 
+function updateQuantity(productId, change) {
+    fetch(`/cart/update/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({ change: change })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (data.deleted) {
+                const item = document.getElementById(`cart-item-${productId}`);
+                if (item) item.remove();
+            } else {
+                document.getElementById(`qty-${productId}`).innerText = data.quantity;
+                document.getElementById(`price-${productId}`).innerText = `$${data.price}`;
             }
-        });
-    }
+        }
+    });
+}
 </script>
 
 @endsection

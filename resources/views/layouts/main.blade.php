@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salman Electric</title>
@@ -95,8 +96,9 @@
 
                             <a href="#" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Cart">
                                 <i class='bx bx-cart text-2xl'></i>
-                                <span class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                                <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
                             </a>
+
 
                             @auth
                             <a href="{{ route('profile.edit') }}">
@@ -225,5 +227,42 @@
   <div class="py-6 text-base text-center text-gray-600 border-t border-gray-200 mt-8">
     © {{ date('Y') }} Salman Electric. All rights reserved.
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        updateCartCount();
+
+        document.querySelectorAll('.cart-form').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const button = form.querySelector('.add-to-cart');
+                const productId = button.getAttribute('data-product-id');
+                const quantity = button.getAttribute('data-quantity');
+
+                fetch(`/cart/add/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ quantity: quantity })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    updateCartCount();
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+
+    function updateCartCount() {
+        fetch('/cart/count')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('cart-count').innerText = data.count;
+            });
+    }
+</script>
 </footer>
 </html>

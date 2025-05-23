@@ -45,7 +45,8 @@ class CartController extends Controller
             session()->put('cart', $cart);
         }
 
-        return redirect()->back()->with('success', 'Product added to cart!');
+      return response()->json(['success' => true, 'message' => 'Product added to cart!']);
+
     }
 
     public function index()
@@ -89,30 +90,24 @@ class CartController extends Controller
             session()->put('cart', $cart);
         }
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'success' => true,
+            'quantity' => $item->quantity ?? 0,
+            'price' => number_format(($item->product->price ?? 0) * ($item->quantity ?? 0), 2),
+        ]);
     }
 
-    public function updateQuantity(Request $request)
-{
-    $productId = $request->input('product_id');
-    $change = $request->input('change');
-
-    if (Auth::check()) {
-        $item = CartItem::where('user_id', Auth::id())
-                        ->where('product_id', $productId)
-                        ->first();
-
-        if ($item) {
-            $item->quantity += $change;
-            $item->quantity = max($item->quantity, 1);
-            $item->save();
-            return response()->json(['success' => true, 'quantity' => $item->quantity]);
+    public function count()
+    {
+        if (Auth::check()) {
+            $count = CartItem::where('user_id', Auth::id())->sum('quantity');
+        } else {
+            $cart = session()->get('cart', []);
+            $count = collect($cart)->sum('quantity');
         }
+
+        return response()->json(['count' => $count]);
     }
-
-    return response()->json(['success' => false], 400);
-}
-
 
 
     public function remove($productId)
