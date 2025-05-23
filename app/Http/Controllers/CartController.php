@@ -104,7 +104,7 @@ class CartController extends Controller
 
         if ($item) {
             $item->quantity += $change;
-            $item->quantity = max($item->quantity, 1); // Prevent zero or negative
+            $item->quantity = max($item->quantity, 1);
             $item->save();
             return response()->json(['success' => true, 'quantity' => $item->quantity]);
         }
