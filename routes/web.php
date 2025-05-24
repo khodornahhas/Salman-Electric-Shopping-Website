@@ -23,6 +23,7 @@ Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear
 Route::post('/cart/update/{productId}', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 Route::get('/cart/total', [CartController::class, 'total']);
+Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
 
 Route::get('/home', [ProductController::class, 'index'])->name('home');

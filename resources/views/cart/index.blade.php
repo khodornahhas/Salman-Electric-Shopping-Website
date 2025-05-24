@@ -241,7 +241,7 @@
   </div>
 </div>
 
-<div class="cart-container" style="font-family: 'Open Sans', sans-serif;">
+<div class="cart-container" style="font-family: 'Open Sans', sans-serif; margin-bottom:100px;">
     <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid grey; width: 100%; margin-bottom: 20px;">
     <h3 style="margin: 0;">Your Cart</h3>
     <i class='bx bx-cart' style="font-size: 24px;"></i>
@@ -255,8 +255,8 @@
                 <div class="delete-header"></div> 
             </div>
 
-            @forelse($cartItems as $item)
-            <div class="cart-item">
+           @forelse($cartItems as $item)
+            <div class="cart-item" id="cart-item-{{ $item->product->id }}">
                 <div class="product-info">
                     <img src="{{ asset($item->product->image) }}" class="product-image" alt="">
                     <div>
@@ -274,7 +274,6 @@
                     ${{ number_format($item->product->price, 2) }}
                 </div>
 
-
                 <div class="delete-icon">
                     <form method="POST" action="{{ route('cart.remove', $item->product->id) }}">
                         @csrf
@@ -285,35 +284,34 @@
                     </form>
                 </div>
             </div>
-            @empty
-                <p class="empty-cart">Your cart is empty.</p>
-            @endforelse
+        @empty
+            <p class="empty-cart">Your cart is empty.</p>
+        @endforelse
         </div>
 
         <div class="summary-section">
             <h2 class="summary-title">Order Summary</h2>
 
             @php
-                $total = 0;
-                foreach($cartItems as $item) {
-                    $total += $item->product->price * $item->quantity;
-                }
-            @endphp
-
+            $total = 0;
+            foreach ($cartItems as $item) {
+                $total += $item->product->price * $item->quantity;
+            }
+        @endphp
             <div class="summary-details">
                 <div class="summary-row total-row">
                     <span>Total</span>
-                    <span class="product-subtotal" id="subtotal-{{ $item->product->id }}"> ${{ number_format($item->product->price * $item->quantity, 2) }}</span>
+                    <span id="cart-total">${{ number_format($total, 2) }}</span>
                 </div>
             </div>
 
             <div class="summary-actions">
-                <a href="#" class="checkout-btn">Checkout Now</a>
+                <a href="" class="checkout-btn">Checkout Now</a>
                 <a href="{{ route('shop') }}" class="continue-btn">Continue Shopping</a>
             </div>
-        </div>
     </div>
 </div>
+
 <script>
     function updateQuantity(productId, change) {
         fetch(`/cart/update/${productId}`, {
@@ -330,22 +328,23 @@
                 if (data.deleted) {
                     const item = document.getElementById(`cart-item-${productId}`);
                     if (item) item.remove();
-                } else {
+                } 
+                else {
                     document.getElementById(`qty-${productId}`).innerText = data.quantity;
-                    document.getElementById(`subtotal-${productId}`).innerText = `$${data.price}`;
                 }
-                updateCartTotal();
+                updateCartTotal(); 
             }
         });
+    }
 
-        function updateCartTotal() {
+    function updateCartTotal() {
         fetch('/cart/total')
             .then(res => res.json())
             .then(data => {
                 document.getElementById('cart-total').innerText = `$${data.total}`;
             });
-        }
     }
 </script>
+
 
 @endsection

@@ -16,25 +16,26 @@ class CartController extends Controller
         $quantity = $request->input('quantity', 1);
 
         if (Auth::check()) {
-            $item = CartItem::where('user_id', Auth::id())
-                            ->where('product_id', $productId)
-                            ->first();
+            $item = CartItem::where('user_id', Auth::id())->where('product_id', $productId)->first();
 
             if ($item) {
                 $item->quantity += $quantity;
                 $item->save();
-            } else {
+            } 
+            else {
                 CartItem::create([
                     'user_id' => Auth::id(),
                     'product_id' => $productId,
                     'quantity' => $quantity,
                 ]);
             }
-        } else {
+        } 
+            else {
             $cart = session()->get('cart', []);
             if (isset($cart[$productId])) {
                 $cart[$productId]['quantity'] += $quantity;
-            } else {
+            } 
+            else {
                 $cart[$productId] = [
                     'name' => $product->name,
                     'price' => $product->price,
@@ -50,19 +51,30 @@ class CartController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-        $sessionId = session()->getId();
+        if (Auth::check()) {
+            $cartItems = CartItem::with('product')
+                ->where('user_id', Auth::id())
+                ->get();
 
-        $cartItems = CartItem::with('product')
-            ->when($user, function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }, function ($query) use ($sessionId) {
-                $query->where('session_id', $sessionId);
-            })
-            ->get();
-
+        } 
+        else {
+            $cart = session()->get('cart', []); 
+            $cartItems = [];
+            foreach ($cart as $productId => $item) {
+                $cartItems[] = (object)[
+                    'product' => (object)[
+                        'id' => $productId,
+                        'name' => $item['name'],
+                        'price' => $item['price'],
+                        'image' => $item['image'],
+                    ],
+                    'quantity' => $item['quantity'],
+                ];
+            }
+        }
         return view('cart.index', compact('cartItems'));
     }
+
     public function update(Request $request, $productId)
     {
         $change = $request->input('change', 0);
@@ -89,11 +101,22 @@ class CartController extends Controller
             session()->put('cart', $cart);
         }
 
-        return response()->json([
-            'success' => true,
-            'quantity' => $item->quantity ?? 0,
-            'price' => number_format(($item->product->price ?? 0) * ($item->quantity ?? 0), 2),
-        ]);
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'quantity' => $item->quantity,
+                'price' => number_format($item->product->price * $item->quantity, 2),
+            ]);
+        } else {
+            $quantity = $cart[$productId]['quantity'] ?? 0;
+            $price = number_format($cart[$productId]['price'] * $quantity, 2);
+
+            return response()->json([
+                'success' => true,
+                'quantity' => $quantity,
+                'price' => $price,
+            ]);
+        }
     }
 
     public function total()
@@ -151,5 +174,21 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Cart cleared!');
     }
+
+    public function checkout()
+    {
+        $cart = Auth::check() ? 
+            CartItem::with('product')->where('user_id', Auth::id())->get() :
+            collect(session('cart', []))->map(function ($item, $productId) {
+                return (object) array_merge(['id' => $productId], $item);
+            });
+
+        $subtotal = $cart->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+
+        return view('cart.checkout', compact('cart', 'subtotal'));
+    }
+
 }
 
