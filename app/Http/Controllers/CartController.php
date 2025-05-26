@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\CartItem;
-
+use App\Models\Order;
+use App\Models\OrderItem;
 
 class CartController extends Controller
 {
@@ -37,6 +38,7 @@ class CartController extends Controller
             } 
             else {
                 $cart[$productId] = [
+                    'product_id' => $productId,
                     'name' => $product->name,
                     'price' => $product->price,
                     'image' => $product->image, 
@@ -188,6 +190,86 @@ class CartController extends Controller
         });
 
         return view('cart.checkout', compact('cart', 'subtotal'));
+    }
+
+    public function confirm(Request $request)
+    {
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'street' => 'nullable|string|max:255',
+            'apartment' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'phone' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
+            'notes' => 'nullable|string',
+            'shipping' => 'required|in:5.00,4.00,0.00',
+        ]);
+
+        return view('cart.confirm', ['data' => $validated]);
+    }
+
+    public function placeOrder(Request $request)
+    {
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'street' => 'nullable|string|max:255',
+            'apartment' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
+            'shipping' => 'required|in:5.00,4.00,0.00',
+        ]);
+
+        $cart = session()->get('cart', []);
+
+        if (empty($cart)) {
+            return redirect('/cart')->with('error', 'Your cart is empty!');
+        }
+
+        $subtotal = 0;
+
+        foreach ($cart as $item) {
+            $product = Product::find($item['product_id']);
+            if ($product) {
+                $subtotal += ($item['price'] ?? $product->price) * $item['quantity'];
+            }
+        }
+
+        $shipping = floatval($validated['shipping']);
+        $total = $subtotal + $shipping;
+
+        $order = Order::create([
+            'user_id' => Auth::check() ? Auth::id() : null,
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'street' => $validated['street'],
+            'apartment' => $validated['apartment'],
+            'city' => $validated['city'],
+            'notes' => $validated['notes'],
+            'shipping' => $shipping,
+            'total' => $total,
+            'status' => 'pending',
+        ]);
+
+        foreach ($cart as $item) {
+            $product = Product::find($item['product_id']);
+
+            if ($product) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'] ?? $product->price,
+                ]);
+            }
+        }
+        session()->forget('cart');
+        return redirect('/home')->with('success', 'Your order has been placed! We will contact you shortly.');
     }
 
 }

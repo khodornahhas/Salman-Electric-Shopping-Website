@@ -24,6 +24,8 @@ Route::post('/cart/update/{productId}', [CartController::class, 'update'])->name
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 Route::get('/cart/total', [CartController::class, 'total']);
 Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/cart/confirm', [CartController::class, 'confirm']);
+Route::post('/cart/place-order', [CartController::class, 'placeOrder']);
 
 
 Route::get('/home', [ProductController::class, 'index'])->name('home');
