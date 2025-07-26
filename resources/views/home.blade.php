@@ -115,7 +115,7 @@
 }
 </style>
 
-<!-- Image Slider (Display) -->
+<!-- Image Slider DISPLAY -->
 <div x-data="{
     activeSlide: 0,
     slides: [
@@ -273,7 +273,7 @@
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             @foreach ($categories as $category)
-                <a href="" 
+                <a href="{{ route('shop', ['category' => $category->id]) }}" 
                    class="group flex flex-col items-center p-3 hover:bg-gray-50 rounded transition-colors">
                     <img src="{{ asset($imageMap[$category->name] ?? 'images/default.png') }}" alt="{{ $category->name }}" class="w-12 h-auto mb-2 object-contain">
                     <span class="text-gray-800 text-sm text-center font-medium">
@@ -288,9 +288,9 @@
 <section class="bg-blue-900 py-10"style="margin-top:15px;">
     <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md flex justify-center items-center gap-10 overflow-x-auto">
         @foreach ($brands as $brand)
-            <div class="flex flex-col items-center min-w-[100px]">
-                <img src="{{ asset('images/' . $brand->image) }}" alt="{{ $brand->name }}"class="h-16 object-contain mb-2 transition-transform duration-300 cursor-pointer ">
-            </div>
+            <a href="{{ route('shop', ['brands[]' => $brand->id]) }}" class="flex flex-col items-center min-w-[100px]">
+                <img src="{{ asset('images/' . $brand->image) }}" alt="{{ $brand->name }}" class="h-16 object-contain mb-2 transition-transform duration-300 cursor-pointer">
+            </a>
         @endforeach
     </div>
 </section>

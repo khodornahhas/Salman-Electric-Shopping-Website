@@ -94,7 +94,7 @@
                                 <span class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
                             </a>
 
-                            <a href="#" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Cart">
+                            <a href="{{ route('cart.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Cart">
                                 <i class='bx bx-cart text-2xl'></i>
                                 <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
                             </a>

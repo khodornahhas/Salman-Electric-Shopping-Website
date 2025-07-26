@@ -28,7 +28,7 @@
 </style>
 
     <div class="bg-blue-600 text-white font-bold py-4 pl-32 text-left mb-6" style="margin-top: 30px; font-size: 20px; font-family: 'Open Sans', sans-serif;">
-        <span style="opacity: 0.4;">Home</span> <span style="opacity: 0.4;">&gt;</span> <span style="opacity: 0.4;">Shop</span>
+        <span style="opacity: 0.4;">Home</span> <span style="opacity: 0.4;">&gt;</span> <span style="opacity: 0.9;">Shop</span>
     </div>
 
     <div class="container mx-auto px-4 py-8">
