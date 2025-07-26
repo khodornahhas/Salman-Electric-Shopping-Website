@@ -125,7 +125,9 @@
             alt: 'Salman Electric Promotion',
             headline: 'PREMIUM ELECTRICAL SOLUTIONS',
             subtext: 'Trusted by homes & businesses since 1995',
-            cta: 'SHOP NOW'
+            cta: 'SHOP NOW',
+            link: '/shop'
+
         },
         { 
             id: 2, 
@@ -200,9 +202,9 @@
                                 x-text="slide.headline"></h2>
                             <p class="text-xl mb-8 text-white" 
                             x-text="slide.subtext"></p>
-                            <button class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-lg">
+                            <a :href="slide.link" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-lg">
                                 <span x-text="slide.cta"></span>
-                            </button>
+                            </a>
                         </div>
                             
                             <div class="w-1/2 flex justify-center">
@@ -418,9 +420,12 @@
           shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
                                 <div class="relative h-64 p-0 flex items-center justify-center bg-white">
                                     <template x-if="product.image">
-                                        <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
-                                             class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
+                                        <a :href="'/product-details/' + product.id">
+                                            <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
+                                                class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
+                                        </a>
                                     </template>
+
                                     <template x-if="!product.image">
                                         <div class="w-full h-full flex items-center justify-center text-gray-300">
                                             <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -478,7 +483,7 @@
         </div>
 
         <div class="text-center mt-8">
-            <a href="#" class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-md">
+            <a href="{{ route('shop') }}" class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-md">
                 Show More
             </a>
         </div>
@@ -604,8 +609,10 @@
           shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
                                 <div class="relative h-64 p-0 flex items-center justify-center bg-white">
                                     <template x-if="product.image">
-                                        <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
-                                             class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
+                                        <a :href="'/product-details/' + product.id">
+                                            <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
+                                                class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
+                                        </a>
                                     </template>
                                     <template x-if="!product.image">
                                         <div class="w-full h-full flex items-center justify-center text-gray-300">
@@ -787,8 +794,10 @@
           shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
                                 <div class="relative h-64 p-0 flex items-center justify-center bg-white">
                                     <template x-if="product.image">
-                                        <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
-                                             class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
+                                        <a :href="'/product-details/' + product.id">
+                                            <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
+                                                class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
+                                        </a>
                                     </template>
                                     <template x-if="!product.image">
                                         <div class="w-full h-full flex items-center justify-center text-gray-300">
