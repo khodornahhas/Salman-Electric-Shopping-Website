@@ -7,26 +7,29 @@
             <h2 class="text-2xl font-semibold mb-6">Log In to your Account</h2>
 
             <div class="flex gap-4 mb-4">
-                <button class="border p-2 rounded"><i class="bx bxl-google"></i></button>
+                <a href="{{ route('auth.google') }}" class="border p-2 rounded inline-flex items-center space-x-2">
+                    <i class="bx bxl-google"></i>
+                    <span>Sign in with Google</span>
+                </a>
                 <button class="border p-2 rounded"><i class="bx bxl-facebook"></i></button>
             </div>
 
             <p class="text-sm mb-4">- or login using your email address.</p>
             @if (session('status'))
-    <div class="mb-4 text-sm text-green-600">
-        {{ session('status') }}
-    </div>
-@endif
+                <div class="mb-4 text-sm text-green-600">
+                    {{ session('status') }}
+                </div>
+            @endif
 
-@if ($errors->any())
-    <div class="mb-4">
-        <ul class="list-disc list-inside text-sm text-red-600">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+            @if ($errors->any())
+                <div class="mb-4">
+                    <ul class="list-disc list-inside text-sm text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form method="POST" action="{{ route('login') }}" class="space-y-4">
                 @csrf
@@ -50,7 +53,10 @@
         <div class="w-full md:w-1/2">
             <h2 class="text-2xl font-semibold mb-6">Create a New Account</h2>
             <div class="flex gap-4 mb-4">
-                <button class="border p-2 rounded"><i class="bx bxl-google"></i></button>
+                <a href="{{ route('auth.google') }}" class="border p-2 rounded inline-flex items-center space-x-2">
+                    <i class="bx bxl-google"></i>
+                    <span>Sign up with Google</span>
+                </a>
                 <button class="border p-2 rounded"><i class="bx bxl-facebook"></i></button>
             </div>
 

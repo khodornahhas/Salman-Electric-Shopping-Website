@@ -103,7 +103,6 @@
                             @auth
                             <a href="{{ route('profile.edit') }}">
                                 <div class="flex flex-col items-center text-sm text-center">
-                                    <span class="text-gray-700">Welcome</span>
                                     <div class="flex items-center gap-2">
                                         <i class='bx bx-user text-2xl text-gray-700'></i> {{-- Icon color reset to default gray --}}
                                         <span class="font-semibold text-black">{{ Auth::user()->name }}</span>
