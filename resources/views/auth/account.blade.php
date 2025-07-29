@@ -12,6 +12,21 @@
             </div>
 
             <p class="text-sm mb-4">- or login using your email address.</p>
+            @if (session('status'))
+    <div class="mb-4 text-sm text-green-600">
+        {{ session('status') }}
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="mb-4">
+        <ul class="list-disc list-inside text-sm text-red-600">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
             <form method="POST" action="{{ route('login') }}" class="space-y-4">
                 @csrf
@@ -40,7 +55,15 @@
             </div>
 
             <p class="text-sm mb-4">- or login using your email address.</p>
-
+            @if ($errors->any())
+                <div class="mb-4">
+                    <ul class="list-disc list-inside text-sm text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form method="POST" action="{{ route('register') }}" class="space-y-4">
                 @csrf
                 <input type="text" name="name" placeholder="Username*" required class="w-full px-4 py-2 border rounded" />

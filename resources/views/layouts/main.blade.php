@@ -61,10 +61,10 @@
                         <nav aria-label="Global" class="hidden md:block">
                             <ul class="flex items-center gap-6 text-sm font-bold ">
                                 <li>
-                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="#">HOME</a>
+                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="/home">HOME</a>
                                 </li>
                                 <li>
-                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="#">SHOP</a>
+                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="/shop">SHOP</a>
                                 </li>
                                 <li>
                                     <a class="text-gray-900 hover:text-blue-600 transition-colors" href="#">ABOUT</a>
@@ -117,7 +117,6 @@
                             @else
                                 <a href="{{ route('account') }}" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
                                     <i class='bx bx-user text-2xl'></i>
-                                    <span class="text-sm font-medium">Login</span>
                                 </a>
                             @endauth
                         </div>
