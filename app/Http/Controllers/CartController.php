@@ -211,7 +211,7 @@ class CartController extends Controller
         return view('cart.confirm', ['data' => $validated]);
     }
 
-    public function placeOrder(Request $request)
+   public function placeOrder(Request $request)
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -225,18 +225,27 @@ class CartController extends Controller
             'shipping' => 'required|in:5.00,4.00,0.00',
         ]);
 
-        $cart = session()->get('cart', []);
+        $cart = Auth::check()
+            ? CartItem::with('product')->where('user_id', Auth::id())->get()
+            : collect(session()->get('cart', []));
 
-        if (empty($cart)) {
+        if ($cart->isEmpty()) {
             return redirect('/cart')->with('error', 'Your cart is empty!');
         }
 
         $subtotal = 0;
 
         foreach ($cart as $item) {
-            $product = Product::find($item['product_id']);
-            if ($product) {
-                $subtotal += ($item['price'] ?? $product->price) * $item['quantity'];
+            if (Auth::check()) {
+                $product = $item->product;
+                if ($product) {
+                    $subtotal += $product->price * $item->quantity;
+                }
+            } else {
+                $product = Product::find($item['product_id']);
+                if ($product) {
+                    $subtotal += ($item['price'] ?? $product->price) * $item['quantity'];
+                }
             }
         }
 
@@ -259,20 +268,36 @@ class CartController extends Controller
         ]);
 
         foreach ($cart as $item) {
-            $product = Product::find($item['product_id']);
-
-            if ($product) {
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $product->id,
-                    'quantity' => $item['quantity'],
-                    'price' => $item['price'] ?? $product->price,
-                ]);
+            if (Auth::check()) {
+                $product = $item->product;
+                if ($product) {
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $product->id,
+                        'quantity' => $item->quantity,
+                        'price' => $product->price,
+                    ]);
+                }
+            } else {
+                $product = Product::find($item['product_id']);
+                if ($product) {
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $product->id,
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'] ?? $product->price,
+                    ]);
+                }
             }
         }
-        session()->forget('cart');
+
+        if (Auth::check()) {
+            CartItem::where('user_id', Auth::id())->delete();
+        } else {
+            session()->forget('cart');
+        }
+
         return redirect('/home')->with('success', 'Your order has been placed! We will contact you shortly.');
     }
-
 }
 
