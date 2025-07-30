@@ -76,15 +76,8 @@
                 <input type="text" name="first_name" placeholder="First Name*" class="w-full px-4 py-2 border rounded" />
                 <input type="text" name="last_name" placeholder="Last Name*" class="w-full px-4 py-2 border rounded" />
                 <input type="email" name="email" placeholder="user@mail.com*" required class="w-full px-4 py-2 border rounded" />
-                <select name="location" class="w-full px-4 py-2 border rounded">
-                    <option value="Beirut">Beirut</option>
-                    <option value="Tripoli">Tripoli</option>
-                    <option value="Sidon">Sidon</option>
-                </select>
-                <input type="text" name="address" placeholder="Enter Your Address*" class="w-full px-4 py-2 border rounded" />
                 <input type="text" name="phone" placeholder="Enter phone number*" class="w-full px-4 py-2 border rounded" />
                 <input type="password" name="password" placeholder="********" required class="w-full px-4 py-2 border rounded" />
-                <input type="password" name="password_confirmation" placeholder="********" required class="w-full px-4 py-2 border rounded" />
 
                 <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-semibold transition">Sign Up</button>
             </form>

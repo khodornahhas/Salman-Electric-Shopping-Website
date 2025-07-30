@@ -37,28 +37,32 @@
 
 <div class="container mx-auto max-w-5xl py-12 px-4" style="font-family: 'Open Sans', sans-serif;">
     <div class="grid md:grid-cols-2 gap-8 bg-white p-6 rounded-lg shadow-md">
+        @php
+            $user = auth()->user();
+        @endphp
+
         <div>
-            <h2 class="mb-6"style="font-size:30px;`  2">Billing & Shipping</h2>
-           <form action="{{ url('/cart/confirm') }}" method="POST">
+            <h2 class="mb-6" style="font-size:30px;">Billing & Shipping</h2>
+            <form action="{{ url('/cart/confirm') }}" method="POST">
                 @csrf
                 <div class="grid grid-cols-2 gap-4 mb-4">
-                    <input type="text" name="first_name" placeholder="First name *" class="border p-2 w-full rounded" required>
-                    <input type="text" name="last_name" placeholder="Last name (Optional) " class="border p-2 w-full rounded" >
+                    <input type="text" name="first_name" placeholder="First name *" class="border p-2 w-full rounded" required value="{{ old('first_name', $user->first_name ?? '') }}">
+                    <input type="text" name="last_name" placeholder="Last name (Optional)" class="border p-2 w-full rounded" value="{{ old('last_name', $user->last_name ?? '') }}">
                 </div>
 
                 <div class="mb-4 font-semibold">Country / Region <br> <span class="text-gray-600">Lebanon</span></div>
 
-                <input type="text" name="street" placeholder="Street address (Optional)" class="border p-2 w-full mb-4 rounded" >
-                <input type="text" name="apartment" placeholder="Apartment, suite, unit, etc. (Optional)" class="border p-2 w-full mb-4 rounded">
-                <input type="text" name="city" placeholder="Town / City (Optional)" class="border p-2 w-full mb-4 rounded" >
-                <input type="text" name="phone" placeholder="Phone *" class="border p-2 w-full mb-4 rounded" required>
-                <input type="email" name="email" placeholder="Email *" class="border p-2 w-full mb-4 rounded" required>
-                <div class="mb-4">
-                <label for="notes" class="block mb-2 font-semibold">Additional Information (Optional)</label>
-                <textarea name="notes" id="notes" rows="4" placeholder="Notes about your order, e.g. special delivery instructions." class="border p-2 w-full rounded"></textarea>
-                </div>
-           
+                <input type="text" name="street" placeholder="Street address (Optional)" class="border p-2 w-full mb-4 rounded" value="{{ old('street') }}">
+                <input type="text" name="apartment" placeholder="Apartment, suite, unit, etc. (Optional)" class="border p-2 w-full mb-4 rounded" value="{{ old('apartment') }}">
+                <input type="text" name="city" placeholder="Town / City (Optional)" class="border p-2 w-full mb-4 rounded" value="{{ old('city') }}">
+                <input type="text" name="phone" placeholder="Phone *" class="border p-2 w-full mb-4 rounded" required value="{{ old('phone', $user->phone ?? '') }}">
+                <input type="email" name="email" placeholder="Email *" class="border p-2 w-full mb-4 rounded" required value="{{ old('email', $user->email ?? '') }}">
 
+                <div class="mb-4">
+                    <label for="notes" class="block mb-2 font-semibold">Additional Information (Optional)</label>
+                    <textarea name="notes" id="notes" rows="4" placeholder="Notes about your order, e.g. special delivery instructions." class="border p-2 w-full rounded">{{ old('notes') }}</textarea>
+                </div>
+            </form>
         </div>
 
         <div>
