@@ -100,24 +100,37 @@
                             </a>
 
 
-                            @auth
-                            <a href="{{ route('profile.edit') }}">
-                                <div class="flex flex-col items-center text-sm text-center">
-                                    <div class="flex items-center gap-2">
-                                        <i class='bx bx-user text-2xl text-gray-700'></i> {{-- Icon color reset to default gray --}}
-                                        <span class="font-semibold text-black">{{ Auth::user()->name }}</span>
+                            <div x-data="{ open: false }" class="relative">
+                                @auth
+                                    <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
+                                        <i class='bx bx-user text-2xl text-gray-700'></i>
+                                    </button>
+
+                                    <div x-show="open" @click.away="open = false" x-transition
+                                        class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
+                                        <div class="px-4 py-2 text-sm text-gray-700">
+                                            Hello, {{ Auth::user()->name }}
+                                        </div>
+                                        <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            <i class='bx bx-package mr-2'></i>Orders
+                                        </a>
+                                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class='bx bx-cog mr-2'></i> Account
+                                        </a>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <div class="w-full border-b border-gray-300"></div>
+                                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100">
+                                                <i class='bx bx-log-out mr-2'></i>Log out
+                                            </button>
+                                        </form>
                                     </div>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="text-red-500 hover:underline text-sm">Log out</button>
-                                    </form>
-                                </div>
-                            </a>
-                            @else
-                                <a href="{{ route('account') }}" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
-                                    <i class='bx bx-user text-2xl'></i>
-                                </a>
-                            @endauth
+                                @else
+                                    <a href="{{ route('account') }}" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
+                                        <i class='bx bx-user text-2xl'></i>
+                                    </a>
+                                @endauth
+                            </div>
                         </div>
 
                         <div class="block md:hidden">
