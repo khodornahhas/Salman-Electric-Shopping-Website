@@ -62,7 +62,6 @@
                     <label for="notes" class="block mb-2 font-semibold">Additional Information (Optional)</label>
                     <textarea name="notes" id="notes" rows="4" placeholder="Notes about your order, e.g. special delivery instructions." class="border p-2 w-full rounded">{{ old('notes') }}</textarea>
                 </div>
-            </form>
         </div>
 
         <div>

@@ -186,11 +186,13 @@ class CartController extends Controller
             });
 
         $subtotal = $cart->sum(function ($item) {
-            return $item->price * $item->quantity;
+            $price = $item->price ?? ($item->product->price ?? 0);
+            return $price * $item->quantity;
         });
 
         return view('cart.checkout', compact('cart', 'subtotal'));
     }
+
 
     public function confirm(Request $request)
     {
