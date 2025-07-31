@@ -111,7 +111,7 @@
                                         <div class="px-4 py-2 text-sm text-gray-700">
                                             Hello, {{ Auth::user()->name }}
                                         </div>
-                                        <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                             <i class='bx bx-package mr-2'></i>Orders
                                         </a>
                                         <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
