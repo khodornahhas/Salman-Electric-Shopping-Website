@@ -258,7 +258,7 @@
            @forelse($cartItems as $item)
             <div class="cart-item" id="cart-item-{{ $item->product->id }}">
                 <div class="product-info">
-                    <img src="{{ asset($item->product->image) }}" class="product-image" alt="">
+                    <img src="{{ asset($item->product->image) }}" class="product-image"alt="">
                     <div>
                         <p class="product-name">{{ $item->product->name }}</p>
                     </div>

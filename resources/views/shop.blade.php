@@ -235,7 +235,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @foreach($products as $product)
         <a href="{{ route('product.details', $product->id) }}" class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
-            <div class="absolute top-2 right-2 z-10">
+            <div class="absolute top-2 right-2 z-10 cursor-pointer add-to-wishlist" data-product-id="{{ $product->id }}">
                 <i class='bx bx-heart text-gray-400 text-2xl hover:text-red-500 transition'></i>
             </div>
 
@@ -281,7 +281,7 @@
     </div>
 </div>
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     const minRange = document.getElementById('min-range');
     const maxRange = document.getElementById('max-range');
@@ -419,6 +419,38 @@
 
     document.getElementById('brand-all').addEventListener('change', () => {
         form.submit();
+    });
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.add-to-wishlist').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const productId = this.getAttribute('data-product-id');
+                const icon = this.querySelector('i');
+
+                fetch("{{ url('/wishlist/add') }}/" + productId, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        icon.classList.remove('bx-heart', 'text-gray-400');
+                        icon.classList.add('bxs-heart', 'text-red-500');
+                    } else {
+                        alert('Failed to add to wishlist.');
+                    }
+                })
+                .catch(error => {
+                    alert('An error occurred.');
+                    console.error('Error:', error);
+                });
+            });
+        });
     });
 </script>
 
