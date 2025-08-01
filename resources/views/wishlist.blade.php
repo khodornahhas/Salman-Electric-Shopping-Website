@@ -14,7 +14,7 @@
                         $product = isset($wishlist->product) ? $wishlist->product : $wishlist;
                     @endphp
 
-                    <a href="{{ route('product.details', $product->id) }}" class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
+                        <a href="{{ route('product.details', $product->id) }}" class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group mx-auto w-64 sm:w-72 md:w-80">
                         <form method="POST" action="{{ route('wishlist.remove', $product->id) }}" class="absolute top-2 right-2 z-10">
                             @csrf
                             <button type="submit">
@@ -53,8 +53,8 @@
                                     @csrf
                                     <input type="hidden" name="quantity" value="1">
                                     <button type="submit"
-                                        class="mt-2 w-full bg-gray-100 text-gray-800 text-sm font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-                                        data-product-id="{{ $product->id }}" data-quantity="1">
+                                        class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
+                                        data-product-id="{{ $product->id }}" data-quantity="1" style="font-size:18px; color:grey;">
                                         Add to Cart
                                     </button>
                                 </form>

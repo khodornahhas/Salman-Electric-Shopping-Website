@@ -269,8 +269,8 @@
                         @csrf
                         <input type="hidden" name="quantity" value="1">
                         <button type="submit"
-                            class="mt-2 w-full bg-gray-100 text-gray-800 text-sm font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-                            data-product-id="{{ $product->id }}" data-quantity="1">
+                            class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
+                            data-product-id="{{ $product->id }}" data-quantity="1" style="font-size:18px; color:grey;">
                             Add to Cart
                         </button>
                     </form>
