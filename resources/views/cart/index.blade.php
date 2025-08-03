@@ -266,7 +266,9 @@
 
                 <div class="quantity-controls">
                     <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, -1)">-</button>
-                    <span class="quantity-value" id="qty-{{ $item->product->id }}">{{ $item->quantity }}</span>
+                    <span class="quantity-value" id="qty-{{ $item->product->id }}">
+                        {{ $item->quantity ?? 1 }}
+                    </span>
                     <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, 1)">+</button>
                 </div>
 

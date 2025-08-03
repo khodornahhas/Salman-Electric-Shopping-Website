@@ -187,30 +187,30 @@
         document.getElementById('imageModal').classList.add('hidden');
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const decreaseBtn = document.getElementById('decrease-qty');
-        const increaseBtn = document.getElementById('increase-qty');
-        const displayQty = document.getElementById('display-qty');
-        const hiddenQty = document.getElementById('hidden-qty');
+   document.addEventListener('DOMContentLoaded', function () {
+    // Quantity buttons
+    const decreaseBtn = document.getElementById('decrease-qty');
+    const increaseBtn = document.getElementById('increase-qty');
+    const displayQty = document.getElementById('display-qty');
+    const hiddenQty = document.getElementById('hidden-qty');
 
-        let quantity = parseInt(hiddenQty.value);
+    let quantity = parseInt(hiddenQty.value) || 1;
 
-        decreaseBtn.addEventListener('click', () => {
-            if (quantity > 1) {
-                quantity--;
-                displayQty.textContent = quantity;
-                hiddenQty.value = quantity;
-            }
-        });
-
-        increaseBtn.addEventListener('click', () => {
-            quantity++;
+    decreaseBtn.addEventListener('click', () => {
+        if (quantity > 1) {
+            quantity--;
             displayQty.textContent = quantity;
             hiddenQty.value = quantity;
-        });
+        }
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
+    increaseBtn.addEventListener('click', () => {
+        quantity++;
+        displayQty.textContent = quantity;
+        hiddenQty.value = quantity;
+    });
+
+    // Wishlist buttons
     document.querySelectorAll('.add-to-wishlist').forEach(function (button) {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -242,6 +242,7 @@
         });
     });
 });
+
 
 </script>
 @endsection

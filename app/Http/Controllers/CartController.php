@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
@@ -12,9 +12,9 @@ use App\Models\OrderItem;
 class CartController extends Controller
 {
     public function add(Request $request, $productId)
-    {
+    {    try {
         $product = Product::findOrFail($productId);
-        $quantity = $request->input('quantity', 1);
+        $quantity = (int) $request->input('quantity') ?: 1;
 
         if (Auth::check()) {
             $item = CartItem::where('user_id', Auth::id())->where('product_id', $productId)->first();
@@ -48,78 +48,105 @@ class CartController extends Controller
             session()->put('cart', $cart);
         }
 
-      return response()->json(['success' => true, 'message' => 'Product added to cart!']);
+      return response()->json(['success' => true, 'message' => 'Product added to cart!']);}
+      catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ], 500);
+    }
     }
 
-    public function index()
-    {
-        if (Auth::check()) {
-            $cartItems = CartItem::with('product')
-                ->where('user_id', Auth::id())
-                ->get();
-
-        } 
-        else {
-            $cart = session()->get('cart', []); 
-            $cartItems = [];
-            foreach ($cart as $productId => $item) {
-                $cartItems[] = (object)[
-                    'product' => (object)[
-                        'id' => $productId,
-                        'name' => $item['name'],
-                        'price' => $item['price'],
-                        'image' => $item['image'],
-                    ],
-                    'quantity' => $item['quantity'],
-                ];
-            }
-        }
-        return view('cart.index', compact('cartItems'));
-    }
-
-    public function update(Request $request, $productId)
-    {
-        $change = $request->input('change', 0);
-        $user = Auth::user();
-
-        if ($user) {
-            $item = CartItem::where('user_id', $user->id)->where('product_id', $productId)->first();
-            if ($item) {
-                $item->quantity += $change;
-                if ($item->quantity < 1) {
-                    $item->delete();
-                } else {
-                    $item->save();
-                }
-            }
-        } else {
-            $cart = session()->get('cart', []);
-            if (isset($cart[$productId])) {
-                $cart[$productId]['quantity'] += $change;
-                if ($cart[$productId]['quantity'] < 1) {
-                    unset($cart[$productId]);
-                }
-            }
-            session()->put('cart', $cart);
-        }
-
-        if ($user) {
-            return response()->json([
-                'success' => true,
-                'quantity' => $item->quantity,
-                'price' => number_format($item->product->price * $item->quantity, 2),
-            ]);
-        } else {
-            $quantity = $cart[$productId]['quantity'] ?? 0;
-            $price = number_format($cart[$productId]['price'] * $quantity, 2);
-
-            return response()->json([
-                'success' => true,
-                'quantity' => $quantity,
-                'price' => $price,
-            ]);
+   public function index()
+{
+    if (Auth::check()) {
+        $cartItems = CartItem::with('product')
+            ->where('user_id', Auth::id())
+            ->get();
+    } else {
+        $cart = session()->get('cart', []);
+        $cartItems = [];
+        foreach ($cart as $productId => $item) {
+            $cartItems[] = (object)[
+                'product' => (object)[
+                    'id' => $productId,
+                    'name' => $item['name'],
+                    'price' => $item['price'],
+                    'image' => $item['image'],
+                ],
+                'quantity' => isset($item['quantity']) && $item['quantity'] > 0 ? $item['quantity'] : 1,
+            ];
         }
     }
+    return view('cart.index', compact('cartItems'));
+}
+
+
+  public function update(Request $request, $productId)
+{
+    $change = $request->input('change', 0);
+    $user = Auth::user();
+
+    if ($user) {
+        $item = CartItem::where('user_id', $user->id)->where('product_id', $productId)->first();
+        if ($item) {
+            $item->quantity += $change;
+
+            if ($item->quantity < 1) {
+                $item->delete();
+                return response()->json([
+                    'success' => true,
+                    'deleted' => true,
+                ]);
+            } else {
+                $item->save();
+
+                return response()->json([
+                    'success' => true,
+                    'quantity' => $item->quantity,
+                    'price' => number_format($item->product->price * $item->quantity, 2),
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Item not found',
+        ], 404);
+
+    } else {
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$productId])) {
+            $cart[$productId]['quantity'] += $change;
+
+            if ($cart[$productId]['quantity'] < 1) {
+                unset($cart[$productId]);
+                session()->put('cart', $cart);
+
+                return response()->json([
+                    'success' => true,
+                    'deleted' => true,
+                ]);
+            } else {
+                session()->put('cart', $cart);
+
+                return response()->json([
+                    'success' => true,
+                    'quantity' => $cart[$productId]['quantity'],
+                    'price' => number_format($cart[$productId]['price'] * $cart[$productId]['quantity'], 2),
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Item not found in cart',
+        ], 404);
+    }
+}
+
 
     public function total()
     {
