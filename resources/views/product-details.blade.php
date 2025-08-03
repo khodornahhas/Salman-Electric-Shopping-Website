@@ -44,19 +44,16 @@
             <p class="text-lg text-gray-500" style="font-size:20px;">{{ $product->description }}</p>
 
             <div class="text-sm text-gray-500 space-x-2" style="font-size:20px;">
-                <span>
-                    Category:
-                    <span class="text-black hover:underline cursor-pointer">
-                        {{ $product->category->name ?? 'N/A' }}
-                    </span>
-                </span>
+                <a href="{{ route('shop', ['category' => $product->category->id]) }}"
+                class="text-black hover:underline cursor-pointer">
+                    {{ $product->category->name ?? 'N/A' }}
+                </a>
+
                 <span>|</span>
-                <span>
-                    Brand:
-                    <span class="text-black hover:underline cursor-pointer">
-                        {{ $product->brand->name ?? 'N/A' }}
-                    </span>
-                </span>
+                <a href="{{ route('shop', ['brands[]' => $product->brand->id]) }}"
+                class="text-black hover:underline cursor-pointer">
+                    {{ $product->brand->name ?? 'N/A' }}
+                </a>
             </div>
 
             <div class="text-2xl font-semibold text-gray-800">
