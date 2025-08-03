@@ -89,10 +89,12 @@
                         </div>
 
                        <div class="flex items-center gap-4">
-                            <a href="/wishlist" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Wishlist">
+                            <a href="{{ route('wishlist.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Wishlist">
                                 <i class='bx bx-heart text-2xl'></i>
                                 <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
                             </a>
+
+
 
                             <a href="{{ route('cart.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Cart">
                                 <i class='bx bx-cart text-2xl'></i>
@@ -241,37 +243,55 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         updateCartCount();
+        updateWishlistCount();
 
-        document.querySelectorAll('.cart-form').forEach(form => {
-            form.addEventListener('submit', function (e) {
+        // Wishlist Add/Remove Toggle
+        document.querySelectorAll('.add-to-wishlist').forEach(button => {
+            button.addEventListener('click', function (e) {
                 e.preventDefault();
+                const productId = this.getAttribute('data-product-id');
+                const heartIcon = this.querySelector('i');
 
-                const button = form.querySelector('.add-to-cart');
-                const productId = button.getAttribute('data-product-id');
-                const quantity = button.getAttribute('data-quantity');
-
-                fetch(`/cart/add/${productId}`, {
+                fetch(`/wishlist/toggle/${productId}`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ quantity: quantity })
+                    body: JSON.stringify({})
                 })
                 .then(res => res.json())
                 .then(data => {
-                    updateCartCount();
+                    updateWishlistCount();
+
+                    // Toggle heart icon class
+                    if (data.inWishlist) {
+                        heartIcon.classList.remove('bx-heart', 'text-gray-400');
+                        heartIcon.classList.add('bxs-heart', 'text-red-500');
+                    } else {
+                        heartIcon.classList.remove('bxs-heart', 'text-red-500');
+                        heartIcon.classList.add('bx-heart', 'text-gray-400');
+                    }
                 })
                 .catch(error => console.error('Error:', error));
             });
         });
     });
 
+
     function updateCartCount() {
         fetch('/cart/count')
             .then(res => res.json())
             .then(data => {
                 document.getElementById('cart-count').innerText = data.count;
+            });
+    }
+
+    function updateWishlistCount() {
+        fetch('/wishlist/count')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('heart-count').innerText = data.count;
             });
     }
 </script>

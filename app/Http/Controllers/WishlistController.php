@@ -60,5 +60,55 @@ class WishlistController extends Controller
         return back();
     }
 
+    public function toggle(Request $request, $productId)
+    {
+        if (Auth::check()) {
+            $wishlistItem = Wishlist::where('user_id', Auth::id())->where('product_id', $productId)->first();
+
+            if ($wishlistItem) {
+                $wishlistItem->delete();
+                $inWishlist = false;
+            } else {
+                Wishlist::create([
+                    'user_id' => Auth::id(),
+                    'product_id' => $productId,
+                ]);
+                $inWishlist = true;
+            }
+
+            $count = Wishlist::where('user_id', Auth::id())->count();
+        } else {
+            $wishlist = session()->get('wishlist', []);
+
+            if (in_array($productId, $wishlist)) {
+                $wishlist = array_diff($wishlist, [$productId]);
+                $inWishlist = false;
+            } else {
+                $wishlist[] = $productId;
+                $inWishlist = true;
+            }
+
+            session()->put('wishlist', $wishlist);
+            $count = count($wishlist);
+        }
+
+        return response()->json([
+            'success' => true,
+            'inWishlist' => $inWishlist,
+            'count' => $count
+        ]);
+    }
+
+    public function count()
+    {
+        if (Auth::check()) {
+            $count = Wishlist::where('user_id', Auth::id())->count();
+        } else {
+            $count = count(session()->get('wishlist', []));
+        }
+
+        return response()->json(['count' => $count]);
+    }
+
 }
 
