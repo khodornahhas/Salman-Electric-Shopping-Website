@@ -9,11 +9,10 @@ use App\Models\Product;
 
 class ShopController extends Controller
 {
-    public function index(Request $request){
-
+    public function index(Request $request)
+{
     $categories = Category::all();
-    $brands = Brand::all();
-    $brands = Brand::withCount('products')->get();
+    $brands = Brand::withCount('products')->get(); 
     $query = Product::query();
 
     if ($request->has('search') && !empty($request->search)) {
@@ -37,6 +36,7 @@ class ShopController extends Controller
     if ($request->has('category') && !empty($request->category)) {
         $query->where('category_id', $request->category);
     }
+
     if ($request->has('brands')) {
         $brandIds = $request->brands;
 
@@ -49,7 +49,6 @@ class ShopController extends Controller
         }
     }
 
-
     if ($request->sort == 'low_high') {
         $query->orderByRaw('CASE WHEN is_on_sale = 1 THEN sale_price ELSE price END ASC');
     } elseif ($request->sort == 'high_low') {
@@ -57,14 +56,16 @@ class ShopController extends Controller
     }
 
     $limit = $request->limit;
-    if ($limit == 'all') {
-    $products = $query->paginate(100000)->withQueryString();
-    } else {
-        $perPage = is_numeric($limit) ? (int)$limit : 12;
-        $products = $query->paginate($perPage)->withQueryString();
-    }
-    return view('shop', compact('categories', 'brands', 'products'));
-    }
+    $products = ($limit == 'all')
+        ? $query->paginate(100000)->withQueryString()
+        : $query->paginate(is_numeric($limit) ? (int)$limit : 12)->withQueryString();
+
+    $wishlistProductIds = auth()->check()
+        ? auth()->user()->wishlists()->pluck('product_id')->toArray()
+        : session()->get('wishlist', []);
+
+    return view('shop', compact('categories', 'brands', 'products', 'wishlistProductIds'));
+}
 
 }
 

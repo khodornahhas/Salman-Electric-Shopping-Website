@@ -235,10 +235,10 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @foreach($products as $product)
         <a href="{{ route('product.details', $product->id) }}" class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
-            <div class="absolute top-2 right-2 z-10 cursor-pointer add-to-wishlist" data-product-id="{{ $product->id }}">
-                <i class='bx bx-heart text-gray-400 text-2xl hover:text-red-500 transition'></i>
+            <div class="absolute top-2 right-2 z-10 cursor-pointer add-to-wishlist"
+                data-product-id="{{ $product->id }}">
+                <i class='bx {{ in_array($product->id, $wishlistProductIds) ? "bxs-heart text-red-500" : "bx-heart text-gray-400" }} text-2xl hover:text-red-500 transition'></i>
             </div>
-
             @if($product->is_on_sale)
             <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                 On Sale
@@ -420,8 +420,8 @@
     document.getElementById('brand-all').addEventListener('change', () => {
         form.submit();
     });
-      document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.add-to-wishlist').forEach(function(button) {
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.add-to-wishlist').forEach(function(button) {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
 
