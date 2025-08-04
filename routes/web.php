@@ -75,7 +75,7 @@ Route::put('/admin/products/{product}', [AdminController::class, 'update'])->nam
 
 Route::delete('/admin/products/{product}', [AdminController::class, 'destroy'])->name('admin.products.destroy');
 
-// Optional: Other admin pages
+Route::get('/admin/products/search', [AdminController::class, 'searchProducts'])->name('admin.products.search');
 Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
 Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
 Route::get('/admin/stats', [AdminController::class, 'stats'])->name('admin.stats');

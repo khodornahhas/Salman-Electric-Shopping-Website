@@ -18,11 +18,27 @@ class AdminController extends Controller
 
         return view('admin.dashboard', compact('productCount', 'orderCount', 'userCount', 'messageCount'));
     }
-    public function products() {
-        $products = Product::with('brand')->paginate(4); 
-        return view('admin.products', compact('products'));
-        return view('admin.products', compact('products'));
+    public function products(Request $request) {
+        $brands = Brand::all();
+        $categories = Category::all();
+        $query = Product::with(['brand', 'category']);
+        if ($request->search) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+        if ($request->brand_id) {
+            $query->where('brand_id', $request->brand_id);
+        }
+        if ($request->category_id) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        $products = $query->paginate(4);
+        if ($request->ajax()) {
+            return view('admin.partials.products-table', compact('products'))->render();
+        }
+        return view('admin.products', compact('products', 'brands', 'categories'));
     }
+
 
     public function users() {
         return view('admin.users');
@@ -102,4 +118,22 @@ class AdminController extends Controller
         $product->delete();
         return back()->with('success', 'Product deleted.');
     }
+    public function searchProducts(Request $request)
+    {
+        $query = $request->input('query');
+
+        $products = Product::with(['brand', 'category'])
+            ->where('name', 'LIKE', "%$query%")
+            ->orWhereHas('brand', function($q) use ($query) {
+                $q->where('name', 'LIKE', "%$query%");
+            })
+            ->orWhereHas('category', function($q) use ($query) {
+                $q->where('name', 'LIKE', "%$query%");
+            })
+            ->limit(10)
+            ->get();
+
+        return view('admin.partials.products-table', compact('products'))->render();
+    }
+
 }
