@@ -79,5 +79,6 @@ Route::get('/admin/products/search', [AdminController::class, 'searchProducts'])
 Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
 Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
 Route::get('/admin/stats', [AdminController::class, 'stats'])->name('admin.stats');
+Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 
 require __DIR__.'/auth.php';

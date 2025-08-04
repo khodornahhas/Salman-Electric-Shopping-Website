@@ -33,6 +33,11 @@ class User extends Authenticatable
         return $this->hasMany(Wishlist::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(\App\Models\Order::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -55,4 +60,5 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
 }

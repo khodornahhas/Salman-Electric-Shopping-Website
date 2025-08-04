@@ -40,8 +40,10 @@ class AdminController extends Controller
     }
 
 
-    public function users() {
-        return view('admin.users');
+   public function users()
+    {
+        $users = \App\Models\User::withCount('orders')->paginate(5);
+        return view('admin.users', compact('users'));
     }
 
     public function orders() {
@@ -56,7 +58,6 @@ class AdminController extends Controller
     $categories = Category::all();
     return view('admin.products-create', compact('brands', 'categories'));
     }
-
 
     public function store(Request $request) {
         $validated = $request->validate([
@@ -135,5 +136,11 @@ class AdminController extends Controller
 
         return view('admin.partials.products-table', compact('products'))->render();
     }
+    public function destroyUser(User $user)
+    {
+        $user->delete();
+        return back()->with('success', 'User deleted successfully.');
+    }
+
 
 }
