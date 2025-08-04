@@ -19,7 +19,7 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('productCount', 'orderCount', 'userCount', 'messageCount'));
     }
     public function products() {
-        $products = Product::with('brand')->paginate(5); 
+        $products = Product::with('brand')->paginate(4); 
         return view('admin.products', compact('products'));
         return view('admin.products', compact('products'));
     }
