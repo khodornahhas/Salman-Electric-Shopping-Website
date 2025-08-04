@@ -16,6 +16,11 @@
         </div>
 
         <div>
+            <label class="block font-semibold mb-1">Information</label>
+            <textarea name="information" class="w-full border rounded px-3 py-2" rows="4" placeholder="Additional product info..."></textarea>
+        </div>
+
+        <div>
             <label class="block font-semibold mb-1">Price</label>
             <input type="number" name="price" step="0.01" class="w-full border rounded px-3 py-2" required>
         </div>
@@ -61,7 +66,7 @@
             <label for="is_available" class="font-semibold">Available?  (Optional)</label>
         </div>
 
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Product</button>
     </form>
 </div>
 @endsection

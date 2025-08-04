@@ -21,6 +21,7 @@ class Product extends Model
         'is_on_sale',
         'is_latest',
         'brand_id',
+        'category_id',
         'information', 
     ];
     public function category()

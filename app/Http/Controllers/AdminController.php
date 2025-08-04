@@ -67,11 +67,13 @@ class AdminController extends Controller
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
+            'information' => 'nullable|string', 
             'price' => 'required|numeric',
             'sale_price' => 'nullable|numeric',
             'quantity' => 'required|integer',
             'image' => 'nullable|image',
             'brand_id' => 'nullable|exists:brands,id',
+            'category_id' => 'required|exists:categories,id',   
             'is_available' => 'nullable|boolean',
         ]);
 
