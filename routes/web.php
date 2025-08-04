@@ -65,5 +65,19 @@ Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
+
+Route::get('/admin/products/create', [AdminController::class, 'create'])->name('admin.products.create');
+Route::post('/admin/products', [AdminController::class, 'store'])->name('admin.products.store');
+
+Route::get('/admin/products/{product}/edit', [AdminController::class, 'edit'])->name('admin.products.edit');
+Route::put('/admin/products/{product}', [AdminController::class, 'update'])->name('admin.products.update');
+
+Route::delete('/admin/products/{product}', [AdminController::class, 'destroy'])->name('admin.products.destroy');
+
+// Optional: Other admin pages
+Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
+Route::get('/admin/stats', [AdminController::class, 'stats'])->name('admin.stats');
 
 require __DIR__.'/auth.php';

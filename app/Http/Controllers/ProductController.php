@@ -47,5 +47,5 @@ class ProductController extends Controller
       return view('product-details', compact('product', 'relatedProducts', 'wishlistProductIds'));
   }
 
-
+  
 }

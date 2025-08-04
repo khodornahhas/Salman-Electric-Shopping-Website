@@ -1018,87 +1018,84 @@
       <aside id="sidebar">
         <div class="sidebar-title">
           <div class="sidebar-brand">
-            <span class="material-icons-outlined">inventory</span> Salman Eelctric
+            <span class="material-icons-outlined">inventory</span> Salman Electric
           </div>
           <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
         </div>
 
         <ul class="sidebar-list">
           <li class="sidebar-list-item">
-            <a href="#" target="_blank">
+            <a href="{{ route('admin.dashboard') }}">
               <span class="material-icons-outlined">dashboard</span> Dashboard
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="#" target="_blank">
+            <a href="{{ route('admin.products') }}">
               <span class="material-icons-outlined">inventory_2</span> Products
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="#" target="_blank">
+            <a href="{{ route('admin.users') }}">
               <span class="material-icons-outlined">fact_check</span> Users
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="#" target="_blank">
+            <a href="{{ route('admin.orders') }}">
               <span class="material-icons-outlined">add_shopping_cart</span> Pending Orders
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="#" target="_blank">
-              <span class="material-icons-outlined">poll</span> Users
-            </a>
-          </li>
-          <li class="sidebar-list-item">
-            <a href="#" target="_blank">
-              <span class="material-icons-outlined">settings</span> Logout
+            <a href="{{ route('admin.stats') }}">
+              <span class="material-icons-outlined">poll</span> Stats
             </a>
           </li>
         </ul>
       </aside>
+
       <!-- End Sidebar -->
 
       <!-- Main -->
       <main class="main-container">
-        <div class="main-title">
-          <p class="font-weight-bold">DASHBOARD</p>
-        </div>
+              <div class="main-title">
+                <p class="font-weight-bold">DASHBOARD</p>
+              </div>
 
-        <div class="main-cards">
+              <div class="main-cards">
 
           <div class="card">
-            <div class="card-inner">
-              <p class="text-primary">PRODUCTS</p>
-              <span class="material-icons-outlined text-blue">inventory_2</span>
-            </div>
-            <span class="text-primary font-weight-bold">249</span>
+              <div class="card-inner">
+                  <p class="text-primary">PRODUCTS</p>
+                  <span class="material-icons-outlined text-blue">inventory_2</span>
+              </div>
+              <span class="text-primary font-weight-bold">{{ $productCount }}</span>
           </div>
 
           <div class="card">
-            <div class="card-inner">
-              <p class="text-primary">PURCHASE ORDERS</p>
-              <span class="material-icons-outlined text-orange">add_shopping_cart</span>
-            </div>
-            <span class="text-primary font-weight-bold">83</span>
+              <div class="card-inner">
+                  <p class="text-primary">PURCHASE ORDERS</p>
+                  <span class="material-icons-outlined text-orange">add_shopping_cart</span>
+              </div>
+              <span class="text-primary font-weight-bold">{{ $orderCount }}</span>
           </div>
 
           <div class="card">
-            <div class="card-inner">
-              <p class="text-primary">REGISTERED USERS</p>
-              <span class="material-icons-outlined text-green">shopping_cart</span>
-            </div>
-            <span class="text-primary font-weight-bold">79</span>
+              <div class="card-inner">
+                  <p class="text-primary">REGISTERED USERS</p>
+                  <span class="material-icons-outlined text-green">person</span>
+              </div>
+              <span class="text-primary font-weight-bold">{{ $userCount }}</span>
           </div>
 
           <div class="card">
-            <div class="card-inner">
-              <p class="text-primary">MESSAGES</p>
-              <span class="material-icons-outlined text-red">notification_important</span>
-            </div>
-            <span class="text-primary font-weight-bold">56</span>
+              <div class="card-inner">
+                  <p class="text-primary">MESSAGES</p>
+                  <span class="material-icons-outlined text-red">notification_important</span>
+              </div>
+              <span class="text-primary font-weight-bold">{{ $messageCount }}</span>
           </div>
 
-        </div>
+      </div>
+
 
         <div class="charts">
           <div class="charts-card">
