@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -47,10 +50,11 @@ class AdminController extends Controller
     }
 
     public function orders() {
-        return view('admin.orders');
+        $orders = Order::with(['user', 'orderItems.product'])->latest()->paginate(5);
+        return view('admin.orders', compact('orders'));
     }
 
-    public function stats() {
+    public function messages() {
         return view('admin.stats');
     }
     public function create() {
@@ -141,6 +145,11 @@ class AdminController extends Controller
         $user->delete();
         return back()->with('success', 'User deleted successfully.');
     }
+    public function deleteOrder($id) {
+    $order = Order::findOrFail($id);
+    $order->delete();
+    return redirect()->back()->with('success', 'Order deleted.');
+    }   
 
 
 }

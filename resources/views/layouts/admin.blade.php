@@ -1032,7 +1032,7 @@
         </li>
         <li class="sidebar-list-item">
           <a href="{{ route('admin.stats') }}">
-            <span class="material-icons-outlined">poll</span> Stats
+            <span class="material-icons-outlined">poll</span> Messages
           </a>
         </li>
       </ul>
