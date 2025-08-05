@@ -76,9 +76,14 @@
             </select>
         </div>
 
-        <div>
+         <div>
             <label class="block font-semibold mb-1">Image</label>
             <input type="file" name="image" class="w-full">
+            
+            @if($product->image)
+                <p class="mt-2">Current Image:</p>
+                <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="w-40 h-auto border rounded mt-1">
+            @endif
         </div>
 
         <div class="flex items-center">

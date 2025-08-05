@@ -140,7 +140,8 @@ class AdminController extends Controller
     }   
 
 
-    public function update(Request $request, Product $product) {
+    public function update(Request $request, Product $product)
+    {
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
@@ -167,12 +168,15 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($product->image);
             }
             $validated['image'] = $request->file('image')->store('products', 'public');
+        } else {
+            $validated['image'] = $product->image;
         }
 
         $product->update($validated);
 
         return redirect()->route('admin.products')->with('success', 'Product updated!');
     }
+
 
 
 
