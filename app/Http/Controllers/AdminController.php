@@ -65,9 +65,31 @@ class AdminController extends Controller
         return view('admin.users', compact('users'));
     }
 
-    public function orders() {
-        $orders = Order::with(['user', 'orderItems.product'])->latest()->paginate(5);
+    public function orders(Request $request)
+    {
+        $orders = Order::with(['user', 'orderItems.product'])
+            ->latest()
+            ->paginate(5);
+
         return view('admin.orders', compact('orders'));
+    }
+
+    public function searchOrders(Request $request)
+    {
+        $query = $request->input('q');
+
+        $orders = Order::with(['user', 'orderItems.product'])
+            ->whereHas('user', function ($q) use ($query) {
+                $q->where('name', 'like', "%$query%")
+                ->orWhere('phone', 'like', "%$query%")
+                ->orWhere('location', 'like', "%$query%");
+            })
+            ->orWhere('phone', 'like', "%$query%")
+            ->orWhere('city', 'like', "%$query%")
+            ->latest()
+            ->paginate(5);
+
+        return view('admin.partials.order-table', compact('orders'))->render();
     }
 
     public function messages() {

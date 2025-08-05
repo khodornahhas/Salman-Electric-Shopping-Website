@@ -77,10 +77,11 @@ Route::delete('/admin/products/{product}', [AdminController::class, 'destroy'])-
 
 Route::get('/admin/products/search', [AdminController::class, 'searchProducts'])->name('admin.products.search');
 Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
-Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
 Route::delete('/admin/orders/{order}', [AdminController::class, 'deleteOrder'])->name('admin.orders.delete');
 Route::get('/admin/stats', [AdminController::class, 'stats'])->name('admin.stats');
 Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 Route::get('/admin/users/search', [App\Http\Controllers\Admin\UserController::class, 'search']);
+Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
+Route::get('/admin/orders/search', [AdminController::class, 'searchOrders'])->name('admin.orders.search');
 
 require __DIR__.'/auth.php';
