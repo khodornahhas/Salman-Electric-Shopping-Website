@@ -19,10 +19,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
-Route::post('/wishlist/add/{productId}', [WishlistController::class, 'add'])->name('wishlist.add');
+Route::post('/wishlist', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 Route::post('/wishlist/remove/{productId}', [WishlistController::class, 'remove'])->name('wishlist.remove');
 Route::get('/wishlist/count', [WishlistController::class, 'count']);
-Route::post('/wishlist/toggle/{productId}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+
 
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

@@ -1,8 +1,11 @@
 @extends('layouts.main')
 
 @section('content')
+<head>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
 <style>
     input[type=range].slider-thumb::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -187,37 +190,37 @@
     @endif
 
     <div class="flex items-center justify-between flex-wrap gap-4 text-sm">
-    <div class="flex items-center gap-2">
-        <span class="text-gray-700 font-medium">Show:</span>
-        @foreach([6, 12, 32, 'all'] as $limit)
-            <form method="GET" action="{{ url()->current() }}">
-                @foreach(request()->except('limit', 'page') as $key => $value)
-                    @if(is_array($value))
-                        @foreach($value as $v)
-                            <input type="hidden" name="{{ $key }}[]" value="{{ $v }}">
-                        @endforeach
-                    @else
-                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                    @endif
-                @endforeach
-                <button 
-                    type="submit" 
-                    name="limit" 
-                    value="{{ $limit }}" 
-                    class="px-2 py-1 rounded border hover:bg-gray-200 transition text-gray-700 {{ request('limit') == $limit ? 'bg-gray-300 font-semibold' : '' }}">
-                    {{ $limit === 'all' ? 'All' : $limit }}
-                </button>
-            </form>
-        @endforeach
-    </div>
-
-    {{-- Pagination (top) --}}
-    @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="mt-1">
-            {{ $products->onEachSide(1)->links('pagination::tailwind') }}
+        <div class="flex items-center gap-2">
+            <span class="text-gray-700 font-medium">Show:</span>
+            @foreach([6, 12, 32, 'all'] as $limit)
+                <form method="GET" action="{{ url()->current() }}">
+                    @foreach(request()->except('limit', 'page') as $key => $value)
+                        @if(is_array($value))
+                            @foreach($value as $v)
+                                <input type="hidden" name="{{ $key }}[]" value="{{ $v }}">
+                            @endforeach
+                        @else
+                            <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                        @endif
+                    @endforeach
+                    <button 
+                        type="submit" 
+                        name="limit" 
+                        value="{{ $limit }}" 
+                        class="px-2 py-1 rounded border hover:bg-gray-200 transition text-gray-700 {{ request('limit') == $limit ? 'bg-gray-300 font-semibold' : '' }}">
+                        {{ $limit === 'all' ? 'All' : $limit }}
+                    </button>
+                </form>
+            @endforeach
         </div>
-    @endif
-</div>
+
+        {{-- Pagination (top) --}}
+        @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
+            <div class="mt-1">
+                {{ $products->onEachSide(1)->links('pagination::tailwind') }}
+            </div>
+        @endif
+    </div>
 
 
     <div>
@@ -234,55 +237,64 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @foreach($products as $product)
-        <a href="{{ route('product.details', $product->id) }}" class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
-            <div class="absolute top-2 right-2 z-10 cursor-pointer add-to-wishlist"
-                data-product-id="{{ $product->id }}">
-                <i class='bx {{ in_array($product->id, $wishlistProductIds) ? "bxs-heart text-red-500" : "bx-heart text-gray-400" }} text-2xl hover:text-red-500 transition'></i>
-            </div>
-            @if($product->is_on_sale)
-            <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                On Sale
-            </div>
+    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
+        
+        <!-- Wishlist Icon (outside any <a>) -->
+        <div class="absolute top-2 right-2 z-10 cursor-pointer wishlist-btn" data-product-id="{{ $product->id }}">
+            <i class="wishlist-icon bx {{ in_array($product->id, $wishlistProductIds) ? 'bxs-heart text-red-500' : 'bx-heart text-gray-400' }} text-2xl"></i>
+        </div>
+
+
+        <!-- Sale Badge -->
+        @if($product->is_on_sale)
+        <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+            On Sale
+        </div>
+        @endif
+
+        <!-- Product Image wrapped in <a> -->
+        <a href="{{ route('product.details', $product->id) }}" class="bg-white w-full h-60 flex items-center justify-center overflow-hidden">
+            @if($product->image)
+            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
+            @else
+            <span class="text-gray-400">No Image</span>
             @endif
-
-            <div class="bg-white w-full h-60 flex items-center justify-center overflow-hidden">
-                @if($product->image)
-                <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
-                @else
-                <span class="text-gray-400">No Image</span>
-                @endif
-            </div>
-
-            <div class="p-5 flex flex-col flex-grow">
-                <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
-                    {{ $product->name }}
-                </h3>
-
-                <div class="mt-auto text-center">
-                    @if($product->is_on_sale)
-                    <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
-                    <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
-                    @else
-                    <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
-                    @endif
-                    <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
-                        @csrf
-                        <input type="hidden" name="quantity" value="1">
-                        <button type="submit"
-                            class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-                            data-product-id="{{ $product->id }}" data-quantity="1" style="font-size:18px; color:grey;">
-                            Add to Cart
-                        </button>
-                    </form>
-                </div>
-            </div>
         </a>
-        @endforeach
+
+        <!-- Product Details -->
+        <div class="p-5 flex flex-col flex-grow">
+            <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
+                {{ $product->name }}
+            </h3>
+
+            <div class="mt-auto text-center">
+                @if($product->is_on_sale)
+                <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
+                <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
+                @else
+                <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
+                @endif
+                <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
+                    @csrf
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit"
+                        class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
+                        data-product-id="{{ $product->id }}" data-quantity="1" style="font-size:18px; color:grey;">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+@endforeach
+
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ asset('js/wishlist.js') }}"></script>
 <script>
+    // ------------------ PRICE RANGE SLIDER ------------------
     const minRange = document.getElementById('min-range');
     const maxRange = document.getElementById('max-range');
     const minVal = document.getElementById('min-val');
@@ -294,7 +306,6 @@
     const maxInputBox = document.querySelector('input[name="max_price_manual"]');
     const form = document.getElementById('filter-form');
 
-    // update the slider as the user will scroll 
     function updateSlider(event) {
         let min = parseInt(minRange.value);
         let max = parseInt(maxRange.value);
@@ -309,7 +320,6 @@
             }
         }
 
-        // update both the slider & the 2 inputs we have (the min and the max)
         minVal.textContent = min;
         maxVal.textContent = max;
         minPriceInput.value = min;
@@ -324,7 +334,6 @@
         sliderTrack.style.right = (100 - percent2) + "%";
     }
 
-    // when the inputs change this updates the slider so it syncs with the input
     function updateSliderFromInput() {
         let min = parseInt(minInputBox.value) || 0;
         let max = parseInt(maxInputBox.value) || 1000;
@@ -358,14 +367,13 @@
     let debounceTimerSlider;
     let debounceTimerInput;
 
-    // time limit after the user uses the slider price range (0.5 seconds for now may increase in future)
     const debounceSubmitSlider = () => {
         clearTimeout(debounceTimerSlider);
         debounceTimerSlider = setTimeout(() => {
             form.submit();
-        }, 500); 
+        }, 500);
     };
-    // time limit after the user inputs the number in both min and max boxes (1.7 seconds)
+
     const debounceSubmitInput = () => {
         clearTimeout(debounceTimerInput);
         debounceTimerInput = setTimeout(() => {
@@ -373,10 +381,8 @@
         }, 1700);
     };
 
-    // All event listeners for sliders and the number input
     minRange.addEventListener('input', updateSlider);
     maxRange.addEventListener('input', updateSlider);
-
     minRange.addEventListener('change', debounceSubmitSlider);
     maxRange.addEventListener('change', debounceSubmitSlider);
 
@@ -389,26 +395,16 @@
         updateSliderFromInput();
         debounceSubmitInput();
     });
+
     updateSlider({ target: minRange });
 
+    // ------------------ BRAND & CATEGORY FILTERS ------------------
     function toggleAllBrands(allCheckbox) {
         const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
         if (allCheckbox.checked) {
             brandCheckboxes.forEach(cb => cb.checked = false);
         }
     }
-
-    document.querySelectorAll('.brand-checkbox').forEach(cb => {
-        cb.addEventListener('change', () => {
-            document.getElementById('brand-all').checked = false;
-        });
-    });
-
-    document.querySelectorAll('input[name="category"]').forEach(input => {
-        input.addEventListener('change', () => {
-            form.submit();
-        });
-    });
 
     document.querySelectorAll('.brand-checkbox').forEach(cb => {
         cb.addEventListener('change', () => {
@@ -420,39 +416,57 @@
     document.getElementById('brand-all').addEventListener('change', () => {
         form.submit();
     });
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.add-to-wishlist').forEach(function(button) {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
 
-                const productId = this.getAttribute('data-product-id');
-                const icon = this.querySelector('i');
+    document.querySelectorAll('input[name="category"]').forEach(input => {
+        input.addEventListener('change', () => {
+            form.submit();
+        });
+    });
 
-                fetch("{{ url('/wishlist/add') }}/" + productId, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({})
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
+    // ------------------ WISHLIST TOGGLE ------------------
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const productId = this.getAttribute('data-product-id');
+            const icon = this.querySelector('.wishlist-icon');
+
+            fetch('/wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrf,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ product_id: productId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.inWishlist) {
                         icon.classList.remove('bx-heart', 'text-gray-400');
                         icon.classList.add('bxs-heart', 'text-red-500');
                     } else {
-                        alert('Failed to add to wishlist.');
+                        icon.classList.remove('bxs-heart', 'text-red-500');
+                        icon.classList.add('bx-heart', 'text-gray-400');
                     }
-                })
-                .catch(error => {
-                    alert('An error occurred.');
-                    console.error('Error:', error);
-                });
+
+                    // ✅ Update the wishlist count in the header dynamically
+                    updateWishlistCount();
+                } else {
+                    alert('Wishlist failed: ' + data.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Something went wrong');
             });
         });
     });
+    });
 </script>
-
-
 @endsection

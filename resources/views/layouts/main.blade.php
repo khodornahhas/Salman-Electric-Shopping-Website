@@ -91,14 +91,12 @@
                        <div class="flex items-center gap-4">
                             <a href="{{ route('wishlist.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Wishlist">
                                 <i class='bx bx-heart text-2xl'></i>
-                                <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                                <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
                             </a>
-
-
 
                             <a href="{{ route('cart.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Cart">
                                 <i class='bx bx-cart text-2xl'></i>
-                                <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                                <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
                             </a>
 
 
@@ -240,31 +238,38 @@
   <div class="py-6 text-base text-center text-gray-600 border-t border-gray-200 mt-8">
     © {{ date('Y') }} Salman Electric. All rights reserved.
 </div>
+
+<!-- jQuery first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Your custom script (wishlist.js) -->
+<script src="{{ asset('js/wishlist.js') }}"></script>
+
+<!-- Inline script depending on jQuery and global functions -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         updateCartCount();
         updateWishlistCount();
 
-        // Wishlist Add/Remove Toggle
         document.querySelectorAll('.add-to-wishlist').forEach(button => {
             button.addEventListener('click', function (e) {
                 e.preventDefault();
                 const productId = this.getAttribute('data-product-id');
                 const heartIcon = this.querySelector('i');
 
-                fetch(`/wishlist/toggle/${productId}`, {
+                fetch(`/wishlist`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
-                    body: JSON.stringify({})
+                    body: JSON.stringify({ product_id: productId })
                 })
                 .then(res => res.json())
                 .then(data => {
                     updateWishlistCount();
 
-                    // Toggle heart icon class
                     if (data.inWishlist) {
                         heartIcon.classList.remove('bx-heart', 'text-gray-400');
                         heartIcon.classList.add('bxs-heart', 'text-red-500');
@@ -278,7 +283,6 @@
         });
     });
 
-
     function updateCartCount() {
         fetch('/cart/count')
             .then(res => res.json())
@@ -286,14 +290,7 @@
                 document.getElementById('cart-count').innerText = data.count;
             });
     }
-
-    function updateWishlistCount() {
-        fetch('/wishlist/count')
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('heart-count').innerText = data.count;
-            });
-    }
 </script>
+
 </footer>
 </html>
