@@ -112,39 +112,47 @@
         </div>
     </div>
 
-     <div class="mb-2">
-            <h3 class="font-semibold mb-3"style="font-family: 'Open Sans', sans-serif;color:#004BA8">Price ($)</h3>
-            <div class="flex justify-between text-sm text-gray-700 mb-2">
-                <span>Min: $<span id="min-val">0</span></span>
-                <span>Max: $<span id="max-val">1000</span></span>
-            </div>
-            <div class="relative h-10">
-                <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-300 rounded transform -translate-y-1/2"></div>
-                <div id="slider-track" class="absolute top-1/2 h-1 bg-blue-500 rounded transform -translate-y-1/2 z-10"></div>
-                <input id="min-range" type="range" min="0" max="1000" value="{{ request('min_price', 10) }}" step="10"
-                    class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
-                <input id="max-range" type="range" min="0" max="1000" value="{{ request('max_price', 1000) }}" step="10"
-                    class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
+     @php
+    $minPrice = request()->has('min_price') ? request('min_price') : 0;
+    $maxPrice = request()->has('max_price') ? request('max_price') : 2500;
+@endphp
 
-                <input type="hidden" name="min_price" id="min-price-input" value="{{ request('min_price', 10) }}">
-                <input type="hidden" name="max_price" id="max-price-input" value="{{ request('max_price', 1000) }}">
-            </div>
-            <div class="flex items-center gap-2 mt-4">
-            <input 
-                type="number" 
-                placeholder="0" 
-                class="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-400" 
-                name="min_price_manual"
-            />
-            <span class="text-gray-500 text-sm">to</span>
-            <input 
-                type="number" 
-                placeholder="1000" 
-                class="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-400" 
-                name="max_price_manual"
-            />
-            </div>
-        </div>
+<div class="mb-2">
+    <h3 class="font-semibold mb-3" style="font-family: 'Open Sans', sans-serif; color:#004BA8">Price ($)</h3>
+    <div class="flex justify-between text-sm text-gray-700 mb-2">
+        <span>Min: $<span id="min-val">{{ $minPrice }}</span></span>
+        <span>Max: $<span id="max-val">{{ $maxPrice }}</span></span>
+    </div>
+    <div class="relative h-10">
+        <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-300 rounded transform -translate-y-1/2"></div>
+        <div id="slider-track" class="absolute top-1/2 h-1 bg-blue-500 rounded transform -translate-y-1/2 z-10"></div>
+        <input id="min-range" type="range" min="0" max="2500" value="{{ $minPrice }}" step="10"
+            class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
+        <input id="max-range" type="range" min="0" max="2500" value="{{ $maxPrice }}" step="10"
+            class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
+
+        <input type="hidden" name="min_price" id="min-price-input" value="{{ $minPrice }}">
+        <input type="hidden" name="max_price" id="max-price-input" value="{{ $maxPrice }}">
+    </div>
+    <div class="flex items-center gap-2 mt-4">
+        <input 
+            type="number" 
+            placeholder="0" 
+            class="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-400" 
+            name="min_price_manual"
+            value="{{ $minPrice }}"
+        />
+        <span class="text-gray-500 text-sm">to</span>
+        <input 
+            type="number" 
+            placeholder="2500" 
+            class="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-400" 
+            name="max_price_manual"
+            value="{{ $maxPrice }}"
+        />
+    </div>
+</div>
+
     </form>
     </div>
 </div>
@@ -237,186 +245,190 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @foreach($products as $product)
-    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
-        
-        <div class="absolute top-2 right-2 z-10 cursor-pointer wishlist-btn" data-product-id="{{ $product->id }}">
-            <i class="wishlist-icon bx {{ in_array($product->id, $wishlistProductIds) ? 'bxs-heart text-red-500' : 'bx-heart text-gray-400' }} text-2xl"></i>
-        </div>
+            <div class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
+                
+                <div class="absolute top-2 right-2 z-10 cursor-pointer wishlist-btn" data-product-id="{{ $product->id }}">
+                    <i class="wishlist-icon bx {{ in_array($product->id, $wishlistProductIds) ? 'bxs-heart text-red-500' : 'bx-heart text-gray-400' }} text-2xl"></i>
+                </div>
 
-        @if($product->is_on_sale)
-        <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-            On Sale
-        </div>
-        @endif
-
-        <a href="{{ route('product.details', $product->id) }}" class="bg-white w-full h-60 flex items-center justify-center overflow-hidden">
-            @if($product->image)
-            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
-            @else
-            <span class="text-gray-400">No Image</span>
-            @endif
-        </a>
-
-        <div class="p-5 flex flex-col flex-grow">
-            <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
-                {{ $product->name }}
-            </h3>
-
-            <div class="mt-auto text-center">
                 @if($product->is_on_sale)
-                <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
-                <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
-                @else
-                <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
+                <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                    On Sale
+                </div>
                 @endif
-                <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
-                    @csrf
-                    <input type="hidden" name="quantity" value="1">
-                    <button type="submit"
-                        class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-                        data-product-id="{{ $product->id }}" data-quantity="1" style="font-size:18px; color:grey;">
-                        Add to Cart
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-@endforeach
 
+                <a href="{{ route('product.details', $product->id) }}" class="bg-white w-full h-60 flex items-center justify-center overflow-hidden">
+                    @if($product->image)
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
+                    @else
+                    <span class="text-gray-400">No Image</span>
+                    @endif
+                </a>
+
+                <div class="p-5 flex flex-col flex-grow">
+                    <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
+                        {{ $product->name }}
+                    </h3>
+
+                    <div class="mt-auto text-center">
+                        @if($product->is_on_sale)
+                        <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
+                        <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
+                        @else
+                        <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
+                        @endif
+                        <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
+                            @csrf
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit"
+                                class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
+                                data-product-id="{{ $product->id }}" data-quantity="1" style="font-size:18px; color:grey;">
+                                Add to Cart
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/wishlist.js') }}"></script>
 <script>
-    // ------------------ PRICE RANGE SLIDER ------------------
-    const minRange = document.getElementById('min-range');
-    const maxRange = document.getElementById('max-range');
-    const minVal = document.getElementById('min-val');
-    const maxVal = document.getElementById('max-val');
-    const sliderTrack = document.getElementById('slider-track');
-    const minPriceInput = document.getElementById('min-price-input');
-    const maxPriceInput = document.getElementById('max-price-input');
-    const minInputBox = document.querySelector('input[name="min_price_manual"]');
-    const maxInputBox = document.querySelector('input[name="max_price_manual"]');
-    const form = document.getElementById('filter-form');
+// ------------------ PRICE RANGE SLIDER ------------------
+const minRange = document.getElementById('min-range');
+const maxRange = document.getElementById('max-range');
+const minVal = document.getElementById('min-val');
+const maxVal = document.getElementById('max-val');
+const sliderTrack = document.getElementById('slider-track');
+const minPriceInput = document.getElementById('min-price-input');
+const maxPriceInput = document.getElementById('max-price-input');
+const minInputBox = document.querySelector('input[name="min_price_manual"]');
+const maxInputBox = document.querySelector('input[name="max_price_manual"]');
+const form = document.getElementById('filter-form');
 
-    function updateSlider(event) {
-        let min = parseInt(minRange.value);
-        let max = parseInt(maxRange.value);
+function updateSlider(event) {
+    let min = parseInt(minRange.value);
+    let max = parseInt(maxRange.value);
 
-        if (max - min < 50) {
-            if (event.target.id === "min-range") {
-                minRange.value = max - 50;
-                min = max - 50;
-            } else {
-                maxRange.value = min + 50;
-                max = min + 50;
-            }
-        }
-
-        minVal.textContent = min;
-        maxVal.textContent = max;
-        minPriceInput.value = min;
-        maxPriceInput.value = max;
-
-        minInputBox.value = min;
-        maxInputBox.value = max;
-
-        const percent1 = (min / 1000) * 100;
-        const percent2 = (max / 1000) * 100;
-        sliderTrack.style.left = percent1 + "%";
-        sliderTrack.style.right = (100 - percent2) + "%";
-    }
-
-    function updateSliderFromInput() {
-        let min = parseInt(minInputBox.value) || 0;
-        let max = parseInt(maxInputBox.value) || 1000;
-
-        min = Math.max(0, Math.min(min, 1000));
-        max = Math.max(0, Math.min(max, 1000));
-
-        if (max - min < 50) {
-            if (minInputBox === document.activeElement) {
-                min = max - 50;
-                minInputBox.value = min;
-            } else {
-                max = min + 50;
-                maxInputBox.value = max;
-            }
-        }
-
-        minRange.value = min;
-        maxRange.value = max;
-        minVal.textContent = min;
-        maxVal.textContent = max;
-        minPriceInput.value = min;
-        maxPriceInput.value = max;
-
-        const percent1 = (min / 1000) * 100;
-        const percent2 = (max / 1000) * 100;
-        sliderTrack.style.left = percent1 + "%";
-        sliderTrack.style.right = (100 - percent2) + "%";
-    }
-
-    let debounceTimerSlider;
-    let debounceTimerInput;
-
-    const debounceSubmitSlider = () => {
-        clearTimeout(debounceTimerSlider);
-        debounceTimerSlider = setTimeout(() => {
-            form.submit();
-        }, 500);
-    };
-
-    const debounceSubmitInput = () => {
-        clearTimeout(debounceTimerInput);
-        debounceTimerInput = setTimeout(() => {
-            form.submit();
-        }, 1700);
-    };
-
-    minRange.addEventListener('input', updateSlider);
-    maxRange.addEventListener('input', updateSlider);
-    minRange.addEventListener('change', debounceSubmitSlider);
-    maxRange.addEventListener('change', debounceSubmitSlider);
-
-    minInputBox.addEventListener('input', () => {
-        updateSliderFromInput();
-        debounceSubmitInput();
-    });
-
-    maxInputBox.addEventListener('input', () => {
-        updateSliderFromInput();
-        debounceSubmitInput();
-    });
-
-    updateSlider({ target: minRange });
-
-    // ------------------ BRAND & CATEGORY FILTERS ------------------
-    function toggleAllBrands(allCheckbox) {
-        const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
-        if (allCheckbox.checked) {
-            brandCheckboxes.forEach(cb => cb.checked = false);
+    if (max - min < 50) {
+        if (event.target.id === "min-range") {
+            minRange.value = max - 50;
+            min = max - 50;
+        } else {
+            maxRange.value = min + 50;
+            max = min + 50;
         }
     }
 
-    document.querySelectorAll('.brand-checkbox').forEach(cb => {
-        cb.addEventListener('change', () => {
-            document.getElementById('brand-all').checked = false;
-            form.submit();
-        });
-    });
+    minVal.textContent = min;
+    maxVal.textContent = max;
+    minPriceInput.value = min;
+    maxPriceInput.value = max;
 
-    document.getElementById('brand-all').addEventListener('change', () => {
+    minInputBox.value = min;
+    maxInputBox.value = max;
+
+    const percent1 = (min / 2500) * 100;
+    const percent2 = (max / 2500) * 100;
+    sliderTrack.style.left = percent1 + "%";
+    sliderTrack.style.right = (100 - percent2) + "%";
+}
+
+function updateSliderFromInput() {
+    let min = parseInt(minInputBox.value) || 0;
+    let max = parseInt(maxInputBox.value) || 2500;
+
+    min = Math.max(0, Math.min(min, 2500));
+    max = Math.max(0, Math.min(max, 2500));
+
+    if (max - min < 50) {
+        if (minInputBox === document.activeElement) {
+            min = max - 50;
+            minInputBox.value = min;
+        } else {
+            max = min + 50;
+            maxInputBox.value = max;
+        }
+    }
+
+    minRange.value = min;
+    maxRange.value = max;
+    minVal.textContent = min;
+    maxVal.textContent = max;
+    minPriceInput.value = min;
+    maxPriceInput.value = max;
+
+    const percent1 = (min / 2500) * 100;
+    const percent2 = (max / 2500) * 100;
+    sliderTrack.style.left = percent1 + "%";
+    sliderTrack.style.right = (100 - percent2) + "%";
+}
+
+let debounceTimerSlider;
+let debounceTimerInput;
+
+const debounceSubmitSlider = () => {
+    clearTimeout(debounceTimerSlider);
+    debounceTimerSlider = setTimeout(() => {
+        form.submit();
+    }, 500);
+};
+
+const debounceSubmitInput = () => {
+    clearTimeout(debounceTimerInput);
+    debounceTimerInput = setTimeout(() => {
+        form.submit();
+    }, 1700);
+};
+
+minRange.addEventListener('input', updateSlider);
+maxRange.addEventListener('input', updateSlider);
+minRange.addEventListener('change', debounceSubmitSlider);
+maxRange.addEventListener('change', debounceSubmitSlider);
+
+minInputBox.addEventListener('input', () => {
+    updateSliderFromInput();
+    debounceSubmitInput();
+});
+
+maxInputBox.addEventListener('input', () => {
+    updateSliderFromInput();
+    debounceSubmitInput();
+});
+
+// Initialize slider and inputs with server values
+minRange.value = {{ $minPrice }};
+maxRange.value = {{ $maxPrice }};
+minInputBox.value = {{ $minPrice }};
+maxInputBox.value = {{ $maxPrice }};
+updateSlider({ target: minRange });
+
+// ------------------ BRAND & CATEGORY FILTERS ------------------
+function toggleAllBrands(allCheckbox) {
+    const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
+    if (allCheckbox.checked) {
+        brandCheckboxes.forEach(cb => cb.checked = false);
+    }
+}
+
+document.querySelectorAll('.brand-checkbox').forEach(cb => {
+    cb.addEventListener('change', () => {
+        document.getElementById('brand-all').checked = false;
         form.submit();
     });
+});
 
-    document.querySelectorAll('input[name="category"]').forEach(input => {
-        input.addEventListener('change', () => {
-            form.submit();
-        });
+document.getElementById('brand-all').addEventListener('change', () => {
+    form.submit();
+});
+
+document.querySelectorAll('input[name="category"]').forEach(input => {
+    input.addEventListener('change', () => {
+        form.submit();
     });
+});
 
     // ------------------ WISHLIST TOGGLE ------------------
 
@@ -450,7 +462,6 @@
                         icon.classList.add('bx-heart', 'text-gray-400');
                     }
 
-                    // ✅ Update the wishlist count in the header dynamically
                     updateWishlistCount();
                 } else {
                     alert('Wishlist failed: ' + data.message);

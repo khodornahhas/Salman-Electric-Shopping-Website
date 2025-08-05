@@ -1,7 +1,11 @@
 @forelse ($products as $product)
     <tr class="hover:bg-gray-50 transition">
         <td class="px-6 py-4">
-            <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image">
+            <img 
+                src="{{ asset('storage/' . $product->image) }}" 
+                alt="Product Image"
+                class="w-20 h-20 object-contain rounded" 
+            >
         </td>
         <td class="px-6 py-4 font-medium text-gray-800">{{ $product->name }}</td>
         <td class="px-6 py-4">
