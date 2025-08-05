@@ -2,6 +2,15 @@
 @section('content')
 <div class="max-w-2xl mx-auto mt-10">
     <h2 class="text-xl font-bold mb-6">Edit Product</h2>
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
         @method('PUT')
@@ -23,7 +32,8 @@
 
         <div>
             <label class="block font-semibold mb-1">Price</label>
-            <input type="number" name="price" step="0.01" value="{{ $product->price }}" class="w-full border rounded px-3 py-2" required>
+            <input type="number" name="price" step="0.01" value="{{ $product->price }}" class="w-full border rounded px-3 py-2"
+    @if(!$product->contact_for_price) required @endif>
         </div>
 
         <div>
@@ -94,12 +104,6 @@
                 <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="w-40 h-auto border rounded mt-1">
             @endif
         </div>
-
-        <div class="flex items-center">
-            <input type="checkbox" name="is_available" id="is_available" {{ $product->is_available ? 'checked' : '' }} class="mr-2">
-            <label for="is_available" class="font-semibold">Available?</label>
-        </div>
-
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update</button>
     </form>
 </div>

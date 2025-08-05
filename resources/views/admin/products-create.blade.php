@@ -80,12 +80,6 @@
             <label class="block font-semibold mb-1">Image</label>
             <input type="file" name="image" class="w-full">
         </div>
-
-        <div class="flex items-center">
-            <input type="checkbox" name="is_available" id="is_available" class="mr-2">
-            <label for="is_available" class="font-semibold">Available?  (Optional)</label>
-        </div>
-
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Product</button>
     </form>
 </div>

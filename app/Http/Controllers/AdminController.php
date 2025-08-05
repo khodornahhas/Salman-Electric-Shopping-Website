@@ -107,17 +107,17 @@ class AdminController extends Controller
             'name' => 'required|string',
             'description' => 'nullable|string',
             'information' => 'nullable|string',
-            'contact_for_price' => 'nullable|boolean',
+            'contact_for_price' => 'sometimes|boolean',
             'price' => 'nullable|numeric',
             'sale_price' => 'nullable|numeric',
             'quantity' => 'nullable|integer',
             'image' => 'nullable|image',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
-            'is_available' => 'nullable|boolean',
-            'is_on_sale' => 'nullable|boolean',
-            'is_featured' => 'nullable|boolean',
-            'is_latest' => 'nullable|boolean',
+            'is_available' => 'sometimes|boolean',
+            'is_on_sale' => 'sometimes|boolean',
+            'is_featured' => 'sometimes|boolean',
+            'is_latest' => 'sometimes|boolean',
         ]);
 
         $contactForPrice = $request->has('contact_for_price');
@@ -144,13 +144,15 @@ class AdminController extends Controller
         return redirect()->route('admin.products')->with('success', 'Product created!');
     }
 
+
     public function edit(Product $product) {
         $brands = Brand::all();
         $categories = Category::all(); 
         return view('admin.products-edit', compact('product', 'brands', 'categories'));
     }   
 
-   public function update(Request $request, Product $product) {
+    public function update(Request $request, Product $product)
+    {
         $isContact = $request->has('contact_for_price');
 
         $validated = $request->validate([
@@ -163,14 +165,17 @@ class AdminController extends Controller
             'image' => 'nullable|image',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
-            'is_available' => 'nullable|boolean',
             'is_on_sale' => 'nullable|boolean',
             'is_featured' => 'nullable|boolean',
             'is_latest' => 'nullable|boolean',
             'contact_for_price' => 'nullable|boolean',
         ]);
 
-        $validated['is_available'] = $request->has('is_available') ? 1 : 0;
+        if ($isContact) {
+            $validated['price'] = null;
+            $validated['sale_price'] = null;
+        }
+
         $validated['is_on_sale'] = $request->has('is_on_sale') ? 1 : 0;
         $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
         $validated['is_latest'] = $request->has('is_latest') ? 1 : 0;

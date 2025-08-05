@@ -46,22 +46,24 @@
             <div class="text-sm text-gray-500 space-x-2" style="font-size:20px;">
                 <a href="{{ route('shop', ['category' => $product->category->id]) }}"
                 class="text-black hover:underline cursor-pointer">
-                    {{ $product->category->name ?? 'N/A' }}
+                   Category: {{ $product->category->name ?? 'N/A' }}
                 </a>
 
                 <span>|</span>
                 <a href="{{ route('shop', ['brands[]' => $product->brand->id]) }}"
                 class="text-black hover:underline cursor-pointer">
-                    {{ $product->brand->name ?? 'N/A' }}
+                    Brand: {{ $product->brand->name ?? 'N/A' }}
                 </a>
             </div>
 
             <div class="text-2xl font-semibold text-gray-800">
-                @if($product->is_on_sale && $product->sale_price)
-                    <span class="text-red-500">${{ $product->sale_price }}</span>
-                    <span class="line-through text-gray-400 ml-2">${{ $product->price }}</span>
+                @if($product->contact_for_price)
+                    <span class="text-blue-600" style="font-size: 22px; font-weight: 600;">Contact for Price</span>
+                @elseif($product->is_on_sale && $product->sale_price)
+                    <span class="text-red-500">${{ number_format($product->sale_price, 2) }}</span>
+                    <span class="line-through text-gray-400 ml-2">${{ number_format($product->price, 2) }}</span>
                 @else
-                    <span class="text-red-600" style="font-size:35px;">${{ $product->price }}</span>
+                    <span class="text-red-600" style="font-size:35px;">${{ number_format($product->price, 2) }}</span>
                 @endif
             </div>
 
@@ -79,13 +81,26 @@
                 <input type="hidden" name="quantity" id="hidden-qty" value="1">
 
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <button type="submit"
-                        class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition add-to-cart"
-                        data-product-id="{{ $product->id }}" style="font-size:18px;">
-                        Add to Cart
-                    </button>
-                    <button type="button" class="w-full sm:w-auto px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition">
-                        Buy via WhatsApp
+                    @if($product->contact_for_price)
+                        <button disabled
+                            class="w-full sm:w-auto px-6 py-3 bg-gray-300 text-gray-500 rounded cursor-not-allowed"
+                            style="font-size:18px;"
+                            title="Contact for Price products cannot be added to cart">
+                            Contact for Price
+                        </button>
+                    @else
+                        <button type="submit"
+                            class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition add-to-cart"
+                            data-product-id="{{ $product->id }}" style="font-size:18px;">
+                            Add to Cart
+                        </button>
+                    @endif
+                    <button type="button" class="w-full sm:w-auto px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition" style="font-size:18px;">
+                        @if($product->contact_for_price)
+                            Contact via WhatsApp
+                        @else
+                            Buy via WhatsApp
+                        @endif
                     </button>
                 </div>
             </form>
@@ -114,7 +129,7 @@
 @if($relatedProducts->count())
     <div class="mt-16 px-8 md:px-32">
         <h2 class="mb-6 text-gray-800" style="font-size: 29px; font-family: 'Open Sans', sans-serif;">You Might Also Like</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6"style="margin-bottom:20px;">
             @foreach($relatedProducts as $related)
                 <div class="relative bg-white rounded-xl overflow-hidden shadow-sm transition border border-gray-100 flex flex-col h-[420px]">
                     
@@ -133,7 +148,7 @@
 
                     {{-- Product Image --}}
                     <a href="{{ route('product.details', $related->id) }}" class="w-full h-56 bg-white flex items-center justify-center overflow-hidden">
-                        <img src="{{ asset($related->image) }}"
+                        <img src="/storage/{{ $related->image }}"
                             alt="{{ $related->name }}"
                             class="w-full h-full object-contain transform transition-transform duration-300 hover:scale-105 cursor-pointer" />
                     </a>
@@ -145,21 +160,27 @@
                             {{ $related->name }}
                         </h3>
 
-                        <div class="mt-auto text-center">
-                            @if($related->is_on_sale && $related->sale_price)
+                        <div class="mt-auto text-center"style="margin-bottom:20px;">
+                            @if($related->contact_for_price)
+                                <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
+                                <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                            @elseif($related->is_on_sale && $related->sale_price)
                                 <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
                                 <p class="text-red-600 text-lg font-bold underline">${{ number_format($related->sale_price, 2) }}</p>
+                                <button class="mt-2 w-full bg-gray-100 text-gray-800 text-sm font-medium py-2 rounded hover:bg-gray-200 transition">
+                                    Add to Cart
+                                </button>
                             @else
                                 <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
+                                <button class="mt-2 w-full bg-gray-100 text-gray-800 text-sm font-medium py-2 rounded hover:bg-gray-200 transition">
+                                    Add to Cart
+                                </button>
                             @endif
-
-                            <button class="mt-2 w-full bg-gray-100 text-gray-800 text-sm font-medium py-2 rounded hover:bg-gray-200 transition">
-                                Add to Cart
-                            </button>
                         </div>
                     </div>
                 </div>
             @endforeach
+
         </div>
     </div>
 @endif

@@ -9,7 +9,9 @@
         </td>
         <td class="px-6 py-4 font-medium text-gray-800">{{ $product->name }}</td>
         <td class="px-6 py-4">
-            @if ($product->is_on_sale && $product->sale_price)
+            @if ($product->contact_for_price)
+                <span class="font-medium text-blue-600">Contact for Price</span>
+            @elseif ($product->is_on_sale && $product->sale_price)
                 <div class="flex items-center">
                     <span class="text-sm text-gray-500 line-through mr-2">
                         ${{ number_format($product->price, 2) }}
