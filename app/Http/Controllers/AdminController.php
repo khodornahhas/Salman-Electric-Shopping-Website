@@ -43,9 +43,25 @@ class AdminController extends Controller
     }
 
 
-   public function users()
+    public function users(Request $request)
     {
-        $users = \App\Models\User::withCount('orders')->paginate(5);
+        $query = User::withCount('orders');
+
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->paginate(5);
+
+        if ($request->ajax()) {
+            return view('admin.partials.user-table', compact('users'))->render();
+        }
+
         return view('admin.users', compact('users'));
     }
 
@@ -152,6 +168,4 @@ class AdminController extends Controller
     $order->delete();
     return redirect()->back()->with('success', 'Order deleted.');
     }   
-
-
 }

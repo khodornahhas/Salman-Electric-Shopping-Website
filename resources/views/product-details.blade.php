@@ -105,10 +105,8 @@
 </div>
 
 <div class="mt-6" style="font-family: 'Open Sans', sans-serif;">
-    <h1 class="font-bold mb-4" style="font-size:45px;">About this product</h1>
-    <p class="text-gray-600 leading-relaxed">
-        {{ $product->information }}
-    </p>
+    <h1 class="font-bold mb-4" style="font-size:45px; margin-left:20px;">About this product</h1>
+    <p class="whitespace-pre-line text-gray-700" style="margin-left:20px;">{{ $product->information }}</p>
 </div>
 
 <div class="w-full border-b border-gray-300"></div>
