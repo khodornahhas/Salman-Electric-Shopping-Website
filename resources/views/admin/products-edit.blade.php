@@ -17,6 +17,11 @@
         </div>
 
         <div>
+            <label class="block font-semibold mb-1">Information</label>
+            <textarea name="information" class="w-full border rounded px-3 py-2" rows="4" placeholder="Additional product info...">{{ $product->information }}</textarea>
+        </div>
+
+        <div>
             <label class="block font-semibold mb-1">Price</label>
             <input type="number" name="price" step="0.01" value="{{ $product->price }}" class="w-full border rounded px-3 py-2" required>
         </div>

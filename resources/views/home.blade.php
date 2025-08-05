@@ -25,94 +25,94 @@
     }
     .product-card {
     transition: all 0.3s ease;
-}
+    }
 
-.show-more-btn {
-    transition: all 0.2s ease;
-}
-.show-more-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.swiper-slide {
-    width: auto !important;
-    height: auto !important;
-}
+    .show-more-btn {
+        transition: all 0.2s ease;
+    }
+    .show-more-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .swiper-slide {
+        width: auto !important;
+        height: auto !important;
+    }
 
-.swiper-pagination-bullet {
-    width: 12px !important;
-    height: 12px !important;
-    background: #d1d5db !important;
-    opacity: 1 !important;
-    transition: all 0.3s ease !important;
-}
+    .swiper-pagination-bullet {
+        width: 12px !important;
+        height: 12px !important;
+        background: #d1d5db !important;
+        opacity: 1 !important;
+        transition: all 0.3s ease !important;
+    }
 
-.swiper-pagination-bullet-active {
-    background: #f59e0b !important;
-    transform: scale(1.2) !important;
-}
+    .swiper-pagination-bullet-active {
+        background: #f59e0b !important;
+        transform: scale(1.2) !important;
+    }
 
-.swiper-button-next,
-.swiper-button-prev {
-    background-color: rgba(255, 255, 255, 0.8);
-    width: 40px !important;
-    height: 40px !important;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease !important;
-}
+    .swiper-button-next,
+    .swiper-button-prev {
+        background-color: rgba(255, 255, 255, 0.8);
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease !important;
+    }
 
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-    background-color: rgba(255, 255, 255, 0.9);
-    transform: scale(1.1);
-}
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+        background-color: rgba(255, 255, 255, 0.9);
+        transform: scale(1.1);
+    }
 
-.swiper-button-next:after,
-.swiper-button-prev:after {
-    font-size: 20px !important;
-    font-weight: bold !important;
-    color: #f59e0b !important;
-}
-.slide-enter-active, .slide-leave-active {
-  transition: all 0.5s ease;
-}
-.slide-enter-from {
-  transform: translateX(100%);
-  opacity: 0;
-}
-.slide-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-.slider-container {
-    overflow: hidden;
-}
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+        font-size: 20px !important;
+        font-weight: bold !important;
+        color: #f59e0b !important;
+    }
+    .slide-enter-active, .slide-leave-active {
+    transition: all 0.5s ease;
+    }
+    .slide-enter-from {
+    transform: translateX(100%);
+    opacity: 0;
+    }
+    .slide-leave-to {
+    transform: translateX(-100%);
+    opacity: 0;
+    }
+    .slider-container {
+        overflow: hidden;
+    }
 
-.slider-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
+    .slider-track {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
 
-.slider-slide {
-    flex: 0 0 25%;
-    transition: all 0.3s ease;
-}
+    .slider-slide {
+        flex: 0 0 25%;
+        transition: all 0.3s ease;
+    }
 
-.slider-dot {
-    width: 12px;
-    height: 12px;
-    background: #d1d5db;
-    opacity: 1;
-    transition: all 0.3s ease;
-    border-radius: 50%;
-    cursor: pointer;
-}
+    .slider-dot {
+        width: 12px;
+        height: 12px;
+        background: #d1d5db;
+        opacity: 1;
+        transition: all 0.3s ease;
+        border-radius: 50%;
+        cursor: pointer;
+    }
 
-.slider-dot.active {
-    background: #f59e0b;
-    transform: scale(1.2);
-}
+    .slider-dot.active {
+        background: #f59e0b;
+        transform: scale(1.2);
+    }
 </style>
 
 <!-- Image Slider DISPLAY -->
@@ -260,16 +260,18 @@
     </div>
 </div>
 
-<!-- Category Slider Section -->
 @php
     $imageMap = [
         'Lamps and lightning' => 'images/light.png',
-        'Cables' => 'images/cables.png',
+        'Cables' => 'images/cables.png',           
         'Electricity essentials' => 'images/e.png',
-        'EV charging' => 'images/EV-charging.png',
+        'EV chargers' => 'images/charger.png',
         'Connectors' => 'images/Connectors.png',
+        'Inverters' => 'images/inverters.png',       
+        'Batteries' => 'images/batteries.png',
     ];
 @endphp
+
 
 <div class="bg-white ">
     <div class="container mx-auto px-4">
@@ -278,7 +280,7 @@
                 <a href="{{ route('shop', ['category' => $category->id]) }}" 
                    class="group flex flex-col items-center p-3 hover:bg-gray-50 rounded transition-colors">
                     <img src="{{ asset($imageMap[$category->name] ?? 'images/default.png') }}" alt="{{ $category->name }}" class="w-12 h-auto mb-2 object-contain">
-                    <span class="text-gray-800 text-sm text-center font-medium">
+                    <span class="text-gray-800 text-sm text-center"style="font-size:20px">
                         {{ $category->name }}
                     </span>
                 </a>

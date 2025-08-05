@@ -8,24 +8,42 @@ use App\Models\Brand;
 
 class ProductController extends Controller
 {
-  public function index()
+    public function index()
     {
-    $products = Product::all(); 
-    $featuredProducts = Product::where('is_featured', true)->get();
-    $saleProducts = Product::where('is_on_sale', true)->get();
-    $latestProducts = Product::where('is_latest', true)->get();
-    $categories = Category::all(); 
-    $brands = Brand::all();
+        $products = Product::all(); 
+        $featuredProducts = Product::where('is_featured', true)->get();
+        $saleProducts = Product::where('is_on_sale', true)->get();
+        $latestProducts = Product::where('is_latest', true)->get();
 
-    return view('home', compact(
-        'products',
-        'featuredProducts',
-        'saleProducts',
-        'latestProducts',
-        'categories',
-        'brands'
-    ));
+        $allowedCategories = [
+            'Lamps and lightning',
+            'EV chargers',
+            'Electricity essentials',
+            'Inverters',
+            'Batteries',
+        ];
+        $categories = Category::whereIn('name', $allowedCategories)->get();
+
+        $allowedBrands = [
+            'Panasonic',
+            'Felicity',
+            'Osram',
+            'Hyundai',
+            'Schneider',
+            'Foshan Ouyad',
+        ];
+        $brands = Brand::whereIn('name', $allowedBrands)->get();
+
+        return view('home', compact(
+            'products',
+            'featuredProducts',
+            'saleProducts',
+            'latestProducts',
+            'categories',
+            'brands'
+        ));
     }
+
 
   public function show($id)
   {

@@ -133,6 +133,7 @@ class AdminController extends Controller
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
+            'information' => 'nullable|string', 
             'price' => 'required|numeric',
             'sale_price' => 'nullable|numeric',
             'quantity' => 'required|integer',

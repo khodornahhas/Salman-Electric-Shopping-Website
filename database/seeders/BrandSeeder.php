@@ -20,6 +20,7 @@ class BrandSeeder extends Seeder
             ['name' => 'Osram', 'image' => 'osram.png'],
             ['name' => 'Hyundai', 'image' => 'hyundai2.png'],
             ['name' => 'Schneider', 'image' => 'schneider.png'],
+            ['name' => 'Foshan Ouyad', 'image' => 'foshan.png'], 
         ];
 
         foreach ($brands as $brand) {

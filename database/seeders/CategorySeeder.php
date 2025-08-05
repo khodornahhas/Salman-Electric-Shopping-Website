@@ -9,18 +9,18 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {    
-         Category::truncate();
-
         $categories = [
             'Lamps and lightning',
             'Cables',
             'Electricity essentials',
-            'EV charging',
+            'EV chargers',
             'Connectors',
+            'Inverters',
+            'Batteries',
         ];
 
         foreach ($categories as $name) {
-            Category::create(['name' => $name]);
+            Category::firstOrCreate(['name' => $name]);
         }
     }
 }

@@ -239,29 +239,24 @@
         @foreach($products as $product)
     <div class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
         
-        <!-- Wishlist Icon (outside any <a>) -->
         <div class="absolute top-2 right-2 z-10 cursor-pointer wishlist-btn" data-product-id="{{ $product->id }}">
             <i class="wishlist-icon bx {{ in_array($product->id, $wishlistProductIds) ? 'bxs-heart text-red-500' : 'bx-heart text-gray-400' }} text-2xl"></i>
         </div>
 
-
-        <!-- Sale Badge -->
         @if($product->is_on_sale)
         <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
             On Sale
         </div>
         @endif
 
-        <!-- Product Image wrapped in <a> -->
         <a href="{{ route('product.details', $product->id) }}" class="bg-white w-full h-60 flex items-center justify-center overflow-hidden">
             @if($product->image)
-            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
+            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
             @else
             <span class="text-gray-400">No Image</span>
             @endif
         </a>
 
-        <!-- Product Details -->
         <div class="p-5 flex flex-col flex-grow">
             <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
                 {{ $product->name }}

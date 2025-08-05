@@ -25,7 +25,7 @@
     <div class="flex flex-col md:flex-row gap-10 items-center">
         <div class="w-full md:w-1/2 flex justify-center">
             <div class="relative w-[600px]">
-                <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
+                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                      class="w-full rounded-lg shadow-xl">
                 <div class="absolute top-4 right-4 flex gap-3">
                     <button class="text-xl bg-white rounded-full p-2 shadow hover:text-red-500 transition">

@@ -1,7 +1,7 @@
 @forelse ($products as $product)
     <tr class="hover:bg-gray-50 transition">
         <td class="px-6 py-4">
-            <img src="{{ asset($product->image) }}" alt="Product Image" class="w-16 h-16 object-cover rounded-lg border border-gray-200">
+            <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image">
         </td>
         <td class="px-6 py-4 font-medium text-gray-800">{{ $product->name }}</td>
         <td class="px-6 py-4">
