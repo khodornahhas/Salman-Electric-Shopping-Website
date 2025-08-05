@@ -23,6 +23,7 @@ class Product extends Model
         'brand_id',
         'category_id',
         'information', 
+        'contact_for_price',
     ];
     public function category()
     {

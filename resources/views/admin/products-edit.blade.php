@@ -32,6 +32,15 @@
         </div>
 
         <div>
+        <label class="inline-flex items-center mt-2">
+            <input type="checkbox" name="contact_for_price" id="contact_for_price" value="1"
+                {{ old('contact_for_price', $product->contact_for_price ?? false) ? 'checked' : '' }}
+                class="mr-2">
+            <span class="font-semibold">Contact for Price</span>
+        </label>
+    </div>
+
+        <div>
             <label class="block font-semibold mb-1">Is On Sale</label>
             <input type="checkbox" name="is_on_sale" value="1" {{ old('is_on_sale', $product->is_on_sale ?? false) ? 'checked' : '' }}>
         </div>
@@ -94,4 +103,20 @@
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update</button>
     </form>
 </div>
+<script>
+function togglePriceInputs(checkbox) {
+    document.querySelector('input[name="price"]').disabled = checkbox.checked;
+    document.querySelector('input[name="sale_price"]').disabled = checkbox.checked;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
+    togglePriceInputs(contactCheckbox);
+
+    contactCheckbox.addEventListener('change', (e) => {
+        togglePriceInputs(e.target);
+    });
+});
+</script>
+
 @endsection

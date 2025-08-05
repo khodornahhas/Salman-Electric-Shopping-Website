@@ -96,19 +96,21 @@ class AdminController extends Controller
         return view('admin.stats');
     }
     public function create() {
-    $brands = Brand::all();
-    $categories = Category::all();
-    return view('admin.products-create', compact('brands', 'categories'));
+        $brands = Brand::all();
+        $categories = Category::all();
+        return view('admin.products-create', compact('brands', 'categories'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
             'information' => 'nullable|string',
-            'price' => 'required|numeric',
+            'contact_for_price' => 'nullable|boolean',
+            'price' => 'nullable|numeric',
             'sale_price' => 'nullable|numeric',
-            'quantity' => 'required|integer',
+            'quantity' => 'nullable|integer',
             'image' => 'nullable|image',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
@@ -117,6 +119,16 @@ class AdminController extends Controller
             'is_featured' => 'nullable|boolean',
             'is_latest' => 'nullable|boolean',
         ]);
+
+        $contactForPrice = $request->has('contact_for_price');
+
+        if (!$contactForPrice && (!$request->filled('price') || $request->price === null || $request->price === '')) {
+            $contactForPrice = true;
+        }
+
+        $validated['contact_for_price'] = $contactForPrice ? 1 : 0;
+        $validated['price'] = $contactForPrice ? null : $request->price;
+        $validated['sale_price'] = $contactForPrice ? null : $request->sale_price;
 
         $validated['is_available'] = $request->has('is_available') ? 1 : 0;
         $validated['is_on_sale'] = $request->has('is_on_sale') ? 1 : 0;
@@ -132,21 +144,20 @@ class AdminController extends Controller
         return redirect()->route('admin.products')->with('success', 'Product created!');
     }
 
-
     public function edit(Product $product) {
         $brands = Brand::all();
         $categories = Category::all(); 
         return view('admin.products-edit', compact('product', 'brands', 'categories'));
     }   
 
+   public function update(Request $request, Product $product) {
+        $isContact = $request->has('contact_for_price');
 
-    public function update(Request $request, Product $product)
-    {
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
             'information' => 'nullable|string',
-            'price' => 'required|numeric',
+            'price' => $isContact ? 'nullable' : 'required|numeric',
             'sale_price' => 'nullable|numeric',
             'quantity' => 'required|integer',
             'image' => 'nullable|image',
@@ -156,12 +167,14 @@ class AdminController extends Controller
             'is_on_sale' => 'nullable|boolean',
             'is_featured' => 'nullable|boolean',
             'is_latest' => 'nullable|boolean',
+            'contact_for_price' => 'nullable|boolean',
         ]);
 
         $validated['is_available'] = $request->has('is_available') ? 1 : 0;
         $validated['is_on_sale'] = $request->has('is_on_sale') ? 1 : 0;
         $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
         $validated['is_latest'] = $request->has('is_latest') ? 1 : 0;
+        $validated['contact_for_price'] = $isContact ? 1 : 0;
 
         if ($request->hasFile('image')) {
             if ($product->image && Storage::disk('public')->exists($product->image)) {
@@ -176,9 +189,6 @@ class AdminController extends Controller
 
         return redirect()->route('admin.products')->with('success', 'Product updated!');
     }
-
-
-
 
     public function destroy(Product $product) {
         if ($product->image && Storage::disk('public')->exists($product->image)) {

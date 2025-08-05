@@ -84,4 +84,9 @@ Route::get('/admin/users/search', [App\Http\Controllers\Admin\UserController::cl
 Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
 Route::get('/admin/orders/search', [AdminController::class, 'searchOrders'])->name('admin.orders.search');
 
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
 require __DIR__.'/auth.php';
