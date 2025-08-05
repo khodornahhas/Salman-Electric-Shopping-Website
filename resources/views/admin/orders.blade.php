@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex flex-col items-center mb-8 text-center">
-        <h2 class="text-3xl font-bold text-gray-800 mb-4">Manage Orders</h2>
+        <h2 class="text-3xl font-bold text-gray-800 mb-4"style="margin-top:25px;">Manage Orders</h2>
     </div>
 
     <div class="bg-white rounded-xl shadow-md overflow-hidden">

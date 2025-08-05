@@ -1022,7 +1022,7 @@
         </li>
         <li class="sidebar-list-item">
           <a href="{{ route('admin.users') }}">
-            <span class="material-icons-outlined">fact_check</span> Users
+            <span class="material-icons-outlined">account_circle</span> Users
           </a>
         </li>
         <li class="sidebar-list-item">
