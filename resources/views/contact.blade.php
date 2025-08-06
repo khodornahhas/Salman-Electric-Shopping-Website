@@ -1,5 +1,12 @@
 @extends('layouts.main')
 @section('content')
+
+<div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mb-6 text-base md:text-lg" style="margin-top: 30px; font-family: 'Open Sans', sans-serif;">
+    <a href="{{ url('/home') }}" class="hover:underline opacity-40">Home</a>
+    <span style="opacity: 0.4;"> &gt; </span>
+    <span style="opacity: 0.8;">Contact Us</span>
+</div>
+
 <div class="bg-white py-12 px-4 sm:px-6 lg:py-16 lg:px-8 max-w-7xl mx-auto">
     <div class="text-center mb-12">
         <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl lg:text-6xl">

@@ -1,5 +1,4 @@
 @extends('layouts.main')
-
 @section('content')
 <div class="py-16  min-h-screen flex items-center justify-center">
     <div class="w-full max-w-6xl bg-white rounded-lg p-6 flex flex-col md:flex-row gap-24">

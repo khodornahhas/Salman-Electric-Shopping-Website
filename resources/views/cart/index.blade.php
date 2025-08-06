@@ -2,6 +2,9 @@
 @section('content')
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style>
+    * {
+        font-family: 'Urbanist', sans-serif !important;
+    }
     .delete-header {
         flex: 0.5;
     }

@@ -1,7 +1,9 @@
 @extends('layouts.main')
-
 @section('content')
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style>* {
+        font-family: 'Urbanist', sans-serif !important;
+    }</style>
+
 <div class="bg-blue-600 text-white font-bold py-4 pl-32 text-left mb-6" style="margin-top: 40px;margin-bottom:50px; font-size: 20px; font-family: 'Open Sans', sans-serif;">
     <div class="flex items-center space-x-4">
         <a href="{{ url('/home') }}" class="hover:underline opacity-40">Home</a>
