@@ -9,41 +9,37 @@ use App\Models\Product;
 
 class ShopController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $categorySlug = null, $brandSlugs = null, $minPrice = 0, $maxPrice = 2500)
     {
         $categories = Category::all();
-        $brands = Brand::withCount('products')->get(); 
+        $brands = Brand::withCount('products')->get();
         $query = Product::query();
-
         if ($request->has('search') && !empty($request->search)) {
             $query->where('name', 'LIKE', '%' . $request->search . '%');
         }
+        $min = (float) $minPrice;
+        $max = (float) $maxPrice;
 
-        if ($request->has('min_price') && $request->has('max_price')) {
-            $min = (float) $request->min_price;
-            $max = (float) $request->max_price;
+        $query->where(function ($q) use ($min, $max) {
+            $q->whereRaw('
+                CASE 
+                    WHEN is_on_sale = 1 AND sale_price IS NOT NULL THEN sale_price 
+                    ELSE price 
+                END BETWEEN ? AND ?
+            ', [$min, $max])
+            ->orWhere('contact_for_price', true);
+        });
 
-            $query->where(function($q) use ($min, $max) {
-                $q->whereRaw('
-                    CASE 
-                        WHEN is_on_sale = 1 AND sale_price IS NOT NULL THEN sale_price 
-                        ELSE price 
-                    END BETWEEN ? AND ?
-                ', [$min, $max])
-                ->orWhere('contact_for_price', true);
-            });
-        }
-
-        if ($request->has('category') && !empty($request->category)) {
-            $query->where('category_id', $request->category);
-        }
-
-        if ($request->has('brands')) {
-            $brandIds = $request->brands;
-
-            if (in_array('all', $brandIds)) {
-                $brandIds = [];
+        if ($categorySlug && strtolower($categorySlug) !== 'all') {
+            $category = Category::where('slug', $categorySlug)->first();
+            if ($category) {
+                $query->where('category_id', $category->id);
             }
+        }
+
+        if ($brandSlugs && strtolower($brandSlugs) !== 'all') {
+            $brandSlugArray = explode(',', $brandSlugs);
+            $brandIds = Brand::whereIn('slug', $brandSlugArray)->pluck('id')->toArray();
 
             if (!empty($brandIds)) {
                 $query->whereIn('brand_id', $brandIds);
@@ -65,8 +61,10 @@ class ShopController extends Controller
             ? auth()->user()->wishlists()->pluck('product_id')->toArray()
             : session()->get('wishlist', []);
 
-        return view('shop', compact('categories', 'brands', 'products', 'wishlistProductIds'));
+        return view('shop', compact(
+            'categories', 'brands', 'products', 'wishlistProductIds',
+            'categorySlug', 'brandSlugs', 'minPrice', 'maxPrice'
+        ));
     }
-
 }
 

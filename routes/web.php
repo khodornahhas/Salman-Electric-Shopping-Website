@@ -41,6 +41,16 @@ Route::get('/home', [ProductController::class, 'index'])->name('home');
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 
+Route::get('/shop/{categorySlug?}/brands/{brandSlugs?}/min-price/{minPrice?}/max-price/{maxPrice?}', [ShopController::class, 'index'])
+    ->name('shop.filters')
+    ->where([
+        'categorySlug' => '[a-z0-9\-]*',  
+        'brandSlugs'   => '[a-z0-9\-,]*', 
+        'minPrice'     => '[0-9]+',
+        'maxPrice'     => '[0-9]+',
+    ]);
+
+    
 Route::get('/product-details/{id}', [ProductController::class, 'show'])->name('product.details');
 
 Route::get('/account', function () {
