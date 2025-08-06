@@ -115,10 +115,10 @@
         </div>
     </div>
 
-     @php
-    $minPrice = request()->has('min_price') ? request('min_price') : 0;
-    $maxPrice = request()->has('max_price') ? request('max_price') : 2500;
-@endphp
+    @php
+        $minPrice = request()->has('min_price') ? request('min_price') : 0;
+        $maxPrice = request()->has('max_price') ? request('max_price') : 2500;
+    @endphp
 
 <div class="mb-2">
     <h3 class="font-semibold mb-3" style="font-family: 'Open Sans', sans-serif; color:#004BA8">Price ($)</h3>

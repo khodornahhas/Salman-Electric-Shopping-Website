@@ -29,7 +29,8 @@ class ShopController extends Controller
                         WHEN is_on_sale = 1 AND sale_price IS NOT NULL THEN sale_price 
                         ELSE price 
                     END BETWEEN ? AND ?
-                ', [$min, $max]);
+                ', [$min, $max])
+                ->orWhere('contact_for_price', true);
             });
         }
 
