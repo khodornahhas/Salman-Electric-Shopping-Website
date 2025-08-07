@@ -4,11 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Admin Dashboard - @yield('title', 'Dashboard')</title>
-
-    <!-- Google Fonts: Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-
-    <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
@@ -1021,6 +1017,16 @@
           </a>
         </li>
         <li class="sidebar-list-item">
+          <a href="{{ route('admin.categories') }}">
+            <span class="material-icons-outlined">inventory_2</span> Categories
+          </a>
+        </li>
+        <li class="sidebar-list-item">
+          <a href="{{ route('admin.brands') }}">
+            <span class="material-icons-outlined">inventory_2</span> Brands
+          </a>
+        </li>
+        <li class="sidebar-list-item">
           <a href="{{ route('admin.users') }}">
             <span class="material-icons-outlined">account_circle</span> Users
           </a>
@@ -1037,13 +1043,11 @@
         </li>
       </ul>
     </aside>
-    <!-- Main Content -->
     <main>
       @yield('content')
     </main>
   </div>
 
-  <!-- Optional scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
   <script src="{{ asset('js/scripts.js') }}"></script>
 

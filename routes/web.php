@@ -70,29 +70,38 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+//admin products
 Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
-
 Route::get('/admin/products/create', [AdminController::class, 'create'])->name('admin.products.create');
 Route::post('/admin/products', [AdminController::class, 'store'])->name('admin.products.store');
-
 Route::get('/admin/products/{product}/edit', [AdminController::class, 'edit'])->name('admin.products.edit');
 Route::put('/admin/products/{product}', [AdminController::class, 'update'])->name('admin.products.update');
-
 Route::delete('/admin/products/{product}', [AdminController::class, 'destroy'])->name('admin.products.destroy');
 
 Route::get('/admin/products/search', [AdminController::class, 'searchProducts'])->name('admin.products.search');
-Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
-Route::delete('/admin/orders/{order}', [AdminController::class, 'deleteOrder'])->name('admin.orders.delete');
 Route::get('/admin/stats', [AdminController::class, 'stats'])->name('admin.stats');
+//admin users
 Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 Route::get('/admin/users/search', [App\Http\Controllers\Admin\UserController::class, 'search']);
+Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+//admin orders
 Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
 Route::get('/admin/orders/search', [AdminController::class, 'searchOrders'])->name('admin.orders.search');
+Route::delete('/admin/orders/{order}', [AdminController::class, 'deleteOrder'])->name('admin.orders.delete');
+//admin category 
+Route::get('/admin/categories', [AdminController::class, 'categories'])->name('admin.categories');
+Route::post('/admin/categories', [AdminController::class, 'storeCategory'])->name('admin.categories.store');
+Route::delete('/admin/categories/{id}', [AdminController::class, 'deleteCategory'])->name('admin.categories.delete');
+Route::put('/admin/categories/{id}', [AdminController::class, 'updateCategory'])->name('admin.categories.update');
+//admin brands
+Route::get('/admin/brands', [AdminController::class, 'brands'])->name('admin.brands');
+Route::post('/admin/brands', [AdminController::class, 'storeBrand'])->name('admin.brands.store');
+Route::delete('/admin/brands/{id}', [AdminController::class, 'deleteBrand'])->name('admin.brands.delete');
+Route::put('/admin/brands/{id}', [AdminController::class, 'updateBrand'])->name('admin.brands.update');
 
 
 Route::get('/contact', function () {

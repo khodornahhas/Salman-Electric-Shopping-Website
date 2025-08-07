@@ -179,7 +179,12 @@
                 />
             </div>
         </div>
-
+        <div class="mt-6">
+            <button type="submit"
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+                Apply Filter
+            </button>
+        </div>
     </form>
     </div>
 </div>
@@ -477,22 +482,22 @@
     // ------------------ PRICE RANGE LISTENERS ------------------
     minRange.addEventListener('input', (e) => {
         updateSlider(e);
-        debouncedRedirect();
+        
     });
 
     maxRange.addEventListener('input', (e) => {
         updateSlider(e);
-        debouncedRedirect();
+        
     });
 
     minInputBox.addEventListener('input', () => {
         updateSliderFromInput();
-        debouncedRedirect();
+        
     });
 
     maxInputBox.addEventListener('input', () => {
         updateSliderFromInput();
-        debouncedRedirect();
+        
     });
 
     // ------------------ WISHLIST TOGGLE ------------------

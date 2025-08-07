@@ -14,21 +14,26 @@ class ShopController extends Controller
         $categories = Category::all();
         $brands = Brand::withCount('products')->get();
         $query = Product::query();
+
         if ($request->has('search') && !empty($request->search)) {
             $query->where('name', 'LIKE', '%' . $request->search . '%');
         }
+
         $min = (float) $minPrice;
         $max = (float) $maxPrice;
 
-        $query->where(function ($q) use ($min, $max) {
-            $q->whereRaw('
-                CASE 
-                    WHEN is_on_sale = 1 AND sale_price IS NOT NULL THEN sale_price 
-                    ELSE price 
-                END BETWEEN ? AND ?
-            ', [$min, $max])
-            ->orWhere('contact_for_price', true);
-        });
+       $query->where(function ($q) use ($min, $max) {
+    $q->where(function ($priceQuery) use ($min, $max) {
+        $priceQuery->whereRaw('
+            CASE 
+                WHEN sale_price IS NOT NULL AND sale_price < price THEN sale_price
+                ELSE price
+            END BETWEEN ? AND ?
+        ', [$min, $max]);
+    })
+    ->orWhere('contact_for_price', true);
+});
+ 
 
         if ($categorySlug && strtolower($categorySlug) !== 'all') {
             $category = Category::where('slug', $categorySlug)->first();
@@ -47,9 +52,19 @@ class ShopController extends Controller
         }
 
         if ($request->sort == 'low_high') {
-            $query->orderByRaw('CASE WHEN is_on_sale = 1 THEN sale_price ELSE price END ASC');
+            $query->orderByRaw('
+                CASE 
+                    WHEN sale_price IS NOT NULL AND sale_price < price THEN sale_price
+                    ELSE price
+                END ASC
+            ');
         } elseif ($request->sort == 'high_low') {
-            $query->orderByRaw('CASE WHEN is_on_sale = 1 THEN sale_price ELSE price END DESC');
+            $query->orderByRaw('
+                CASE 
+                    WHEN sale_price IS NOT NULL AND sale_price < price THEN sale_price
+                    ELSE price
+                END DESC
+            ');
         }
 
         $limit = $request->limit;
@@ -67,4 +82,3 @@ class ShopController extends Controller
         ));
     }
 }
-

@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -230,4 +231,96 @@ class AdminController extends Controller
         $order->delete();
         return redirect()->back()->with('success', 'Order deleted.');
     }   
+
+    public function categories()
+    {
+        $categories = Category::all();
+        $brands = Brand::all();
+        return view('admin.categories', compact('categories', 'brands'));
+    }
+
+    public function storeCategory(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+        ]);
+
+        Category::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('admin.categories')->with('success', 'Category added!');
+    }
+
+    public function updateCategory(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $id,
+        ]);
+
+        $category = Category::findOrFail($id);
+        $category->name = $request->name;
+        $category->save();
+
+        return redirect()->route('admin.categories')->with('success', 'Category updated!');
+    }
+
+    public function deleteCategory($id)
+    {
+        $category = Category::findOrFail($id);
+        if ($category->products()->count() > 0) {
+            return back()->with('error', 'Cannot delete this category because it has products.');
+        }
+
+        $category->delete();
+
+        return back()->with('success', 'Category deleted!');
+    }
+
+    public function brands()
+    {
+        $brands = Brand::all()
+            ->sortBy(function ($brand) {
+                return $brand->slug === 'other-brands' ? 'zzz' : strtolower($brand->name);
+            })
+            ->values();
+
+        return view('admin.brands', compact('brands'));
+    }
+
+    public function storeBrand(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:brands,name',
+        ]);
+
+        Brand::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+        ]);
+
+        return redirect()->route('admin.brands')->with('success', 'Brand added successfully.');
+    }
+
+    public function deleteBrand($id)
+    {
+        $brand = Brand::findOrFail($id);
+        $brand->delete();
+
+        return back()->with('success', 'Brand deleted!');
+    }
+
+    public function updateBrand(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:brands,name,' . $id,
+        ]);
+
+        $brand = Brand::findOrFail($id);
+        $brand->name = $request->name;
+        $brand->slug = Str::slug($request->name);
+        $brand->save();
+
+        return redirect()->route('admin.brands')->with('success', 'Brand updated successfully.');
+    }
 }
