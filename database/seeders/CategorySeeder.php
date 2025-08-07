@@ -8,7 +8,7 @@ use App\Models\Category;
 class CategorySeeder extends Seeder
 {
     public function run(): void
-    {    
+    {
         $categories = [
             'Lamps and lightning',
             'Cables',
@@ -17,10 +17,14 @@ class CategorySeeder extends Seeder
             'Connectors',
             'Inverters',
             'Batteries',
+            'UPS',
         ];
 
         foreach ($categories as $name) {
-            Category::firstOrCreate(['name' => $name]);
+            Category::firstOrCreate(
+                ['name' => $name],
+                [] 
+            );
         }
     }
 }

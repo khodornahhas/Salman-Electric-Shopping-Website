@@ -101,23 +101,44 @@
         <label for="brand-all" class="cursor-pointer text-gray-800">All Brands</label>
     </div>
 
-    @foreach($brands as $brand)
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <input type="checkbox" name="brands[]" value="{{ $brand->slug }}" id="brand-{{ $brand->id }}"
-                    class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 brand-checkbox"
-                    {{ in_array($brand->slug, $selectedBrands) ? 'checked' : '' }}>
-                <label for="brand-{{ $brand->id }}" class="cursor-pointer text-gray-800">
-                    {{ $brand->name }}
-                </label>
+        @php
+            $otherBrands = $brands->where('name', 'Other Brands')->first();
+            $normalBrands = $brands->filter(fn($b) => $b->name !== 'Other Brands');
+        @endphp
+
+        @foreach($normalBrands as $brand)
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" name="brands[]" value="{{ $brand->slug }}" id="brand-{{ $brand->id }}"
+                        class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 brand-checkbox"
+                        {{ in_array($brand->slug, $selectedBrands) ? 'checked' : '' }}>
+                    <label for="brand-{{ $brand->id }}" class="cursor-pointer text-gray-800">
+                        {{ $brand->name }}
+                    </label>
+                </div>
+                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                    {{ $brand->products_count ?? 0 }}
+                </span>
             </div>
-            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
-                {{ $brand->products_count ?? 0 }}
-            </span>
-        </div>
-    @endforeach
+        @endforeach
+
+        @if($otherBrands)
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" name="brands[]" value="{{ $otherBrands->slug }}" id="brand-{{ $otherBrands->id }}"
+                        class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 brand-checkbox"
+                        {{ in_array($otherBrands->slug, $selectedBrands) ? 'checked' : '' }}>
+                    <label for="brand-{{ $otherBrands->id }}" class="cursor-pointer text-gray-800">
+                        {{ $otherBrands->name }}
+                    </label>
+                </div>
+                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                    {{ $otherBrands->products_count ?? 0 }}
+                </span>
+            </div>
+        @endif
     </div>
-    </div>
+</div>
 
 
     
