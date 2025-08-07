@@ -10,10 +10,16 @@ use Illuminate\Validation\Rule;
 
 class AccountController extends Controller
 { 
-    public function show(){
-        $user = Auth::user();
-        return view('account', compact('user'));
+   public function show()
+{
+    if (!Auth::check()) {
+        return redirect()->route('login'); 
     }
+
+    $user = Auth::user();
+    return view('account', compact('user'));
+}
+
 
     public function update(Request $request){
         $user = auth()->user();
@@ -30,7 +36,7 @@ class AccountController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('account')->with('success', 'Profile updated successfully!');
+        return redirect('/account')->with('success', 'Profile updated successfully!');
     }
 
     public function destroy(Request $request){

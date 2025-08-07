@@ -213,9 +213,17 @@ class CartController extends Controller
 
     public function checkout()
     {
-        $cart = Auth::check() ? 
-            CartItem::with('product')->where('user_id', Auth::id())->get() :
-            collect(session('cart', []))->map(function ($item, $productId) {
+        $hasItems = Auth::check()
+            ? CartItem::where('user_id', Auth::id())->exists()
+            : !empty(session('cart', []));
+
+        if (!$hasItems) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty. Please add items before proceeding.');
+        }
+
+        $cart = Auth::check() 
+            ? CartItem::with('product')->where('user_id', Auth::id())->get() 
+            : collect(session('cart', []))->map(function ($item, $productId) {
                 return (object) array_merge(['id' => $productId], $item);
             });
 
@@ -230,6 +238,10 @@ class CartController extends Controller
 
     public function confirm(Request $request)
     {
+        if (!$request->isMethod('post') || !$request->has('first_name')) {
+            return redirect()->route('cart.checkout')->with('error', 'Please complete the checkout form first.');
+        }
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
@@ -244,6 +256,7 @@ class CartController extends Controller
 
         return view('cart.confirm', ['data' => $validated]);
     }
+
 
    public function placeOrder(Request $request)
     {
@@ -333,5 +346,6 @@ class CartController extends Controller
 
         return redirect('/home')->with('success', 'Your order has been placed! We will contact you shortly.');
     }
+    
 }
 

@@ -128,7 +128,7 @@
                                         </form>
                                     </div>
                                 @else
-                                    <a href="{{ route('account') }}" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
+                                    <a href="{{ url('/account') }}" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
                                         <i class='bx bx-user text-2xl'></i>
                                     </a>
                                 @endauth

@@ -18,14 +18,15 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'first_name',
-        'last_name',
-        'address',
-        'phone',
-        'location',
-        'email',
-        'password',
+    'name',
+    'first_name',
+    'last_name',
+    'address',
+    'phone',
+    'location',
+    'email',
+    'password',
+    'is_admin',
     ];
 
     public function wishlists()

@@ -222,6 +222,26 @@
         <span class="opacity-100">Cart</span>
     </div>
 </div>
+@if(session('error'))
+    <div 
+        x-data="{ show: true }" 
+        x-show="show" 
+        x-transition 
+        class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded shadow-md flex items-center max-w-lg w-full z-50"
+        role="alert"
+    >
+        <span class="flex-1">{{ session('error') }}</span>
+        <button 
+            @click="show = false" 
+            class="ml-4 text-red-700 hover:text-red-900 focus:outline-none"
+            aria-label="Close"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+@endif
 
 <div class="flex items-center justify-center my-6 space-x-6">
   <div class="flex items-center space-x-2">
@@ -230,7 +250,6 @@
   </div>
 
   <span class="text-gray-400">›</span>
-
   <div class="flex items-center space-x-2">
     <div class="flex items-center justify-center w-8 h-8 border border-blue-300 text-blue-800 rounded-full bg-white">2</div>
     <span class="text-gray-500">Checkout</span>
@@ -257,7 +276,7 @@
                 <div class="price-header">Price</div>
                 <div class="delete-header"></div> 
             </div>
-
+    
            @forelse($cartItems as $item)
             <div class="cart-item" id="cart-item-{{ $item->product->id }}">
                 <div class="product-info">
@@ -296,7 +315,6 @@
 
         <div class="summary-section">
             <h2 class="summary-title">Order Summary</h2>
-
             @php
             $total = 0;
             foreach ($cartItems as $item) {
