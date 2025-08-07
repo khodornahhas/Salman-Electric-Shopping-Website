@@ -219,7 +219,6 @@
     }
 
    document.addEventListener('DOMContentLoaded', function () {
-    // Quantity buttons
     const decreaseBtn = document.getElementById('decrease-qty');
     const increaseBtn = document.getElementById('increase-qty');
     const displayQty = document.getElementById('display-qty');
@@ -241,7 +240,6 @@
         hiddenQty.value = quantity;
     });
 
-    // Wishlist buttons
     document.querySelectorAll('.add-to-wishlist').forEach(function (button) {
         button.addEventListener('click', function (e) {
             e.preventDefault();

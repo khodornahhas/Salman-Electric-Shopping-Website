@@ -140,12 +140,12 @@
     </div>
 </div>
 
+@php
+    $minPrice = request()->route('minPrice') ?? 0;
+    $maxPrice = request()->route('maxPrice') ?? 2500;
+    $maxPriceLimit = 2500;
+@endphp
 
-    
-    @php
-        $minPrice = request()->has('min_price') ? request('min_price') : 0;
-        $maxPrice = request()->has('max_price') ? request('max_price') : 2500;
-    @endphp
 
         <div class="mb-2">
             <h3 class="font-semibold mb-3" style="font-family: 'Open Sans', sans-serif; color:#004BA8">Price ($)</h3>
@@ -156,11 +156,8 @@
             <div class="relative h-10">
                 <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-300 rounded transform -translate-y-1/2"></div>
                 <div id="slider-track" class="absolute top-1/2 h-1 bg-blue-500 rounded transform -translate-y-1/2 z-10"></div>
-                <input id="min-range" type="range" min="0" max="2500" value="{{ $minPrice }}" step="10"
-                    class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
-                <input id="max-range" type="range" min="0" max="2500" value="{{ $maxPrice }}" step="10"
-                    class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
-
+                <input id="min-range" type="range" min="0" max="{{ $maxPriceLimit }}" value="{{ $minPrice }}" step="10"class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
+                <input id="max-range" type="range" min="0" max="{{ $maxPriceLimit }}" value="{{ $maxPrice }}" step="10"class="absolute w-full pointer-events-none appearance-none z-20 bg-transparent slider-thumb">
                 <input type="hidden" name="min_price" id="min-price-input" value="{{ $minPrice }}">
                 <input type="hidden" name="max_price" id="max-price-input" value="{{ $maxPrice }}">
             </div>
@@ -342,7 +339,8 @@
 <script src="{{ asset('js/wishlist.js') }}"></script>
 <script>
     // ------------------ PRICE RANGE SLIDER ------------------
-    const minRange = document.getElementById('min-range');
+     const maxPriceLimit = {{ $maxPriceLimit }};
+   const minRange = document.getElementById('min-range');
     const maxRange = document.getElementById('max-range');
     const minVal = document.getElementById('min-val');
     const maxVal = document.getElementById('max-val');
@@ -375,18 +373,18 @@
         minInputBox.value = min;
         maxInputBox.value = max;
 
-        const percent1 = (min / 2500) * 100;
-        const percent2 = (max / 2500) * 100;
+        const percent1 = (min / maxPriceLimit) * 100;
+        const percent2 = (max / maxPriceLimit) * 100;
         sliderTrack.style.left = percent1 + "%";
         sliderTrack.style.right = (100 - percent2) + "%";
     }
 
     function updateSliderFromInput() {
         let min = parseInt(minInputBox.value) || 0;
-        let max = parseInt(maxInputBox.value) || 2500;
+        let max = parseInt(maxInputBox.value) || maxPriceLimit;
 
-        min = Math.max(0, Math.min(min, 2500));
-        max = Math.max(0, Math.min(max, 2500));
+        min = Math.max(0, Math.min(min, maxPriceLimit));
+        max = Math.max(0, Math.min(max, maxPriceLimit));
 
         if (max - min < 50) {
             if (minInputBox === document.activeElement) {
@@ -405,8 +403,8 @@
         minPriceInput.value = min;
         maxPriceInput.value = max;
 
-        const percent1 = (min / 2500) * 100;
-        const percent2 = (max / 2500) * 100;
+        const percent1 = (min / maxPriceLimit) * 100;
+        const percent2 = (max / maxPriceLimit) * 100;
         sliderTrack.style.left = percent1 + "%";
         sliderTrack.style.right = (100 - percent2) + "%";
     }
