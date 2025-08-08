@@ -231,7 +231,6 @@
             <input type="hidden" name="brands[]" value="{{ $brandId }}">
         @endforeach
     @endif
-
     <div class="flex items-center justify-between flex-wrap gap-4 text-sm">
         <div class="flex items-center gap-2">
             <span class="text-gray-700 font-medium">Show:</span>
@@ -262,18 +261,16 @@
                 {{ $products->onEachSide(1)->links('pagination::tailwind') }}
             </div>
         @endif
-    </div>
-
-
+    </div>    
     <div>
-        <select name="sort" onchange="this.form.submit()" class="p-2 border rounded text-sm">
+        <select name="sort" id="sort-select" class="p-2 border rounded text-sm">
             <option value="">Default</option>
             <option value="low_high" {{ request('sort') == 'low_high' ? 'selected' : '' }}>Price: Low to High</option>
             <option value="high_low" {{ request('sort') == 'high_low' ? 'selected' : '' }}>Price: High to Low</option>
             <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
         </select>
     </div>
-    
+</form>
 </form>
 </div>
 
@@ -344,8 +341,8 @@
 <script src="{{ asset('js/wishlist.js') }}"></script>
 <script>
     // ------------------ PRICE RANGE SLIDER ------------------
-     const maxPriceLimit = {{ $maxPriceLimit }};
-   const minRange = document.getElementById('min-range');
+    const maxPriceLimit = {{ $maxPriceLimit }};
+    const minRange = document.getElementById('min-range');
     const maxRange = document.getElementById('max-range');
     const minVal = document.getElementById('min-val');
     const maxVal = document.getElementById('max-val');
@@ -431,26 +428,39 @@
 
     // ------------------ Build SEO URL ------------------
     function buildSeoUrl() {
-        const categoryInput = document.querySelector('input[name="category"]:checked');
-        const categorySlug = categoryInput && categoryInput.value.trim() !== '' ? categoryInput.value : 'all';
+    const categoryInput = document.querySelector('input[name="category"]:checked');
+    const categorySlug = categoryInput && categoryInput.value.trim() !== '' ? categoryInput.value : 'all';
 
-        const brandInputs = document.querySelectorAll('input[name="brands[]"]:checked');
-        let brandSlugs = [];
-        brandInputs.forEach(input => {
-            if (input.value !== 'all') brandSlugs.push(input.value);
-        });
-        if (brandSlugs.length === 0) brandSlugs = ['all'];
+    const brandInputs = document.querySelectorAll('input[name="brands[]"]:checked');
+    let brandSlugs = [];
+    brandInputs.forEach(input => {
+        if (input.value !== 'all') brandSlugs.push(input.value);
+    });
+    if (brandSlugs.length === 0) brandSlugs = ['all'];
 
-        const minPrice = minInputBox.value || '0';
-        const maxPrice = maxInputBox.value || '2500';
+    const minPrice = minInputBox.value || '0';
+    const maxPrice = maxInputBox.value || '2500';
 
-        let url = `/shop/${encodeURIComponent(categorySlug)}/brands/${encodeURIComponent(brandSlugs.join(','))}/min-price/${encodeURIComponent(minPrice)}/max-price/${encodeURIComponent(maxPrice)}`;
-        const searchInput = document.querySelector('input[name="search"]');
-        if (searchInput && searchInput.value.trim() !== '') {
-            url += `?search=${encodeURIComponent(searchInput.value.trim())}`;
-        }
+    const path = `/shop/${encodeURIComponent(categorySlug)}/brands/${encodeURIComponent(brandSlugs.join(','))}/min-price/${encodeURIComponent(minPrice)}/max-price/${encodeURIComponent(maxPrice)}`;
 
-        return url;
+    const params = new URLSearchParams();
+
+    const searchInput = document.querySelector('input[name="search"]');
+    if (searchInput && searchInput.value.trim() !== '') {
+        params.set('search', searchInput.value.trim());
+    }
+
+    const sortSelect = document.querySelector('select[name="sort"]');
+    if (sortSelect && sortSelect.value) {
+        params.set('sort', sortSelect.value);
+    }
+
+    const limitInput = document.querySelector('input[name="limit"]');
+    if (limitInput && limitInput.value) {
+        params.set('limit', limitInput.value);
+    }
+
+    return path + (params.toString() ? `?${params.toString()}` : '');
     }
 
     // ------------------ Debounce Function ------------------
@@ -551,6 +561,12 @@
             window.location.href = url;
         }
     });
+
+    document.getElementById('sort-select').addEventListener('change', function () {
+    const url = buildSeoUrl();
+    window.location.href = url;
+});
+
 </script>
 
 @endsection

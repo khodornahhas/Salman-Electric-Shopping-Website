@@ -15,24 +15,35 @@ class ShopController extends Controller
         $brands = Brand::withCount('products')->get();
         $query = Product::query();
 
-        if ($request->has('search') && !empty($request->search)) {
-            $query->where('name', 'LIKE', '%' . $request->search . '%');
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('category', function ($catQuery) use ($search) {
+                    $catQuery->where('name', 'LIKE', '%' . $search . '%');
+                })
+                ->orWhereHas('brand', function ($brandQuery) use ($search) {
+                    $brandQuery->where('name', 'LIKE', '%' . $search . '%');
+                })
+                ->orWhere('description', 'LIKE', '%' . $search . '%');
+            });
         }
 
         $min = (float) $minPrice;
         $max = (float) $maxPrice;
 
        $query->where(function ($q) use ($min, $max) {
-    $q->where(function ($priceQuery) use ($min, $max) {
-        $priceQuery->whereRaw('
-            CASE 
-                WHEN sale_price IS NOT NULL AND sale_price < price THEN sale_price
-                ELSE price
-            END BETWEEN ? AND ?
-        ', [$min, $max]);
-    })
-    ->orWhere('contact_for_price', true);
-});
+            $q->where(function ($priceQuery) use ($min, $max) {
+                $priceQuery->whereRaw('
+                    CASE 
+                        WHEN sale_price IS NOT NULL AND sale_price < price THEN sale_price
+                        ELSE price
+                    END BETWEEN ? AND ?
+                ', [$min, $max]);
+            })
+            ->orWhere('contact_for_price', true);
+        });
  
 
         if ($categorySlug && strtolower($categorySlug) !== 'all') {

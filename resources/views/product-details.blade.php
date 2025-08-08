@@ -138,62 +138,63 @@
 <div class="w-full border-b border-gray-300"></div>
 
 @if($relatedProducts->count())
-    <div class="mt-16 px-4 md:px-32">
-        <h2 class="mb-6 text-gray-800 text-[24px] md:text-[29px] font-[Open Sans, sans-serif]">You Might Also Like</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-5">
-            @foreach($relatedProducts as $related)
-                <div class="relative bg-white rounded-xl overflow-hidden shadow-sm transition border border-gray-100 flex flex-col h-[420px]">
-                    <div class="absolute top-2 right-2 z-10 cursor-pointer add-to-wishlist"
-                        data-product-id="{{ $related->id }}">
-                        <i class='bx {{ in_array($related->id, $wishlistProductIds) ? "bxs-heart text-red-500" : "bx-heart text-gray-400" }} text-2xl hover:text-red-500 transition'></i>
+    <div class="mt-16 px-4 md:px-10 max-w-screen-xl mx-auto">
+    <h2 class="mb-6 text-gray-800 text-[24px] md:text-[29px] font-[Open Sans, sans-serif]">You Might Also Like</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
+        @foreach($relatedProducts as $related)
+            <div class="relative bg-white rounded-xl overflow-hidden shadow-sm transition border border-gray-100 flex flex-col h-[420px]">
+                <div class="absolute top-2 right-2 z-10 cursor-pointer add-to-wishlist"
+                    data-product-id="{{ $related->id }}">
+                    <i class='bx {{ in_array($related->id, $wishlistProductIds) ? "bxs-heart text-red-500" : "bx-heart text-gray-400" }} text-2xl hover:text-red-500 transition'></i>
+                </div>
+
+                @if($related->sale_price && $related->sale_price < $related->price)
+                    <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                        On Sale
                     </div>
+                    @php
+                        $discount = round((($related->price - $related->sale_price) / $related->price) * 100);
+                    @endphp
+                    <div class="absolute top-2 left-24 z-10 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
+                        -{{ $discount }}%
+                    </div>
+                @endif
 
-                    @if($related->sale_price && $related->sale_price < $related->price)
-                        <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                            On Sale
-                        </div>
+                <a href="{{ route('product.details', $related->id) }}" class="w-full h-56 bg-white flex items-center justify-center overflow-hidden">
+                    <img src="/storage/{{ $related->image }}"
+                        alt="{{ $related->name }}"
+                        class="w-full h-full object-contain transform transition-transform duration-300 hover:scale-105 cursor-pointer" />
+                </a>
 
-                        @php
-                            $discount = round((($related->price - $related->sale_price) / $related->price) * 100);
-                        @endphp
-                        <div class="absolute top-2 left-24 z-10 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
-                            -{{ $discount }}%
-                        </div>
-                    @endif
+                <div class="p-5 flex flex-col flex-grow">
+                    <h3 class="font-semibold text-gray-800 text-center leading-tight font-[Open Sans, sans-serif] text-[15px] min-h-[48px]">
+                        {{ $related->name }}
+                    </h3>
 
-                    <a href="{{ route('product.details', $related->id) }}" class="w-full h-56 bg-white flex items-center justify-center overflow-hidden">
-                        <img src="/storage/{{ $related->image }}"
-                            alt="{{ $related->name }}"
-                            class="w-full h-full object-contain transform transition-transform duration-300 hover:scale-105 cursor-pointer" />
-                    </a>
-
-                    <div class="p-5 flex flex-col flex-grow">
-                        <h3 class="font-semibold text-gray-800 text-center leading-tight font-[Open Sans, sans-serif] text-[15px] min-h-[48px]">
-                            {{ $related->name }}
-                        </h3>
-
-                        <div class="mt-auto text-center mb-5">
-                            @if($related->contact_for_price)
-                                <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
-                                <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
-                            @elseif($related->sale_price && $related->sale_price < $related->price)
-                                <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
-                                <p class="text-red-600 text-lg font-bold underline">${{ number_format($related->sale_price, 2) }}</p>
-                                <button class="mt-2 w-full bg-gray-100 text-gray-800 text-sm font-medium py-2 rounded hover:bg-gray-200 transition">
-                                    Add to Cart
-                                </button>
-                            @else
-                                <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
-                                <button class="mt-2 w-full bg-gray-100 text-gray-800 text-sm font-medium py-2 rounded hover:bg-gray-200 transition">
-                                    Add to Cart
-                                </button>
-                            @endif
-                        </div>
+                    <div class="mt-auto text-center mb-0">
+                        @if($related->contact_for_price)
+                            <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
+                            <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                        @elseif($related->sale_price && $related->sale_price < $related->price)
+                            <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
+                            <p class="text-red-600 text-lg font-bold underline">${{ number_format($related->sale_price, 2) }}</p>
+                            <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart">
+                                Add to Cart
+                            </button>
+                        @else
+                            <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
+                            <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart">
+                                Add to Cart
+                            </button>
+                        @endif
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @endforeach
     </div>
+</div>
+
 @endif
 
 <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
