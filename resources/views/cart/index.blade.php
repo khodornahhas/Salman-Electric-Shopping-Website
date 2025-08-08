@@ -40,13 +40,11 @@
         height: fit-content;
     }
 
-    .cart-header {
-        display: flex;
-        background: #dbeafe;
-        color: black;
-        font-weight: 600;
-        padding: 12px 20px;
-        border-radius: 8px 8px 0 0;
+    .cart-header,
+    .cart-item {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 0.5fr;
+        gap: 20px;
         align-items: center;
     }
 
@@ -62,16 +60,6 @@
     .price-header {
         flex: 1;
         text-align: right;
-    }
-
-    .cart-item {
-        display: flex;
-        background: white;
-        padding: 16px 20px;
-        margin-bottom: 10px;
-        border-radius: 0 0 8px 8px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        align-items: center;
     }
 
     .product-info {
@@ -215,21 +203,16 @@
         }
     }
 </style>
-<div class="bg-blue-600 text-white font-bold py-4 pl-32 text-left mb-6" style="margin-top: 40px;margin-bottom:50px; font-size: 20px; font-family: 'Open Sans', sans-serif;">
+<div class="bg-blue-600 text-white font-bold py-4 px-4 md:pl-32 text-left mb-6 text-[20px]" style="margin-top: 40px; margin-bottom:50px; font-family: 'Open Sans', sans-serif;">
     <div class="flex items-center space-x-4">
         <a href="{{ url('/home') }}" class="hover:underline opacity-40">Home</a>
         <span class="opacity-40">&gt;</span>
         <span class="opacity-100">Cart</span>
     </div>
 </div>
+
 @if(session('error'))
-    <div 
-        x-data="{ show: true }" 
-        x-show="show" 
-        x-transition 
-        class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded shadow-md flex items-center max-w-lg w-full z-50"
-        role="alert"
-    >
+    <div x-data="{ show: true }" x-show="show" x-transition class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded shadow-md flex items-center max-w-lg w-full z-50" role="alert">
         <span class="flex-1">{{ session('error') }}</span>
         <button 
             @click="show = false" 
@@ -243,97 +226,106 @@
     </div>
 @endif
 
-<div class="flex items-center justify-center my-6 space-x-6">
-  <div class="flex items-center space-x-2">
-    <div class="flex items-center justify-center w-8 h-8 text-white bg-blue-800 rounded-full">1</div>
-    <span class="text-blue-800 font-medium">Cart</span>
-  </div>
+<div class="flex items-center justify-center my-6 space-x-2 flex-wrap text-sm sm:text-base">
+    <div class="flex items-center space-x-2 mb-2 sm:mb-0">
+        <div class="flex items-center justify-center w-8 h-8 text-white bg-blue-800 rounded-full">1</div>
+        <span class="text-blue-800 font-medium">Cart</span>
+    </div>
 
-  <span class="text-gray-400">›</span>
-  <div class="flex items-center space-x-2">
-    <div class="flex items-center justify-center w-8 h-8 border border-blue-300 text-blue-800 rounded-full bg-white">2</div>
-    <span class="text-gray-500">Checkout</span>
-  </div>
+    <span class="text-gray-400">›</span>
+    
+    <div class="flex items-center space-x-2 mb-2 sm:mb-0">
+        <div class="flex items-center justify-center w-8 h-8 border border-blue-300 text-blue-800 rounded-full bg-white">2</div>
+        <span class="text-gray-500">Checkout</span>
+    </div>
 
-  <span class="text-gray-400">›</span>
+    <span class="text-gray-400">›</span>
 
-  <div class="flex items-center space-x-2">
-    <div class="flex items-center justify-center w-8 h-8 border border-blue-300 text-blue-800 rounded-full bg-white">3</div>
-    <span class="text-gray-500">Order</span>
-  </div>
+    <div class="flex items-center space-x-2 mb-2 sm:mb-0">
+        <div class="flex items-center justify-center w-8 h-8 border border-blue-300 text-blue-800 rounded-full bg-white">3</div>
+        <span class="text-gray-500">Order</span>
+    </div>
 </div>
 
-<div class="cart-container" style="font-family: 'Open Sans', sans-serif; margin-bottom:100px;">
-    <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid grey; width: 100%; margin-bottom: 20px;">
-    <h3 style="margin: 0;">Your Cart</h3>
-    <i class='bx bx-cart' style="font-size: 24px;"></i>
-    </div>    
-    <div class="cart-layout">
-        <div class="cart-items-section">
-            <div class="cart-header">
+<div class="cart-container px-4 md:px-20" style="font-family: 'Open Sans', sans-serif; margin-bottom:100px;">
+    <div class="flex items-center justify-between border-b border-gray-400 w-full mb-6">
+        <h3 class="m-0">Your Cart</h3>
+        <i class='bx bx-cart text-xl'></i>
+    </div>
+
+    <div class="cart-layout flex flex-col lg:flex-row gap-8">
+        <div class="cart-items-section w-full lg:w-2/3 overflow-x-auto">
+            <div class="cart-header hidden sm:grid grid-cols-[2fr_1fr_1fr_0.5fr] gap-4 font-semibold border-b pb-2 mb-4 text-sm text-gray-600">
                 <div class="product-header">Product</div>
-                <div class="qty-header">QTY</div>
-                <div class="price-header">Price</div>
-                <div class="delete-header"></div> 
+                <div class="qty-header text-center">QTY</div>
+                <div class="price-header text-center">Price</div>
+                <div class="delete-header text-right"></div> 
             </div>
-    
-           @forelse($cartItems as $item)
-            <div class="cart-item" id="cart-item-{{ $item->product->id }}">
-                <div class="product-info">
-                    <img src="{{ asset($item->product->image) }}" class="product-image"alt="">
-                    <div>
-                        <p class="product-name">{{ $item->product->name }}</p>
+
+            @forelse($cartItems as $item)
+                <div class="cart-item grid grid-cols-1 sm:grid-cols-4 gap-4 items-center mb-4 border-b pb-2" id="cart-item-{{ $item->product->id }}">
+                    <div class="product-info flex items-center gap-4 sm:col-span-1">
+                        @if($item->product && $item->product->image)
+                            <a href="{{ route('product.details', $item->product->id) }}">
+                                <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="product-image w-20 h-20 object-cover">
+                            </a>
+                        @else
+                            <p>No Image</p>
+                        @endif
+                        <div>
+                            <p class="product-name">{{ $item->product->name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="quantity-controls flex items-center gap-2 sm:justify-center">
+                        <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, -1)">-</button>
+                        <span class="quantity-value" id="qty-{{ $item->product->id }}">
+                            {{ $item->quantity ?? 1 }}
+                        </span>
+                        <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, 1)">+</button>
+                    </div>
+
+                    <div class="product-price sm:text-center">${{ number_format($item->product->price, 2) }}</div>
+
+                    <div class="delete-icon flex justify-end sm:justify-center">
+                        <form method="POST" action="{{ route('cart.remove', $item->product->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" title="Remove item">
+                                <i class='bx bx-trash text-red-600 text-xl hover:text-red-800'></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
-
-                <div class="quantity-controls">
-                    <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, -1)">-</button>
-                    <span class="quantity-value" id="qty-{{ $item->product->id }}">
-                        {{ $item->quantity ?? 1 }}
-                    </span>
-                    <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, 1)">+</button>
-                </div>
-
-                <div class="product-price">
-                    ${{ number_format($item->product->price, 2) }}
-                </div>
-
-                <div class="delete-icon">
-                    <form method="POST" action="{{ route('cart.remove', $item->product->id) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" title="Remove item">
-                            <i class='bx bx-trash text-red-600 text-xl hover:text-red-800'></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        @empty
-            <p class="empty-cart">Your cart is empty.</p>
-        @endforelse
+            @empty
+                <p class="empty-cart">Your cart is empty.</p>
+            @endforelse
         </div>
 
-        <div class="summary-section">
-            <h2 class="summary-title">Order Summary</h2>
+        <div class="summary-section w-full lg:w-1/3 border border-gray-200 p-4 rounded-md shadow-sm">
+            <h2 class="summary-title text-lg font-semibold mb-4">Order Summary</h2>
             @php
-            $total = 0;
-            foreach ($cartItems as $item) {
-                $total += $item->product->price * $item->quantity;
-            }
-        @endphp
+                $total = 0;
+                foreach ($cartItems as $item) {
+                    $total += $item->product->price * $item->quantity;
+                }
+            @endphp
+
             <div class="summary-details">
-                <div class="summary-row total-row">
+                <div class="summary-row total-row flex justify-between font-bold text-gray-800 text-lg mb-4">
                     <span>Total</span>
                     <span id="cart-total">${{ number_format($total, 2) }}</span>
                 </div>
             </div>
 
-            <div class="summary-actions">
-                <a href="" class="checkout-btn">Checkout Now</a>
-                <a href="{{ route('shop') }}" class="continue-btn">Continue Shopping</a>
+            <div class="summary-actions flex flex-col gap-3">
+                <a href="{{ route('cart.checkout') }}" class="checkout-btn text-center">Checkout Now</a>
+                <a href="{{ route('shop') }}" class="continue-btn text-center">Continue Shopping</a>
             </div>
+        </div>
     </div>
 </div>
+
 
 <script>
     function updateQuantity(productId, change) {

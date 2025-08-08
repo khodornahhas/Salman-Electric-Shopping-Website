@@ -43,9 +43,7 @@ Route::get('/cart/checkout', [CartController::class, 'checkout'])
     Route::get('/cart/confirm', function () {
     return redirect('/cart')->with('error', 'Please complete the checkout form first.');
 });
-Route::post('/cart/confirm', [CartController::class, 'confirm'])
-    ->middleware('cart.notempty');
-
+Route::post('/cart/confirm', [CartController::class, 'confirm']);
 
 Route::post('/cart/place-order', [CartController::class, 'placeOrder']);
 

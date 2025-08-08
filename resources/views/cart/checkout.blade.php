@@ -4,7 +4,7 @@
         font-family: 'Urbanist', sans-serif !important;
     }</style>
 
-<div class="bg-blue-600 text-white font-bold py-4 pl-32 text-left mb-6" style="margin-top: 40px;margin-bottom:50px; font-size: 20px; font-family: 'Open Sans', sans-serif;">
+<div class="bg-blue-600 text-white font-bold py-4 px-4 md:pl-32 text-left mb-6" style="margin-top: 40px;margin-bottom:50px; font-size: 20px; font-family: 'Open Sans', sans-serif;">
     <div class="flex items-center space-x-4">
         <a href="{{ url('/home') }}" class="hover:underline opacity-40">Home</a>
         <span class="opacity-40">&gt;</span>
@@ -12,13 +12,13 @@
     </div>
 </div>
 
-<div class="flex items-center justify-center my-6 space-x-6">
- <div class="flex items-center space-x-2">
-  <div class="flex items-center justify-center w-8 h-8 bg-blue-800 rounded-full">
-    <i class='bx bx-check text-white text-xl'></i>
+<div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 my-6">
+  <div class="flex items-center space-x-2">
+    <div class="flex items-center justify-center w-8 h-8 bg-blue-800 rounded-full">
+      <i class='bx bx-check text-white text-xl'></i>
+    </div>
+    <span class="text-blue-800 font-medium">Cart</span>
   </div>
-  <span class="text-blue-800 font-medium">Cart</span>
-</div>
 
   <span class="text-gray-400">›</span>
 
