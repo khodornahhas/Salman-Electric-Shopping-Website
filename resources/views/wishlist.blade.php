@@ -1,20 +1,29 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="py-16 min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-7xl bg-white rounded-lg p-6 shadow">
-        <h2 class="text-2xl font-semibold mb-6 text-center">My Wishlist</h2>
+<div class="pt-16 mb-20 sm:mb-40 md:mb-80 flex justify-center"> 
+    <div class="w-full max-w-7xl p-4 sm:p-6"> 
+        <h2 class="text-2xl font-semibold mb-14 text-center">My Wishlist</h2>
 
         @if($wishlists->isEmpty())
-            <p class="text-center text-gray-600">No items in your wishlist.</p>
+            <p class="text-center text-gray-600 mb-6">No items in your wishlist.</p>
+            <div class="flex justify-center">
+                <a href="{{ route('shop') }}" 
+                   class="px-6 py-3 bg-gray-200 text-gray-800 font-semibold rounded-full shadow-sm hover:bg-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105">
+                    Shop Now
+                </a>
+            </div>
         @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(250px,1fr))] justify-center">
                 @foreach($wishlists as $wishlist)
                     @php
                         $product = isset($wishlist->product) ? $wishlist->product : $wishlist;
                     @endphp
 
-                        <a href="{{ route('product.details', $product->id) }}" class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group mx-auto w-64 sm:w-72 md:w-80">
+                    <a href="{{ route('product.details', $product->id) }}" 
+                       class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group mx-auto"
+                       style="max-width: 280px;">
+                        
                         <form method="POST" action="{{ route('wishlist.remove', $product->id) }}" class="absolute top-2 right-2 z-10">
                             @csrf
                             <button type="submit">
@@ -22,50 +31,65 @@
                             </button>
                         </form>
 
-                        @if($product->is_on_sale)
-                        <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                            On Sale
-                        </div>
-                        @endif
+                       @if($product->sale_price && $product->sale_price < $product->price)
+                            <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                On Sale
+                            </div>
 
-                        <div class="bg-white w-full h-60 flex items-center justify-center overflow-hidden">
+                            @php
+                                $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
+                            @endphp
+                            <div class="absolute top-2 left-24 z-10 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
+                                -{{ $discount }}%
+                            </div>
+                        @endif
+                        
+                        <div class="bg-white w-full h-40 sm:h-48 flex items-center justify-center overflow-hidden">
                             @if($product->image)
-                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" 
+                                     class="object-contain max-h-full max-w-full">
                             @else
-                            <span class="text-gray-400">No Image</span>
+                                <span class="text-gray-400">No Image</span>
                             @endif
                         </div>
 
-                        <div class="p-5 flex flex-col flex-grow">
-                            <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="font-semibold text-gray-800 text-center mb-2 leading-tight" 
+                                style="font-family: 'Open Sans', sans-serif; font-size:15px;">
                                 {{ $product->name }}
                             </h3>
 
                             <div class="mt-auto text-center">
-                                @if($product->is_on_sale)
-                                <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
-                                <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
+                                  @if($product->contact_for_price)
+                                        <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
+                                        <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                                @elseif($product->sale_price && $product->sale_price < $product->price)
+                                    <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
+                                    <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
                                 @else
-                                <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
+                                    <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
                                 @endif
 
-                                <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
+                                @if(!$product->contact_for_price)
+                                <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form flex justify-center">
                                     @csrf
                                     <input type="hidden" name="quantity" value="1">
                                     <button type="submit"
-                                        class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-                                        data-product-id="{{ $product->id }}" data-quantity="1" style="font-size:18px; color:grey;">
+                                            class="mt-2 px-4 py-2 bg-gray-100 font-medium rounded hover:bg-gray-200 transition add-to-cart"
+                                            data-product-id="{{ $product->id }}" data-quantity="1" 
+                                            style="font-size:16px; color:grey;">
                                         Add to Cart
                                     </button>
                                 </form>
+                                @endif
                             </div>
                         </div>
                     </a>
-
                 @endforeach
             </div>
         @endif
     </div>
 </div>
 @endsection
+
 
