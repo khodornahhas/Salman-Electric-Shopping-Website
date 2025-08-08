@@ -69,10 +69,10 @@
                                     <a class="text-gray-900 hover:text-blue-600 transition-colors" href="/shop">SHOP</a>
                                 </li>
                                 <li>
-                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="#">ABOUT</a>
+                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="/about">ABOUT</a>
                                 </li>
                                 <li>
-                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="#">CONTACT</a>
+                                    <a class="text-gray-900 hover:text-blue-600 transition-colors" href="/contact">CONTACT</a>
                                 </li>
                             </ul>
                         </nav>

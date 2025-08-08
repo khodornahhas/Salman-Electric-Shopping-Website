@@ -80,15 +80,15 @@
             </div>
 
             <div class="pt-6">
-                <div class="relative w-full overflow-hidden rounded-lg" style="padding-bottom: 56.25%;">
+                <a href="https://maps.app.goo.gl/MJcWKaUrpZzXK2BY8" target="_blank" rel="noopener noreferrer" class="block relative w-full overflow-hidden rounded-lg" style="padding-bottom: 56.25%;">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3313.0767365694!2d35.5180989!3d33.8619132!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151f170059153593%3A0x8e38ddb835744431!2sSalman%20Electric!5e0!3m2!1sen!2slb!4v1754469349998!5m2!1sen!2slb"
-                        class="absolute top-0 left-0 w-full h-full border-0"
-                        allowfullscreen=""
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3313.0767365694!2d35.5180989!3d33.8619132!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151f170059153593%3A0x8e38ddb835744431!2sSalman%20Electric!5e0!3m2!1sen!2slb!4v1754469349998!5m2!1sen!2slb"
+                    class="absolute top-0 left-0 w-full h-full border-0 pointer-events-none"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
-                </div>
+                </a>
             </div>
         </div>
 

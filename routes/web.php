@@ -29,6 +29,7 @@ Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.in
 Route::post('/wishlist', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 Route::post('/wishlist/remove/{productId}', [WishlistController::class, 'remove'])->name('wishlist.remove');
 Route::get('/wishlist/count', [WishlistController::class, 'count']);
+Route::post('/wishlist/add/{productId}', [WishlistController::class, 'add'])->name('wishlist.add');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');

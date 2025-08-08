@@ -23,26 +23,43 @@ class WishlistController extends Controller
 
 
     public function add(Request $request, $productId)
-    {
-        if (Auth::check()) {
-            $exists = Wishlist::where('user_id', Auth::id())->where('product_id', $productId)->exists();
+{
+    if (Auth::check()) {
+        $wishlist = Wishlist::where('user_id', Auth::id())
+            ->where('product_id', $productId)
+            ->first();
 
-            if (!$exists) {
-                Wishlist::create([
-                    'user_id' => Auth::id(),
-                    'product_id' => $productId,
-                ]);
-            }
+        if ($wishlist) {
+            $wishlist->delete();
+            $inWishlist = false;
         } else {
-            $wishlist = session()->get('wishlist', []);
-            if (!in_array($productId, $wishlist)) {
-                $wishlist[] = $productId;
-                session()->put('wishlist', $wishlist);
-            }
+            Wishlist::create([
+                'user_id' => Auth::id(),
+                'product_id' => $productId,
+            ]);
+            $inWishlist = true;
         }
 
-        return response()->json(['success' => true]);
+        $count = Wishlist::where('user_id', Auth::id())->count();
+    } else {
+        $wishlist = session()->get('wishlist', []);
+        if (in_array($productId, $wishlist)) {
+            $wishlist = array_diff($wishlist, [$productId]);
+            $inWishlist = false;
+        } else {
+            $wishlist[] = $productId;
+            $inWishlist = true;
+        }
+        session()->put('wishlist', $wishlist);
+        $count = count($wishlist);
     }
+
+    return response()->json([
+        'success' => true,
+        'inWishlist' => $inWishlist,
+        'count' => $count
+    ]);
+}
 
 
     public function remove($productId)

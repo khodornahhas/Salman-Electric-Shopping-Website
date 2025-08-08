@@ -194,7 +194,6 @@
         @endforeach
     </div>
 </div>
-
 @endif
 
 <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
@@ -238,38 +237,46 @@
         hiddenQty.value = quantity;
     });
 
-    document.querySelectorAll('.add-to-wishlist').forEach(function (button) {
-        button.addEventListener('click', function (e) {
+    document.addEventListener('DOMContentLoaded', function () {
+    const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    document.querySelectorAll('.add-to-wishlist').forEach(btn => {
+        btn.addEventListener('click', function (e) {
             e.preventDefault();
 
             const productId = this.getAttribute('data-product-id');
             const icon = this.querySelector('i');
 
-            fetch("{{ url('/wishlist/add') }}/" + productId, {
-                method: 'POST',
-                headers: {
+            fetch('/wishlist', {
+                    method: 'POST',
+                    headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    icon.classList.remove('bx-heart', 'text-gray-400');
-                    icon.classList.add('bxs-heart', 'text-red-500');
-                } else {
-                    alert('Failed to add to wishlist.');
-                }
-            })
-            .catch(error => {
-                alert('An error occurred.');
-                console.error('Error:', error);
+                    'X-CSRF-TOKEN': csrf,
+                    'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ product_id: productId })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        if (data.inWishlist) {
+                            icon.classList.remove('bx-heart', 'text-gray-400');
+                            icon.classList.add('bxs-heart', 'text-red-500');
+                        } else {
+                            icon.classList.remove('bxs-heart', 'text-red-500');
+                            icon.classList.add('bx-heart', 'text-gray-400');
+                        }
+                    } else {
+                        alert('Wishlist failed: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Something went wrong');
+                });
             });
         });
     });
 });
-
-
 </script>
 @endsection
