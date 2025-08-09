@@ -57,7 +57,7 @@
                         <th class="px-6 py-4 font-medium">Sale Price</th> 
                         <th class="px-6 py-4 font-medium">Brand</th>
                         <th class="px-6 py-4 font-medium">Category</th>
-                        <th class="px-6 py-4 font-medium text-right">Actions</th>
+                        <th class="px-6 py-4 font-medium text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="products-table-body" class="divide-y divide-gray-100">

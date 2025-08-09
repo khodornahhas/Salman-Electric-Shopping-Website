@@ -262,7 +262,7 @@
 
 @php
     $imageMap = [
-        'Lamps and lightning' => 'images/light.png',
+        'Lamps and Lighting' => 'images/light.png',
         'Cables' => 'images/cables.png',           
         'Electricity essentials' => 'images/e.png',
         'EV chargers' => 'images/charger.png',
@@ -275,12 +275,13 @@
 
 <div class="bg-white ">
     <div class="container mx-auto px-4">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div class="grid gap-8 grid-cols-[repeat(auto-fit,minmax(120px,1fr))] justify-items-center">
             @foreach ($categories as $category)
                 <a href="{{ route('shop', ['category' => $category->id]) }}" 
-                   class="group flex flex-col items-center p-3 hover:bg-gray-50 rounded transition-colors">
-                    <img src="{{ asset($imageMap[$category->name] ?? 'images/default.png') }}" alt="{{ $category->name }}" class="w-12 h-auto mb-2 object-contain">
-                    <span class="text-gray-800 text-sm text-center"style="font-size:20px">
+                class="group flex flex-col items-center p-3 hover:bg-gray-50 rounded transition-colors">
+                    <img src="{{ asset($imageMap[$category->name] ?? 'images/default.png') }}" 
+                        alt="{{ $category->name }}" class="w-12 h-auto mb-2 object-contain">
+                    <span class="text-gray-800 text-sm text-center" style="font-size:20px">
                         {{ $category->name }}
                     </span>
                 </a>
@@ -410,76 +411,66 @@
                  @mouseleave="resumeAutoplay()">
                 <div class="flex transition-transform duration-500 ease-in-out"
                      :style="`transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
-                    <template x-for="(product, index) in slidesWithClones" :key="index">
-                        <div class="flex-shrink-0 px-3 transition-all duration-300"
-                             :class="{
-                                 'w-full': visibleSlides === 1,
-                                 'w-1/2': visibleSlides === 2,
-                                 'w-1/3': visibleSlides === 3,
-                                 'w-1/4': visibleSlides === 4
-                             }">
-                            <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col 
-          shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
-                                <div class="relative h-64 p-0 flex items-center justify-center bg-white">
-                                    <template x-if="product.image">
-                                        <a :href="'/product-details/' + product.id">
-                                            <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
-                                                class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
-                                        </a>
-                                    </template>
+                   <template x-for="(product, index) in slidesWithClones" :key="index">
+                    <div class="flex-shrink-0 px-3 transition-all duration-300"
+                        :class="{
+                            'w-full': visibleSlides === 1,
+                            'w-1/2': visibleSlides === 2,
+                            'w-1/3': visibleSlides === 3,
+                            'w-1/4': visibleSlides === 4
+                        }">
+                        <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col 
+                            shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+                            <div class="relative h-64 p-0 flex items-center justify-center bg-white">
+                                <template x-if="product.image">
+                                    <a :href="'/product-details/' + product.id">
+                                        <img 
+                                            :src="'{{ asset('storage') }}/' + product.image"
+                                            :alt="product.name"
+                                            class="w-52 h-52 object-contain transition-transform duration-300 hover:scale-105"
+                                            x-init="console.log('Featured Image debug', { id: product.id, raw: product.image, final: '{{ asset('storage') }}/' + product.image })"
+                                        >
+                                    </a>
+                                </template>
 
-                                    <template x-if="!product.image">
-                                        <div class="w-full h-full flex items-center justify-center text-gray-300">
-                                            <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                            </svg>
-                                        </div>
-                                    </template>
-
-                                    <template x-if="product.is_on_sale">
-                                        <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                                            SALE
-                                        </div>
-                                    </template>
-                                </div>
-
-                                <div class="p-4 flex-grow flex flex-col">
-                                    <div class="border-t border-gray-200 mb-4"></div>
-                                    
-                                    <h3 class="font-medium text-gray-800 text-center mb-4" style="font-family: 'Open Sans', sans-serif; font-size:17px;"x-text="product.name"></h3>    
-                                    <div class="border-t border-gray-200 mt-auto mb-4"></div>                                  
-                                    <div class="flex justify-center items-center">
-                                    <div class="flex justify-center items-center">
-                                        <template x-if="product.is_on_sale && product.sale_price !== null">
-                                            <div class="text-center">
-                                                <span class="text-gray-400 line-through text-sm" 
-                                                    x-text="'$' + product.price"></span>
-                                                <span class="text-[#B70113] font-bold text-lg ml-2" 
-                                                    x-text="'$' + product.sale_price"></span>
-                                            </div>
-                                        </template>
-                                        <template x-if="!product.is_on_sale || product.sale_price === null">
-                                            <span class="text-[#B70113] font-bold text-lg" 
-                                                x-text="'$' + product.price"></span>
-                                        </template>
+                                <template x-if="!product.image">
+                                    <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                        <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" 
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14
+                                                m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                            </path>
+                                        </svg>
                                     </div>
+                                </template>
+
+                                <template x-if="product.is_on_sale">
+                                    <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                        SALE
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div class="p-4 flex-grow flex flex-col">
+                                <div class="border-t border-gray-200 mb-4"></div>
+
+                                <h3 class="font-medium text-gray-800 text-center mb-4" style="font-family: 'Open Sans', sans-serif; font-size:17px;" x-text="product.name"></h3>    
+
+                                <div class="border-t border-gray-200 mt-auto mb-4"></div>                                  
+                                <div class="flex justify-center items-center">
+                                    <template x-if="product.is_on_sale && product.sale_price !== null">
+                                        <div class="text-center">
+                                            <span class="text-gray-400 line-through text-sm" x-text="'$' + product.price"></span>
+                                            <span class="text-[#B70113] font-bold text-lg ml-2" x-text="'$' + product.sale_price"></span>
+                                        </div>
+                                    </template>
+                                    <template x-if="!product.is_on_sale || product.sale_price === null">
+                                        <span class="text-[#B70113] font-bold text-lg" x-text="'$' + product.price"></span>
+                                    </template>
                                 </div>
                             </div>
                         </div>
-                    </template>
-                </div>
-            </div>
-
-            <div class="flex justify-center mt-12 space-x-2" x-show="slides.length > visibleSlides">
-                <template x-for="(_, index) in totalSlideGroups" :key="index">
-                    <button @click="goToSlideGroup(index)" 
-                            class="w-3 h-3 rounded-full transition-all"
-                            :class="{
-                                'bg-amber-500': currentSlideGroup === index, 
-                                'bg-gray-300': currentSlideGroup !== index
-                            }"
-                            :aria-label="'Go to slide ' + (index + 1)">
-                    </button>
+                    </div>
                 </template>
             </div>
         </div>
@@ -608,14 +599,20 @@
                                  'w-1/4': visibleSlides === 4
                              }">
                             <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col 
-          shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+                            shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
                                 <div class="relative h-64 p-0 flex items-center justify-center bg-white">
                                     <template x-if="product.image">
                                         <a :href="'/product-details/' + product.id">
-                                            <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
-                                                class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
+                                            <img
+                                                :src="'{{ asset('storage') }}/' + product.image"
+                                                :alt="product.name"
+                                                class="w-52 h-52 object-contain transition-transform duration-300 hover:scale-105"
+                                                x-init="console.log('Image debug', { id: product.id, raw: product.image, final: '{{ asset('storage') }}/' + product.image })"
+                                            />
+
                                         </a>
                                     </template>
+
                                     <template x-if="!product.image">
                                         <div class="w-full h-full flex items-center justify-center text-gray-300">
                                             <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -779,87 +776,81 @@
         }" 
         x-init="init()"
         class="relative">
-            <div class="relative overflow-hidden pb-2"
-                 @mouseenter="pauseAutoplay()"
-                 @mouseleave="resumeAutoplay()">
-                <div class="flex transition-transform duration-500 ease-in-out"
-                     :style="`transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
-                    <template x-for="(product, index) in slidesWithClones" :key="index">
-                        <div class="flex-shrink-0 px-3 transition-all duration-300"
-                             :class="{
-                                 'w-full': visibleSlides === 1,
-                                 'w-1/2': visibleSlides === 2,
-                                 'w-1/3': visibleSlides === 3,
-                                 'w-1/4': visibleSlides === 4
-                             }">
-                            <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col 
-          shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
-                                <div class="relative h-64 p-0 flex items-center justify-center bg-white">
-                                    <template x-if="product.image">
-                                        <a :href="'/product-details/' + product.id">
-                                            <img x-bind:src="'{{ asset('') }}' + product.image" x-bind:alt="product.name"
-                                                class="w-full h-full object-contain transition-transform duration-300 hover:scale-105">
-                                        </a>
-                                    </template>
-                                    <template x-if="!product.image">
-                                        <div class="w-full h-full flex items-center justify-center text-gray-300">
-                                            <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                            </svg>
-                                        </div>
-                                    </template>
+        <div class="relative overflow-hidden pb-2"
+            @mouseenter="pauseAutoplay()"
+            @mouseleave="resumeAutoplay()">
+            <div class="flex transition-transform duration-500 ease-in-out"
+             :style="`transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
+            <template x-for="(product, index) in slidesWithClones" :key="index">
+                <div class="flex-shrink-0 px-3 transition-all duration-300"
+                    :class="{
+                        'w-full': visibleSlides === 1,
+                        'w-1/2': visibleSlides === 2,
+                        'w-1/3': visibleSlides === 3,
+                        'w-1/4': visibleSlides === 4
+                    }">
+                    <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col 
+                                shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+                        <div class="relative h-64 p-0 flex items-center justify-center bg-white">
+                            <template x-if="product.image">
+                                <a :href="'/product-details/' + product.id">
+                                    <img 
+                                        :src="'{{ asset('storage') }}/' + product.image"
+                                        :alt="product.name"
+                                        class="w-52 h-52 object-contain transition-transform duration-300 hover:scale-105"
+                                        x-init="console.log('Latest Image debug', { id: product.id, raw: product.image, final: '{{ asset('storage') }}/' + product.image })"
+                                    >
+                                </a>
+                            </template>
 
-                                    <template x-if="product.is_on_sale">
-                                        <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                                            SALE
-                                        </div>
-                                    </template>
+                            <template x-if="!product.image">
+                                <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                    <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" 
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14
+                                                m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
                                 </div>
+                            </template>
 
-                                <div class="p-5 flex-grow flex flex-col">
-                                    <div class="border-t border-gray-200 mb-4"></div>
-                                    
-                                    <h3 class="font-medium text-gray-800 text-center mb-4" style="font-family: 'Open Sans', sans-serif;font-size:17px;"x-text="product.name"></h3>
-                                    
-                                    <div class="border-t border-gray-200 mt-auto mb-4"></div>
-                                    
-                                    <div class="flex justify-center items-center">
-                                    <template x-if="product.is_on_sale && product.sale_price !== null">
-                                        <div class="text-center">
-                                            <span class="text-gray-400 line-through text-sm" x-text="'$' + Number(product.price).toFixed(2)"></span>
-                                            <span class="text-[#B70113] font-bold text-lg ml-2" x-text="'$' + Number(product.sale_price).toFixed(2)"></span>
-                                        </div>
-                                    </template>
-                                    <template x-if="!product.is_on_sale || product.sale_price === null">
-                                        <span class="text-[#B70113] font-bold text-lg" x-text="'$' + Number(product.price).toFixed(2)"></span>
-                                    </template>
+                            <template x-if="product.is_on_sale">
+                                <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                    SALE
                                 </div>
-                                </div>
+                            </template>
+                        </div>
+
+                        <div class="p-4 flex-grow flex flex-col">
+                            <div class="border-t border-gray-200 mb-4"></div>
+
+                            <h3 class="font-medium text-gray-800 text-center mb-4" style="font-family: 'Open Sans', sans-serif; font-size:17px;" x-text="product.name"></h3>
+
+                            <div class="border-t border-gray-200 mt-auto mb-4"></div>
+
+                            <div class="flex justify-center items-center">
+                                <template x-if="product.is_on_sale && product.sale_price !== null">
+                                    <div class="text-center">
+                                        <span class="text-gray-400 line-through text-sm" x-text="'$' + product.price"></span>
+                                        <span class="text-[#B70113] font-bold text-lg ml-2" x-text="'$' + product.sale_price"></span>
+                                    </div>
+                                </template>
+                                <template x-if="!product.is_on_sale || product.sale_price === null">
+                                    <span class="text-[#B70113] font-bold text-lg" x-text="'$' + product.price"></span>
+                                </template>
                             </div>
                         </div>
-                    </template>
+                    </div>
                 </div>
-            </div>
-
-            <div class="flex justify-center mt-12 space-x-2" x-show="slides.length > visibleSlides">
-                <template x-for="(_, index) in totalSlideGroups" :key="index">
-                    <button @click="goToSlideGroup(index)" 
-                            class="w-3 h-3 rounded-full transition-all"
-                            :class="{
-                                'bg-amber-500': currentSlideGroup === index, 
-                                'bg-gray-300': currentSlideGroup !== index
-                            }"
-                            :aria-label="'Go to slide ' + (index + 1)">
-                    </button>
-                </template>
-            </div>
-        </div>
-
-        <div class="text-center mt-8">
-            <a href="#" class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-md">
-                Show More
-            </a>
+            </template>
         </div>
     </div>
+    <div class="text-center mt-8">
+        <a href="#" class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-md">
+            Show More
+        </a>
+    </div>
+</div>
+
 </section>
 @endsection

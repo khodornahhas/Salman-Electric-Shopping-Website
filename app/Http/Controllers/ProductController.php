@@ -16,7 +16,7 @@ class ProductController extends Controller
         $latestProducts = Product::where('is_latest', true)->get();
 
         $allowedCategories = [
-            'Lamps and lightning',
+            'Lamps and Lighting',
             'EV chargers',
             'Electricity essentials',
             'Inverters',
