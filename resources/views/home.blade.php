@@ -4,6 +4,57 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 
 <style>
+    .logos {
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        white-space: nowrap; 
+    }
+
+    .logos-slide {
+        display: inline-block; 
+        animation: slide 20s linear infinite;
+        white-space: nowrap;
+    }
+
+    .logos-slide a {
+        margin: 0 35px;
+        display: inline-flex; 
+        align-items: center;
+        justify-content: center;
+        min-height: 50px;
+        height: auto;
+    }
+
+    .logos-slide img {
+        max-height: 50px;
+        width: auto;
+        max-width: 120px;
+        object-fit: contain;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    @media (max-width: 767px) {
+    .logos {
+        padding: 0 10px;
+    }
+    
+    .logos-slide a {
+        margin: 0 10px;
+    }
+    
+    .logos-slide img {
+        max-height: 40px;
+        max-width: 100px;
+    }
+    }
+
+    @keyframes slide {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); } 
+    }
+
     .animate-float {
         animation: float 3s ease-in-out infinite;
     }
@@ -269,13 +320,13 @@
         'Connectors' => 'images/Connectors.png',
         'Inverters' => 'images/inverters.png',       
         'Batteries' => 'images/batteries.png',
+        'UPS' => 'images/ups.png',
     ];
 @endphp
 
-
-<div class="bg-white ">
-    <div class="container mx-auto px-4">
-        <div class="grid gap-8 grid-cols-[repeat(auto-fit,minmax(120px,1fr))] justify-items-center">
+<div class="bg-white py-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-6 sm:gap-8 grid-cols-[repeat(auto-fit,minmax(120px,1fr))] justify-items-center">
             @foreach ($categories as $category)
                 <a href="{{ route('shop.filters', [
                     'categorySlug' => $category->slug ?? Str::slug($category->name),
@@ -283,10 +334,13 @@
                     'minPrice' => 0,
                     'maxPrice' => 2500
                 ]) }}" 
-                class="group flex flex-col items-center p-3 hover:bg-gray-50 rounded transition-colors">
-                    <img src="{{ asset($imageMap[$category->name] ?? 'images/default.png') }}" 
-                        alt="{{ $category->name }}" class="w-12 h-auto mb-2 object-contain">
-                    <span class="text-gray-800 text-sm text-center" style="font-size:20px">
+                class="group flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-all duration-200 transform hover:scale-105">
+                    <div class="flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 mb-2">
+                        <img src="{{ asset($imageMap[$category->name] ?? 'images/default.png') }}" 
+                            alt="{{ $category->name }}" 
+                            class="w-full h-full object-contain">
+                    </div>
+                    <span class="text-gray-800 text-center font-medium text-xs sm:text-sm md:text-base leading-tight px-1">
                         {{ $category->name }}
                     </span>
                 </a>
@@ -295,23 +349,26 @@
     </div>
 </div>
 
-<section class="bg-blue-900 py-10" style="margin-top:15px;">
-    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md flex justify-center items-center gap-10 overflow-x-auto">
-        @foreach ($brands as $brand)
-            <a href="{{ route('shop.filters', [
-                'categorySlug' => 'all',
-                'brandSlugs' => $brand->slug ?? Str::slug($brand->name),
-                'minPrice' => 0,
-                'maxPrice' => 2500
-            ]) }}" 
-            class="flex flex-col items-center min-w-[100px]">
-                <img src="{{ asset('images/' . $brand->image) }}" 
-                     alt="{{ $brand->name }}" 
-                     class="h-16 object-contain mb-2 transition-transform duration-300 cursor-pointer">
-            </a>
-        @endforeach
+
+<section class="bg-blue-900 py-10 mt-[15px]">
+    <div class="max-w-6xl mx-auto">
+        <div class="logos bg-white rounded-lg shadow-md py-6 px-4">
+            <div class="logos-slide" id="brandSlide">
+                @foreach ($brands as $brand)
+                    <a href="{{ route('shop.filters', [
+                        'categorySlug' => 'all',
+                        'brandSlugs' => $brand->slug ?? Str::slug($brand->name),
+                        'minPrice' => 0,
+                        'maxPrice' => 2500
+                    ]) }}">
+                        <img src="{{ asset('images/' . $brand->image) }}" alt="{{ $brand->name }}">
+                    </a>
+                @endforeach
+            </div>
+        </div>
     </div>
 </section>
+
 
 
 
@@ -865,6 +922,24 @@
         </a>
     </div>
 </div>
-
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slide = document.getElementById('brandSlide');
+    const container = slide.parentNode;
+    
+    // Clone the slide for seamless looping
+    const clone = slide.cloneNode(true);
+    container.appendChild(clone);
+    
+    // Reset animation when it completes to create infinite loop
+    slide.addEventListener('animationiteration', function() {
+        // Reset position when animation completes one cycle
+        if (this.style.animationPlayState !== 'paused') {
+            this.style.animation = 'none';
+            void this.offsetWidth; // Trigger reflow
+            this.style.animation = 'slide 20s linear infinite';
+        }
+    });
+});</script>
 @endsection

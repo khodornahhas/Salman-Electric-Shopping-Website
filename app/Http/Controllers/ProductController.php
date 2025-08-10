@@ -21,6 +21,7 @@ class ProductController extends Controller
             'Electricity essentials',
             'Inverters',
             'Batteries',
+            'UPS',
         ];
         $categories = Category::whereIn('name', $allowedCategories)->get();
 
