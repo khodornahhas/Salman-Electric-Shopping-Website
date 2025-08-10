@@ -1018,12 +1018,12 @@
         </li>
         <li class="sidebar-list-item">
           <a href="{{ route('admin.categories') }}">
-            <span class="material-icons-outlined">inventory_2</span> Categories
+            <span class="material-icons-outlined">category</span> Categories
           </a>
         </li>
         <li class="sidebar-list-item">
           <a href="{{ route('admin.brands') }}">
-            <span class="material-icons-outlined">inventory_2</span> Brands
+            <span class="material-icons-outlined">store</span> Brands
           </a>
         </li>
         <li class="sidebar-list-item">

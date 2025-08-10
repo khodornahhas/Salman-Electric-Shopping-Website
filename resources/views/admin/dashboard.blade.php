@@ -1007,18 +1007,18 @@
           <span>Welcome Admin!</span>
         </div>
         <div class="header-right flex items-center space-x-4">
-  <a href="{{ url('/admin/products') }}" class="text-blue-600 hover:text-blue-800" title="Products">
-    <span class="material-icons-outlined cursor-pointer">inventory_2</span>
-  </a>
+          <a href="{{ url('/admin/products') }}" class="text-blue-600 hover:text-blue-800" title="Products">
+            <span class="material-icons-outlined cursor-pointer">inventory_2</span>
+          </a>
 
-  <a href="{{ url('/admin/orders') }}" class="text-gray-700 hover:text-blue-600" title="Orders">
-    <span class="material-icons-outlined cursor-pointer">shopping_cart</span>
-  </a>
+          <a href="{{ url('/admin/orders') }}" class="text-gray-700 hover:text-blue-600" title="Orders">
+            <span class="material-icons-outlined cursor-pointer">shopping_cart</span>
+          </a>
 
-  <a href="{{ url('/admin/messages') }}" class="text-gray-700 hover:text-blue-600" title="Messages">
-    <span class="material-icons-outlined cursor-pointer">notifications</span>
-  </a>
-</div>
+          <a href="{{ url('/admin/messages') }}" class="text-gray-700 hover:text-blue-600" title="Messages">
+            <span class="material-icons-outlined cursor-pointer">notifications</span>
+          </a>
+        </div>
 
       </header>
       <!-- End Header -->
@@ -1041,6 +1041,16 @@
           <li class="sidebar-list-item">
             <a href="{{ route('admin.products') }}">
               <span class="material-icons-outlined">inventory_2</span> Products
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="{{ route('admin.categories') }}">
+              <span class="material-icons-outlined">category</span> Categories
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="{{ route('admin.brands') }}">
+              <span class="material-icons-outlined">store</span> Brands
             </a>
           </li>
           <li class="sidebar-list-item">

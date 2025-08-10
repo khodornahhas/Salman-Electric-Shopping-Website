@@ -277,7 +277,12 @@
     <div class="container mx-auto px-4">
         <div class="grid gap-8 grid-cols-[repeat(auto-fit,minmax(120px,1fr))] justify-items-center">
             @foreach ($categories as $category)
-                <a href="{{ route('shop', ['category' => $category->id]) }}" 
+                <a href="{{ route('shop.filters', [
+                    'categorySlug' => $category->slug ?? Str::slug($category->name),
+                    'brandSlugs' => 'all',
+                    'minPrice' => 0,
+                    'maxPrice' => 2500
+                ]) }}" 
                 class="group flex flex-col items-center p-3 hover:bg-gray-50 rounded transition-colors">
                     <img src="{{ asset($imageMap[$category->name] ?? 'images/default.png') }}" 
                         alt="{{ $category->name }}" class="w-12 h-auto mb-2 object-contain">
@@ -290,15 +295,24 @@
     </div>
 </div>
 
-<section class="bg-blue-900 py-10"style="margin-top:15px;">
+<section class="bg-blue-900 py-10" style="margin-top:15px;">
     <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md flex justify-center items-center gap-10 overflow-x-auto">
         @foreach ($brands as $brand)
-            <a href="{{ route('shop', ['brands[]' => $brand->id]) }}" class="flex flex-col items-center min-w-[100px]">
-                <img src="{{ asset('images/' . $brand->image) }}" alt="{{ $brand->name }}" class="h-16 object-contain mb-2 transition-transform duration-300 cursor-pointer">
+            <a href="{{ route('shop.filters', [
+                'categorySlug' => 'all',
+                'brandSlugs' => $brand->slug ?? Str::slug($brand->name),
+                'minPrice' => 0,
+                'maxPrice' => 2500
+            ]) }}" 
+            class="flex flex-col items-center min-w-[100px]">
+                <img src="{{ asset('images/' . $brand->image) }}" 
+                     alt="{{ $brand->name }}" 
+                     class="h-16 object-contain mb-2 transition-transform duration-300 cursor-pointer">
             </a>
         @endforeach
     </div>
 </section>
+
 
 
 
