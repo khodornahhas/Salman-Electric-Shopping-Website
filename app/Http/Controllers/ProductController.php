@@ -64,4 +64,25 @@ class ProductController extends Controller
 
       return view('product-details', compact('product', 'relatedProducts', 'wishlistProductIds'));
   }
+
+  public function getBrands(Request $request)
+    {
+        $allowedBrands = [
+            'Panasonic',
+            'Felicity',
+            'Osram',
+            'Hyundai',
+            'Schneider',
+            'Foshan Ouyad',
+        ];
+
+        $limit = $request->input('limit', count($allowedBrands));
+
+        $brands = Brand::whereIn('name', $allowedBrands)
+            ->take($limit)
+            ->get();
+
+        return view('partials.brands', compact('brands'));
+    }
+
 }

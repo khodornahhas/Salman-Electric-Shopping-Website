@@ -119,6 +119,7 @@ class AdminController extends Controller
             'is_on_sale' => 'sometimes|boolean',
             'is_featured' => 'sometimes|boolean',
             'is_latest' => 'sometimes|boolean',
+            'unit_price' => 'nullable|numeric',
         ]);
 
         $contactForPrice = $request->has('contact_for_price');
@@ -130,6 +131,8 @@ class AdminController extends Controller
         $validated['contact_for_price'] = $contactForPrice ? 1 : 0;
         $validated['price'] = $contactForPrice ? null : $request->price;
         $validated['sale_price'] = $contactForPrice ? null : $request->sale_price;
+
+        $validated['unit_price'] = $request->filled('unit_price') ? $request->unit_price : null;
 
         $validated['is_available'] = $request->has('is_available') ? 1 : 0;
         $validated['is_on_sale'] = $request->has('is_on_sale') ? 1 : 0;
@@ -144,6 +147,7 @@ class AdminController extends Controller
 
         return redirect()->route('admin.products')->with('success', 'Product created!');
     }
+
 
 
     public function edit(Product $product) {
@@ -170,12 +174,15 @@ class AdminController extends Controller
             'is_featured' => 'nullable|boolean',
             'is_latest' => 'nullable|boolean',
             'contact_for_price' => 'nullable|boolean',
+            'unit_price' => 'nullable|numeric',  
         ]);
 
         if ($isContact) {
             $validated['price'] = null;
             $validated['sale_price'] = null;
         }
+
+        $validated['unit_price'] = $request->filled('unit_price') ? $request->unit_price : null;  
 
         $validated['is_on_sale'] = $request->has('is_on_sale') ? 1 : 0;
         $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
@@ -195,6 +202,7 @@ class AdminController extends Controller
 
         return redirect()->route('admin.products')->with('success', 'Product updated!');
     }
+
 
     public function destroy(Product $product) {
         if ($product->image && Storage::disk('public')->exists($product->image)) {

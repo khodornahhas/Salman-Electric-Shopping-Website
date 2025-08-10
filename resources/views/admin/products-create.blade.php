@@ -21,6 +21,11 @@
         </div>
 
         <div>
+            <label class="block font-semibold mb-1">Unit Price (Optional)</label>
+            <input type="number" name="unit_price" step="0.01" class="w-full border rounded px-3 py-2" value="{{ old('unit_price') }}">
+        </div>
+
+        <div>
             <label class="block font-semibold mb-1">Price</label>
             <input type="number" name="price" step="0.01" class="w-full border rounded px-3 py-2" required>
         </div>
