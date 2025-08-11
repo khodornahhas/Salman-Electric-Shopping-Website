@@ -42,7 +42,7 @@
             Edit
         </a>
 
-        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline-block m-0 p-0"
+        <form action="{{ route('admin.products.destroy', [$product->id] + request()->query()) }}" method="POST" class="inline-block m-0 p-0"
               onsubmit="return confirm('Are you sure you want to delete this product?');">
             @csrf
             @method('DELETE')

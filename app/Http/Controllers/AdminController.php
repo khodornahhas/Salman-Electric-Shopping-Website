@@ -13,7 +13,31 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
-{
+{   
+    public function index(Request $request)
+    {
+        $query = Product::query();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('brand_id')) {
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        $products = $query->paginate(10)->appends($request->query());
+
+        $brands = Brand::all();
+        $categories = Category::all();
+
+        return view('admin.products.index', compact('products', 'brands', 'categories'));
+    }
+
     public function dashboard() {
         $productCount = \App\Models\Product::count();
         $orderCount = \App\Models\Order::count();
@@ -36,7 +60,7 @@ class AdminController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        $products = $query->paginate(4);
+        $products = $query->paginate(4)->appends($request->query());
         if ($request->ajax()) {
             return view('admin.partials.products-table', compact('products'))->render();
         }
@@ -204,14 +228,19 @@ class AdminController extends Controller
     }
 
 
-    public function destroy(Product $product) {
+   public function destroy(Product $product, Request $request)
+    {
         if ($product->image && Storage::disk('public')->exists($product->image)) {
             Storage::disk('public')->delete($product->image);
         }
 
         $product->delete();
-        return back()->with('success', 'Product deleted.');
+
+        return redirect()
+            ->route('admin.products', $request->query())
+            ->with('success', 'Product deleted.');
     }
+
     public function searchProducts(Request $request)
     {
         $query = $request->input('query');

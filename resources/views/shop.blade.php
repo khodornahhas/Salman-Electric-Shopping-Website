@@ -49,11 +49,10 @@
             background: white;
         }
 
-        /* Show toggle button on mobile */
         #filter-toggle-btn {
             display: block;
             margin-bottom: 1rem;
-            background-color: #1e40af; /* bg-blue-900 */
+            background-color: #1e40af; 
             color: white;
             padding: 0.5rem 1rem;
             border-radius: 0.375rem;
@@ -63,7 +62,6 @@
             user-select: none;
         }
     }
-    /* Hide toggle button on md+ */
     @media (min-width: 768px) {
         #filter-toggle-btn {
             display: none;
@@ -79,14 +77,11 @@
         }
     }
 
-    /* Product grid: 2 cards per row on small (sm) screens and below */
-    /* You had grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 */
-    /* Change so xs and sm = 2 columns */
     @media (max-width: 639px) {
         .product-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1.5rem; /* 6 */
+            gap: 1.5rem; 
         }
     }
 </style>

@@ -97,6 +97,7 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->name('admi
         Route::put('/products/{product}', [AdminController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [AdminController::class, 'destroy'])->name('products.destroy');
         Route::get('/products/search', [AdminController::class, 'searchProducts'])->name('products.search');
+        
 
         // Admin Stats
         Route::get('/stats', [AdminController::class, 'stats'])->name('stats');
