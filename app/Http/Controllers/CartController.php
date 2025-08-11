@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -343,7 +344,19 @@ class CartController extends Controller
         } else {
             session()->forget('cart');
         }
+        try {
+            Mail::send('emails.order_confirmation', ['order' => $order], function ($message) use ($order) {
+                $message->to($order->email)
+                        ->subject('Your Order Confirmation');
+            });
 
+            Mail::send('emails.new_order_notification', ['order' => $order], function ($message) {
+                $message->to(env('OWNER_EMAIL'))
+                        ->subject('New Order Received');
+            });
+        } catch (\Exception $e) {
+            Log::error('Order email failed: ' . $e->getMessage());
+        }
         return redirect('/home')->with('success', 'Your order has been placed! We will contact you shortly.');
     }
     

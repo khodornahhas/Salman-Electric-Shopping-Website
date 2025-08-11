@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 Route::middleware('guest')->group(function () {
     Route::post('/account', [AuthenticatedSessionController::class, 'store']);
@@ -133,4 +134,11 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+Route::get('/mail-test', function () {
+    Mail::raw('This is a test email from Laravel via Gmail SMTP', function ($message) {
+        $message->to('khodornahhas8@gmail.com')->subject('Test Email');
+    });
+
+    return 'Test email sent! Check your inbox.';
+});
 require __DIR__.'/auth.php';
