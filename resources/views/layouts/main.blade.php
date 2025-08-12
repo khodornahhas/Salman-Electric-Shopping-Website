@@ -14,13 +14,13 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <style>
-  body {
-  font-family: 'Urbanist', sans-serif !important;
-  padding-top:40px;  
-  margin: 0;          
-  padding-left: 0;
-  padding-right: 0;
-}
+    body {
+    font-family: 'Urbanist', sans-serif !important;
+    padding-top:40px;  
+    margin: 0;          
+    padding-left: 0;
+    padding-right: 0;
+  }
 
   .sticky-header {
     position: fixed;
@@ -123,7 +123,7 @@
     box-shadow: 0 3px 8px rgba(0,0,0,0.25);
     z-index: 70;
   }
-}
+  }
   @media (max-width: 1023px) {
     .footer-mobile-center {
       display: flex;
@@ -174,9 +174,7 @@
         </div>
         <div class="flex items-center space-x-4">
           <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors"><i class='bx bxl-facebook'></i></a>
-          <a href="#" class="text-gray-600 hover:text-blue-400 transition-colors"><i class='bx bxl-twitter'></i></a>
           <a href="#" class="text-gray-600 hover:text-pink-500 transition-colors"><i class='bx bxl-instagram'></i></a>
-          <a href="#" class="text-gray-600 hover:text-red-500 transition-colors"><i class='bx bxl-youtube'></i></a>
         </div>
       </div>
     </div>
@@ -364,28 +362,19 @@
                 <a href="#" aria-label="Facebook" class="text-gray-600 hover:text-blue-600 transition-colors text-xl sm:text-2xl">
                     <i class='bx bxl-facebook'></i>
                 </a>
-                <a href="#" aria-label="Twitter" class="text-gray-600 hover:text-blue-400 transition-colors text-xl sm:text-2xl">
-                    <i class='bx bxl-twitter'></i>
-                </a>
                 <a href="#" aria-label="Instagram" class="text-gray-600 hover:text-pink-500 transition-colors text-xl sm:text-2xl">
                     <i class='bx bxl-instagram'></i>
                 </a>
-                <a href="#" aria-label="YouTube" class="text-gray-600 hover:text-red-600 transition-colors text-xl sm:text-2xl">
-                    <i class='bx bxl-youtube'></i>
-                </a>
-            </div>
-
-            <a href="https://maps.google.com/?q=Your+Business+Address" 
+                 <a href="https://maps.google.com/?q=Your+Business+Address" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                class="flex items-center text-gray-600 hover:text-blue-600 transition-colors mt-2 sm:mt-4">
-                <i class='bx bx-map text-xl sm:text-2xl mr-2'></i>
-                <span class="text-xs sm:text-sm">Our Location</span>
-            </a>
+                class="text-gray-600 hover:text-red-600 transition-colors text-xl sm:text-2xl">
+                <i class='bx bx-map text-xl sm:text-2xl mr-2'></i></a>
+            </div>
         </div>
     </div>
 
-    <div class="py-6 text-sm sm:text-base text-center text-gray-600 border-t border-gray-200 mt-8">
+    <div class="py-6 text-sm sm:text-base text-center text-gray-700 border-t border-gray-300 mt-8">
         © {{ date('Y') }} Salman Electric. All rights reserved.
     </div>
 </footer>
