@@ -87,7 +87,20 @@
 
         <div>
             <label class="block font-semibold mb-1">Quantity</label>
-            <input type="number" name="quantity" value="{{ $product->quantity }}" class="w-full border rounded px-3 py-2" required>
+            <input id="quantity-input" type="number" name="quantity" value="{{ old('quantity', $product->quantity) }}" class="w-full border rounded px-3 py-2" required>
+        </div>
+
+        <div class="mt-2">
+            <label class="inline-flex items-center cursor-pointer select-none">
+                <input
+                    type="checkbox"
+                    name="out_of_stock"
+                    id="out-of-stock-checkbox"
+                    class="form-checkbox h-5 w-5 text-red-600"
+                    {{ old('out_of_stock', $product->out_of_stock) ? 'checked' : '' }}
+                />
+                <span class="ml-2 text-gray-700 font-semibold">Out of Stock</span>
+            </label>
         </div>
 
         <div>
@@ -131,20 +144,36 @@
 function togglePriceInputs() {
     const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
     const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
-    const disable = contactCheckbox.checked || comingSoonCheckbox.checked;
+    const disablePrice = contactCheckbox.checked || comingSoonCheckbox.checked;
 
-    document.querySelector('input[name="price"]').disabled = disable;
-    document.querySelector('input[name="sale_price"]').disabled = disable;
+    document.querySelector('input[name="price"]').disabled = disablePrice;
+    document.querySelector('input[name="sale_price"]').disabled = disablePrice;
+}
+
+function toggleQuantity() {
+    const outOfStockCheckbox = document.getElementById('out-of-stock-checkbox');
+    const quantityInput = document.getElementById('quantity-input');
+
+    if (outOfStockCheckbox.checked) {
+        quantityInput.disabled = true;
+        quantityInput.value = 0;
+    } else {
+        quantityInput.disabled = false;
+        if (quantityInput.value == 0) quantityInput.value = 1;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
     const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
+    const outOfStockCheckbox = document.getElementById('out-of-stock-checkbox');
 
     togglePriceInputs();
+    toggleQuantity();
 
     contactCheckbox.addEventListener('change', togglePriceInputs);
     comingSoonCheckbox.addEventListener('change', togglePriceInputs);
+    outOfStockCheckbox.addEventListener('change', toggleQuantity);
 });
 </script>
 

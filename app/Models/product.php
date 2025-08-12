@@ -26,6 +26,7 @@ class Product extends Model
         'information', 
         'contact_for_price',
         'coming_soon',
+        'out_of_stock', 
     ];
     public function category()
     {

@@ -29,24 +29,28 @@
                 <div class="flex flex-col md:flex-row gap-10 items-center">
                     <div class="w-full md:w-1/2 flex justify-center">
                         <div class="relative w-full max-w-[600px]">
-                @if($product->coming_soon)
-                    <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
-                        Coming Soon
-                    </div>
-                @endif
+                            @if($product->coming_soon)
+                                <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                    Coming Soon
+                                </div>
+                            @elseif($product->quantity == 0 || $product->out_of_stock)
+                                <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                    Out of Stock
+                                </div>
+                            @endif
 
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full rounded-lg shadow-xl">
-                
-                <div class="absolute top-4 right-4 flex gap-3">
-                    <button class="text-xl bg-white rounded-full p-2 shadow hover:text-red-500 transition">
-                        <i class='bx bx-heart'></i>
-                    </button>
-                    <button class="text-xl bg-white rounded-full p-2 shadow hover:text-green-600 transition" onclick="openModal()">
-                        <i class='bx bx-search-alt-2'></i>
-                    </button>
-                </div>
+                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full rounded-lg shadow-xl">
+
+                            <div class="absolute top-4 right-4 flex gap-3">
+                                <button class="text-xl bg-white rounded-full p-2 shadow hover:text-red-500 transition">
+                                    <i class='bx bx-heart'></i>
+                                </button>
+                                <button class="text-xl bg-white rounded-full p-2 shadow hover:text-green-600 transition" onclick="openModal()">
+                                    <i class='bx bx-search-alt-2'></i>
+                                </button>
+                            </div>
+                        </div>
             </div>
-        </div>
 
         <div class="w-full md:w-1/2 space-y-8 mb-[130px] font-[Open Sans, sans-serif]">
             <h1 class="text-4xl font-bold text-gray-900">{{ $product->name }}</h1>
@@ -67,20 +71,15 @@
             <div class="text-2xl font-semibold text-gray-800">
                 @if($product->coming_soon)
                     <span class="text-yellow-600 text-[22px] font-semibold">Coming Soon</span>
-                
                 @elseif($product->contact_for_price)
                     <span class="text-blue-600 text-[22px] font-semibold">Contact for Price</span>
+                @elseif($product->quantity == 0 || $product->out_of_stock)
+                    <span class="text-red-600 text-[22px] font-semibold">Out of Stock</span>
                 @elseif($product->sale_price && $product->sale_price < $product->price)
                     <div class="flex flex-wrap items-center gap-3">
                         <span class="text-red-500 text-3xl">${{ number_format($product->sale_price, 2) }}</span>
                         <span class="line-through text-gray-400 text-xl">${{ number_format($product->price, 2) }}</span>
                         <span class="text-red-600 text-sm font-bold uppercase">On Sale</span>
-                        @php
-                            $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
-                        @endphp
-                        <span class="bg-yellow-300 text-black text-xs font-bold px-2 py-0.5 rounded">
-                            -{{ $discount }}%
-                        </span>
                     </div>
                 @else
                     <span class="text-red-600 text-[35px]">${{ number_format($product->price, 2) }}</span>
@@ -89,6 +88,8 @@
 
             <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
                 @csrf
+
+                @if(!($product->quantity == 0 || $product->out_of_stock || $product->coming_soon || $product->contact_for_price))
                 <div class="flex items-center gap-4 mb-4">
                     <label class="font-semibold text-gray-700">Quantity:</label>
                     <div class="flex items-center border rounded px-3 py-1">
@@ -97,18 +98,25 @@
                         <button type="button" id="increase-qty" class="text-xl px-2 text-gray-700 hover:text-black">+</button>
                     </div>
                 </div>
-
                 <input type="hidden" name="quantity" id="hidden-qty" value="1">
+                @endif
 
                 <div class="flex flex-col sm:flex-row gap-3">
                     @if($product->coming_soon)
                         <button type="button" class="w-full sm:w-auto px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition text-[18px]">
-                                Ask via WhatsApp
+                            Ask via WhatsApp
+                        </button>
                     @elseif($product->contact_for_price)
                         <button disabled
                             class="w-full sm:w-auto px-6 py-3 bg-gray-300 text-gray-500 rounded cursor-not-allowed text-[18px]"
                             title="Contact for Price products cannot be added to cart">
                             Contact for Price
+                        </button>
+                    @elseif($product->quantity == 0 || $product->out_of_stock)
+                        <button disabled
+                            class="w-full sm:w-auto px-6 py-3 bg-gray-300 text-gray-500 rounded cursor-not-allowed text-[18px]"
+                            title="Out of Stock">
+                            Add to cart
                         </button>
                     @else
                         <button type="submit"
@@ -118,7 +126,7 @@
                         </button>
                     @endif
 
-                    @if(!$product->coming_soon)
+                        @if(!$product->coming_soon && !($product->quantity == 0 || $product->out_of_stock))
                         <button type="button" class="w-full sm:w-auto px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition text-[18px]">
                             @if($product->contact_for_price)
                                 Contact via WhatsApp
@@ -172,12 +180,6 @@
                         <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                             On Sale
                         </div>
-                        @php
-                            $discount = round((($related->price - $related->sale_price) / $related->price) * 100);
-                        @endphp
-                        <div class="absolute top-2 left-24 z-10 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
-                            -{{ $discount }}%
-                        </div>
                     @endif
 
                     <a href="{{ route('product.details', $related->id) }}" class="w-full h-56 bg-white flex items-center justify-center overflow-hidden">
@@ -192,25 +194,38 @@
                         </h3>
 
                         <div class="mt-auto text-center mb-0">
-                            @if($related->coming_soon)
-                                <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
-                                <p class="text-sm text-gray-500 italic">Stay tuned</p>
-                            @elseif($related->contact_for_price)
-                                <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
-                                <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
-                            @elseif($related->sale_price && $related->sale_price < $related->price)
-                                <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
-                                <p class="text-red-600 text-lg font-bold underline">${{ number_format($related->sale_price, 2) }}</p>
-                                <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart">
-                                    Add to Cart
-                                </button>
-                            @else
-                                <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
-                                <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart">
-                                    Add to Cart
-                                </button>
-                            @endif
-                        </div>
+    @if($related->coming_soon)
+        <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
+        <p class="text-sm text-gray-500 italic">Stay tuned</p>
+    @elseif($related->contact_for_price)
+        <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
+        <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+    @elseif($related->quantity == 0 || $related->out_of_stock)
+        <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
+        <button
+            class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50"
+            disabled
+        >
+            Add to Cart
+        </button>
+    @elseif($related->sale_price && $related->sale_price < $related->price)
+        <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
+        <p class="text-red-600 text-lg font-bold underline">${{ number_format($related->sale_price, 2) }}</p>
+        <button
+            class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
+        >
+            Add to Cart
+        </button>
+    @else
+        <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
+        <button
+            class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
+        >
+            Add to Cart
+        </button>
+    @endif
+</div>
+
                     </div>
                 </div>
             @endforeach

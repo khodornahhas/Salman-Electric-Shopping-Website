@@ -45,23 +45,29 @@
         </div>
 
         <div>
-    <label class="block font-semibold mb-1">Is On Sale</label>
-        <input type="checkbox" name="is_on_sale" value="1" {{ old('is_on_sale', $product->is_on_sale ?? false) ? 'checked' : '' }}>
-    </div>
+            <label class="block font-semibold mb-1">Is On Sale</label>
+            <input type="checkbox" name="is_on_sale" value="1" {{ old('is_on_sale', $product->is_on_sale ?? false) ? 'checked' : '' }}>
+        </div>
 
-    <div>
-        <label class="block font-semibold mb-1">Is Featured</label>
-        <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $product->is_featured ?? false) ? 'checked' : '' }}>
-    </div>
+        <div>
+            <label class="block font-semibold mb-1">Is Featured</label>
+            <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $product->is_featured ?? false) ? 'checked' : '' }}>
+        </div>
 
-    <div>
-        <label class="block font-semibold mb-1">Is Latest</label>
-        <input type="checkbox" name="is_latest" value="1" {{ old('is_latest', $product->is_latest ?? false) ? 'checked' : '' }}>
-    </div>
+        <div>
+            <label class="block font-semibold mb-1">Is Latest</label>
+            <input type="checkbox" name="is_latest" value="1" {{ old('is_latest', $product->is_latest ?? false) ? 'checked' : '' }}>
+        </div>
 
-       <div>
-        <label class="block font-semibold mb-1">Quantity (Optional)</label>
-        <input type="number" name="quantity" class="w-full border rounded px-3 py-2" value="1" min="0">
+        <div>
+            <label class="block font-semibold mb-1">Quantity (Optional)</label>
+            <input id="quantity-input" type="number" name="quantity" class="w-full border rounded px-3 py-2" value="1" min="0">
+        </div>
+        <div class="mt-2">
+            <label class="inline-flex items-center cursor-pointer select-none">
+                <input type="checkbox" name="out_of_stock" id="out-of-stock-checkbox" class="form-checkbox h-5 w-5 text-red-600" />
+                <span class="ml-2 text-gray-700 font-semibold">Out of Stock</span>
+            </label>
         </div>
         
         <div>
@@ -104,11 +110,27 @@ function togglePriceInputs() {
 document.addEventListener('DOMContentLoaded', () => {
     const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
     const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
+    const outOfStockCheckbox = document.getElementById('out-of-stock-checkbox');
+    const quantityInput = document.getElementById('quantity-input');
 
     togglePriceInputs();
 
     contactCheckbox.addEventListener('change', togglePriceInputs);
     comingSoonCheckbox.addEventListener('change', togglePriceInputs);
+
+    function toggleQuantity() {
+        if (outOfStockCheckbox.checked) {
+            quantityInput.disabled = true;
+            quantityInput.value = 0;
+        } else {
+            quantityInput.disabled = false;
+            if (quantityInput.value == 0) quantityInput.value = 1;
+        }
+    }
+
+    outOfStockCheckbox.addEventListener('change', toggleQuantity);
+
+    toggleQuantity();
 });
 </script>
 

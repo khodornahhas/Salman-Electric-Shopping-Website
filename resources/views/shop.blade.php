@@ -325,8 +325,10 @@
                 @foreach($products as $product)
                     <div class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
 
-                        <div class="absolute top-2 right-2 z-10 cursor-pointer wishlist-btn" data-product-id="{{ $product->id }}">
-                            <i class="wishlist-icon bx {{ in_array($product->id, $wishlistProductIds) ? 'bxs-heart text-red-500' : 'bx-heart text-gray-400' }} text-2xl"></i>
+                        <div class="absolute top-2 right-2 z-10 flex items-center space-x-2">
+                            <div class="cursor-pointer wishlist-btn" data-product-id="{{ $product->id }}">
+                                <i class="wishlist-icon bx {{ in_array($product->id, $wishlistProductIds) ? 'bxs-heart text-red-500' : 'bx-heart text-gray-400' }} text-2xl"></i>
+                            </div>
                         </div>
 
                         @if($product->coming_soon)
@@ -336,13 +338,6 @@
                         @elseif($product->sale_price && $product->sale_price < $product->price)
                             <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                                 On Sale
-                            </div>
-
-                            @php
-                                $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
-                            @endphp
-                            <div class="absolute top-2 left-24 z-10 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
-                                -{{ $discount }}%
                             </div>
                         @endif
 
@@ -366,29 +361,39 @@
                                 @elseif($product->contact_for_price)
                                     <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
                                     <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
-                                @else
+                                @elseif($product->quantity == 0 || $product->out_of_stock)
+                                    <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
+                                @endif
+
+                                @php
+                                    $disableAddToCart = $product->coming_soon || $product->contact_for_price || $product->quantity == 0 || $product->out_of_stock;
+                                @endphp
+
+                                @if(!$disableAddToCart)
                                     @if($product->sale_price && $product->sale_price < $product->price)
                                         <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
                                         <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
                                     @else
                                         <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
                                     @endif
-
-                                    <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
-                                        @csrf
-                                        <input type="hidden" name="quantity" value="1">
-                                        <button type="submit"
-                                            class="mt-2 w-44 sm:w-44 w-auto mx-auto bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-                                            data-product-id="{{ $product->id }}" data-quantity="1" style="font-size:18px; color:grey;">
-                                            Add to Cart
-                                        </button>
-                                    </form>
                                 @endif
+
+                                <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
+                                    @csrf
+                                    <input type="hidden" name="quantity" value="1">
+                                   <button type="submit"
+                                        class="mt-2 w-44 sm:w-44 w-auto mx-auto bg-gray-100 font-medium py-2 rounded transition add-to-cart
+                                            {{ $disableAddToCart ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-200' }}"
+                                        {{ $disableAddToCart ? 'disabled' : '' }}
+                                        data-product-id="{{ $product->id }}" data-quantity="1"
+                                        style="font-size:18px; color:grey;">
+                                        Add to Cart
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 @endforeach
-
 </div>
 
 

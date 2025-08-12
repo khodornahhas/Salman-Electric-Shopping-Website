@@ -71,6 +71,7 @@
                         <th class="px-6 py-4 font-medium">Discount Price</th> 
                         <th class="px-6 py-4 font-medium">Brand</th>
                         <th class="px-6 py-4 font-medium">Category</th>
+                        <th class="px-6 py-4 font-medium">Quantity</th>
                         <th class="px-6 py-4 font-medium text-center">Actions</th>
                     </tr>
                 </thead>

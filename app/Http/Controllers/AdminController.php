@@ -125,9 +125,12 @@ class AdminController extends Controller
         $categories = Category::all();
         return view('admin.products-create', compact('brands', 'categories'));
     }
-
     public function store(Request $request)
     {
+        $request->merge([
+            'out_of_stock' => $request->has('out_of_stock') && $request->out_of_stock === 'on' ? 1 : 0,
+        ]);
+
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
@@ -136,6 +139,7 @@ class AdminController extends Controller
             'price' => 'nullable|numeric',
             'sale_price' => 'nullable|numeric',
             'quantity' => 'nullable|integer',
+            'out_of_stock' => 'sometimes|boolean', 
             'image' => 'nullable|image',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
@@ -152,10 +156,15 @@ class AdminController extends Controller
             $contactForPrice = true;
         }
 
+        if ($validated['out_of_stock']) {
+            $validated['quantity'] = 0;
+        } else {
+            $validated['quantity'] = $request->filled('quantity') ? $request->quantity : 1;
+        }
+
         $validated['contact_for_price'] = $contactForPrice ? 1 : 0;
         $validated['price'] = $contactForPrice ? null : $request->price;
         $validated['sale_price'] = $contactForPrice ? null : $request->sale_price;
-
         $validated['unit_price'] = $request->filled('unit_price') ? $request->unit_price : null;
 
         $validated['is_available'] = $request->has('is_available') ? 1 : 0;
@@ -167,13 +176,10 @@ class AdminController extends Controller
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
-
         Product::create($validated);
 
         return redirect()->route('admin.products')->with('success', 'Product created!');
     }
-
-
 
     public function edit(Product $product) {
         $brands = Brand::all();
@@ -185,13 +191,20 @@ class AdminController extends Controller
     {
         $isContact = $request->has('contact_for_price');
 
+        if ($request->has('out_of_stock') && $request->out_of_stock === 'on') {
+            $request->merge(['out_of_stock' => true]);
+        } else {
+            $request->merge(['out_of_stock' => false]);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
             'information' => 'nullable|string',
             'price' => $isContact ? 'nullable' : 'required|numeric',
             'sale_price' => 'nullable|numeric',
-            'quantity' => 'required|integer',
+            'quantity' => 'nullable|integer', 
+            'out_of_stock' => 'sometimes|boolean',
             'image' => 'nullable|image',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
@@ -200,6 +213,7 @@ class AdminController extends Controller
             'is_latest' => 'nullable|boolean',
             'contact_for_price' => 'nullable|boolean',
             'unit_price' => 'nullable|numeric',  
+            'coming_soon' => 'nullable|boolean',
         ]);
 
         if ($isContact) {
@@ -207,7 +221,15 @@ class AdminController extends Controller
             $validated['sale_price'] = null;
         }
 
-        $validated['unit_price'] = $request->filled('unit_price') ? $request->unit_price : null;  
+        if ($request->out_of_stock) {
+            $validated['quantity'] = 0;
+            $validated['out_of_stock'] = 1;
+        } else {
+            $validated['quantity'] = $request->filled('quantity') ? $request->quantity : 1;
+            $validated['out_of_stock'] = 0;
+        }
+
+        $validated['unit_price'] = $request->filled('unit_price') ? $request->unit_price : null;
 
         $validated['is_on_sale'] = $request->has('is_on_sale') ? 1 : 0;
         $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;

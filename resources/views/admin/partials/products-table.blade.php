@@ -37,6 +37,14 @@
 
     <td class="px-6 py-4">{{ $product->brand->name ?? '—' }}</td>
     <td class="px-6 py-4">{{ $product->category->name ?? '—' }}</td>
+    <td class="px-6 py-4">
+    @if($product->quantity > 0)
+        {{ $product->quantity }}
+    @else
+        <span class="text-red-600 font-semibold">Out of Stock</span>
+    @endif
+</td>
+
     <td class="px-6 py-4 text-right">
     <div class="inline-flex items-center gap-2">
         <a href="{{ route('admin.products.edit', $product->id) }}"

@@ -40,13 +40,6 @@
                     </div>
                 @elseif($product->sale_price && $product->sale_price < $product->price)
                     <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">On Sale</div>
-
-                    @php
-                        $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
-                    @endphp
-                    <div class="absolute top-2 left-24 z-10 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
-                        -{{ $discount }}%
-                    </div>
                 @endif
 
                 <div class="bg-white w-full h-40 sm:h-48 flex items-center justify-center overflow-hidden">
@@ -69,6 +62,8 @@
                         @elseif($product->contact_for_price)
                             <p class="text-blue-600 text-lg font-bold italic">Contact for Price</p>
                             <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                        @elseif($product->quantity == 0 || $product->out_of_stock)
+                            <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
                         @elseif($product->sale_price && $product->sale_price < $product->price)
                             <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
                             <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
@@ -81,9 +76,9 @@
                                 @csrf
                                 <input type="hidden" name="quantity" value="1">
                                 <button type="submit"
-                                        class="mt-2 px-4 py-2 bg-gray-100 font-medium rounded hover:bg-gray-200 transition add-to-cart"
-                                        data-product-id="{{ $product->id }}" data-quantity="1" 
-                                        style="font-size:16px; color:grey;">
+                                    @if($product->quantity == 0 || $product->out_of_stock) disabled class="mt-2 px-4 py-2 bg-gray-100 font-medium rounded cursor-not-allowed opacity-50" style="font-size:16px; color:grey;"
+                                    @else class="mt-2 px-4 py-2 bg-gray-100 font-medium rounded hover:bg-gray-200 transition add-to-cart" style="font-size:16px; color:grey;" @endif
+                                    data-product-id="{{ $product->id }}" data-quantity="1">
                                     Add to Cart
                                 </button>
                             </form>
