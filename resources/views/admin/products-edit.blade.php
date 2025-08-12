@@ -44,20 +44,29 @@
         <div>
             <label class="block font-semibold mb-1">Price</label>
             <input type="number" name="price" step="0.01" value="{{ $product->price }}" class="w-full border rounded px-3 py-2"
-        @if(!$product->contact_for_price) required @endif>
-            </div>
+        @if(!$product->contact_for_price && !$product->coming_soon) required @endif>
+        </div>
 
-            <div>
-                <label class="block font-semibold mb-1">Sale Price</label>
-                <input type="number" name="sale_price" step="0.01" value="{{ $product->sale_price }}" class="w-full border rounded px-3 py-2">
-            </div>
+        <div>
+            <label class="block font-semibold mb-1">Sale Price</label>
+            <input type="number" name="sale_price" step="0.01" value="{{ $product->sale_price }}" class="w-full border rounded px-3 py-2">
+        </div>
 
-            <div>
+        <div>
             <label class="inline-flex items-center mt-2">
                 <input type="checkbox" name="contact_for_price" id="contact_for_price" value="1"
                     {{ old('contact_for_price', $product->contact_for_price ?? false) ? 'checked' : '' }}
                     class="mr-2">
                 <span class="font-semibold">Contact for Price</span>
+            </label>
+        </div>
+
+        <div>
+            <label class="inline-flex items-center mt-2">
+                <input type="checkbox" name="coming_soon" id="coming_soon" value="1"
+                    {{ old('coming_soon', $product->coming_soon ?? false) ? 'checked' : '' }}
+                    class="mr-2">
+                <span class="font-semibold">Coming Soon</span>
             </label>
         </div>
 
@@ -75,7 +84,6 @@
             <label class="block font-semibold mb-1">Is Latest</label>
             <input type="checkbox" name="is_latest" value="1" {{ old('is_latest', $product->is_latest ?? false) ? 'checked' : '' }}>
         </div>
-
 
         <div>
             <label class="block font-semibold mb-1">Quantity</label>
@@ -118,19 +126,25 @@
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update</button>
     </form>
 </div>
+
 <script>
-function togglePriceInputs(checkbox) {
-    document.querySelector('input[name="price"]').disabled = checkbox.checked;
-    document.querySelector('input[name="sale_price"]').disabled = checkbox.checked;
+function togglePriceInputs() {
+    const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
+    const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
+    const disable = contactCheckbox.checked || comingSoonCheckbox.checked;
+
+    document.querySelector('input[name="price"]').disabled = disable;
+    document.querySelector('input[name="sale_price"]').disabled = disable;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
-    togglePriceInputs(contactCheckbox);
+    const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
 
-    contactCheckbox.addEventListener('change', (e) => {
-        togglePriceInputs(e.target);
-    });
+    togglePriceInputs();
+
+    contactCheckbox.addEventListener('change', togglePriceInputs);
+    comingSoonCheckbox.addEventListener('change', togglePriceInputs);
 });
 </script>
 

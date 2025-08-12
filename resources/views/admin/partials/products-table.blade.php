@@ -18,7 +18,9 @@
     </td>
 
     <td class="px-6 py-4">
-        @if ($product->contact_for_price)
+        @if ($product->coming_soon)
+            <span class="font-medium text-yellow-600">Coming Soon</span>
+        @elseif ($product->contact_for_price)
             <span class="font-medium text-blue-600">Contact for Price</span>
         @else
             <span class="font-medium">${{ number_format($product->price, 2) }}</span>

@@ -25,8 +25,8 @@
             @php
                 $product = isset($wishlist->product) ? $wishlist->product : $wishlist;
             @endphp
-        <a href="{{ route('product.details', $product->id) }}" class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group mx-auto"style="max-width: none;">
-                        
+            <a href="{{ route('product.details', $product->id) }}" class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group mx-auto" style="max-width: none;">
+
                 <form method="POST" action="{{ route('wishlist.remove', $product->id) }}" class="absolute top-2 right-2 z-10">
                     @csrf
                     <button type="submit">
@@ -34,57 +34,64 @@
                     </button>
                 </form>
 
-                    @if($product->sale_price && $product->sale_price < $product->price)
-                        <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded"> On Sale</div>
+                @if($product->coming_soon)
+                    <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        Coming Soon
+                    </div>
+                @elseif($product->sale_price && $product->sale_price < $product->price)
+                    <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">On Sale</div>
 
-                        @php
-                            $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
-                        @endphp
-                        <div class="absolute top-2 left-24 z-10 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
-                            -{{ $discount }}%
-                        </div>
+                    @php
+                        $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
+                    @endphp
+                    <div class="absolute top-2 left-24 z-10 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
+                        -{{ $discount }}%
+                    </div>
+                @endif
+
+                <div class="bg-white w-full h-40 sm:h-48 flex items-center justify-center overflow-hidden">
+                    @if($product->image)
+                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="object-contain max-h-full max-w-full">
+                    @else
+                        <span class="text-gray-400">No Image</span>
                     @endif
+                </div>
 
-                    <div class="bg-white w-full h-40 sm:h-48 flex items-center justify-center overflow-hidden">
-                        @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="object-contain max-h-full max-w-full">
+                <div class="p-4 flex flex-col flex-grow">
+                    <h3 class="font-semibold text-gray-800 text-center mb-2 leading-tight" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
+                        {{ $product->name }}
+                    </h3>
+
+                    <div class="mt-auto text-center">
+                        @if($product->coming_soon)
+                            <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
+                            <p class="text-sm text-gray-500 italic">Product will be available soon.</p>
+                        @elseif($product->contact_for_price)
+                            <p class="text-blue-600 text-lg font-bold italic">Contact for Price</p>
+                            <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                        @elseif($product->sale_price && $product->sale_price < $product->price)
+                            <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
+                            <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
                         @else
-                            <span class="text-gray-400">No Image</span>
+                            <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
+                        @endif
+
+                        @if(!$product->contact_for_price && !$product->coming_soon)
+                            <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form flex justify-center">
+                                @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit"
+                                        class="mt-2 px-4 py-2 bg-gray-100 font-medium rounded hover:bg-gray-200 transition add-to-cart"
+                                        data-product-id="{{ $product->id }}" data-quantity="1" 
+                                        style="font-size:16px; color:grey;">
+                                    Add to Cart
+                                </button>
+                            </form>
                         @endif
                     </div>
-
-                    <div class="p-4 flex flex-col flex-grow">
-                        <h3 class="font-semibold text-gray-800 text-center mb-2 leading-tight" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
-                            {{ $product->name }}
-                        </h3>
-
-                        <div class="mt-auto text-center">
-                            @if($product->contact_for_price)
-                                <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
-                                <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
-                            @elseif($product->sale_price && $product->sale_price < $product->price)
-                                <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
-                                <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
-                            @else
-                                <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
-                            @endif
-
-                            @if(!$product->contact_for_price)
-                                <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form flex justify-center">
-                                    @csrf
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button type="submit"
-                                            class="mt-2 px-4 py-2 bg-gray-100 font-medium rounded hover:bg-gray-200 transition add-to-cart"
-                                            data-product-id="{{ $product->id }}" data-quantity="1" 
-                                            style="font-size:16px; color:grey;">
-                                        Add to Cart
-                                    </button>
-                                </form>
-                            @endif
-                        </div>
-                    </div>
-                </a>
-                @endforeach
+                </div>
+            </a>
+        @endforeach
             </div>
         @endif
     </div>

@@ -4,7 +4,6 @@
     <h2 class="text-xl font-bold mb-6">Create New Product</h2>
     <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
-
         <div>
             <label class="block font-semibold mb-1">Name</label>
             <input type="text" name="name" class="w-full border rounded px-3 py-2" required>
@@ -41,6 +40,11 @@
         </div>
 
         <div>
+            <label class="block font-semibold mb-1">Coming Soon</label>
+            <input type="checkbox" name="coming_soon" value="1" {{ old('coming_soon') ? 'checked' : '' }}>
+        </div>
+
+        <div>
     <label class="block font-semibold mb-1">Is On Sale</label>
         <input type="checkbox" name="is_on_sale" value="1" {{ old('is_on_sale', $product->is_on_sale ?? false) ? 'checked' : '' }}>
     </div>
@@ -70,7 +74,6 @@
             </select>
         </div>
 
-
         <div>
             <label class="block font-semibold mb-1">Brand</label>
             <select name="brand_id" class="w-full border rounded px-3 py-2">
@@ -89,19 +92,25 @@
     </form>
 </div>
 <script>
-function togglePriceInputs(checkbox) {
-    document.querySelector('input[name="price"]').disabled = checkbox.checked;
-    document.querySelector('input[name="sale_price"]').disabled = checkbox.checked;
+function togglePriceInputs() {
+    const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
+    const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
+    const disable = contactCheckbox.checked || comingSoonCheckbox.checked;
+
+    document.querySelector('input[name="price"]').disabled = disable;
+    document.querySelector('input[name="sale_price"]').disabled = disable;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
-    togglePriceInputs(contactCheckbox);
+    const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
 
-    contactCheckbox.addEventListener('change', (e) => {
-        togglePriceInputs(e.target);
-    });
+    togglePriceInputs();
+
+    contactCheckbox.addEventListener('change', togglePriceInputs);
+    comingSoonCheckbox.addEventListener('change', togglePriceInputs);
 });
 </script>
+
 
 @endsection

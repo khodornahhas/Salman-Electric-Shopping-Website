@@ -162,6 +162,7 @@ class AdminController extends Controller
         $validated['is_on_sale'] = $request->has('is_on_sale') ? 1 : 0;
         $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
         $validated['is_latest'] = $request->has('is_latest') ? 1 : 0;
+        $validated['coming_soon'] = $request->has('coming_soon') ? 1 : 0;
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
@@ -212,6 +213,7 @@ class AdminController extends Controller
         $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
         $validated['is_latest'] = $request->has('is_latest') ? 1 : 0;
         $validated['contact_for_price'] = $isContact ? 1 : 0;
+        $validated['coming_soon'] = $request->has('coming_soon') ? 1 : 0;
 
         if ($request->hasFile('image')) {
             if ($product->image && Storage::disk('public')->exists($product->image)) {

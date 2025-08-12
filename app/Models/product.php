@@ -25,6 +25,7 @@ class Product extends Model
         'category_id',
         'information', 
         'contact_for_price',
+        'coming_soon',
     ];
     public function category()
     {
