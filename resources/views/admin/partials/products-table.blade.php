@@ -7,21 +7,7 @@
             class="w-20 h-20 object-contain rounded" 
         >
     </td>
-    <td class="px-6 py-4 font-medium text-gray-800">{{ $product->name }}</td>
-    <td class="px-6 py-4">
-        @if ($product->contact_for_price)
-            <span class="font-medium text-blue-600">Contact for Price</span>
-        @else
-            <span class="font-medium">${{ number_format($product->price, 2) }}</span>
-        @endif
-    </td>
-    <td class="px-6 py-4">
-        @if($product->sale_price && $product->sale_price > 0)
-            <span class="font-medium text-red-600">${{ number_format($product->sale_price, 2) }}</span>
-        @else
-            <span class="text-gray-400 italic">N/A</span>
-        @endif
-    </td>
+   <td class="px-6 py-4 font-medium text-gray-800">{{ $product->name }}</td>
 
     <td class="px-6 py-4">
         @if($product->unit_price !== null)
@@ -30,6 +16,23 @@
             <span class="text-gray-400 italic">N/A</span>
         @endif
     </td>
+
+    <td class="px-6 py-4">
+        @if ($product->contact_for_price)
+            <span class="font-medium text-blue-600">Contact for Price</span>
+        @else
+            <span class="font-medium">${{ number_format($product->price, 2) }}</span>
+        @endif
+    </td>
+
+    <td class="px-6 py-4">
+        @if($product->sale_price && $product->sale_price > 0)
+            <span class="font-medium text-red-600">${{ number_format($product->sale_price, 2) }}</span>
+        @else
+            <span class="text-gray-400 italic">N/A</span>
+        @endif
+    </td>
+
     <td class="px-6 py-4">{{ $product->brand->name ?? '—' }}</td>
     <td class="px-6 py-4">{{ $product->category->name ?? '—' }}</td>
     <td class="px-6 py-4 text-right">

@@ -66,9 +66,9 @@
                     <tr class="bg-gray-50 text-left text-gray-700 uppercase text-sm">
                         <th class="px-6 py-4 font-medium">Image</th>
                         <th class="px-6 py-4 font-medium">Name</th>
+                        <th class="px-6 py-4 font-medium">Cost Price</th>
                         <th class="px-6 py-4 font-medium">Sale Price</th>
                         <th class="px-6 py-4 font-medium">Discount Price</th> 
-                         <th class="px-6 py-4 font-medium">Unit Price</th>
                         <th class="px-6 py-4 font-medium">Brand</th>
                         <th class="px-6 py-4 font-medium">Category</th>
                         <th class="px-6 py-4 font-medium text-center">Actions</th>
