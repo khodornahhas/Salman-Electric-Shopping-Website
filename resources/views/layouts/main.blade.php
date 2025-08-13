@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {{-- Favicon --}}
+    <link rel="icon" type="image/png" href="{{ asset('images/salman.png') }}?v={{ time() }}">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -11,6 +15,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    @yield('head') {{-- this lets child pages add extra <head> content --}}
 </head>
 <style>
   .logo-img {
@@ -286,6 +292,7 @@
               <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/shop">SHOP</a></li>
               <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/about">ABOUT</a></li>
               <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/contact">CONTACT</a></li>
+              <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/portfolio">PORTFOLIO</a></li>
             </ul>
           </nav>
         </div>
