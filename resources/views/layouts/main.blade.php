@@ -14,9 +14,16 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <style>
-    body {
+  .logo-img {
+    max-height: 40px; 
+    min-width: 100px; 
+    height: auto;
+    width: auto; 
+  }
+  
+  body {
     font-family: 'Urbanist', sans-serif !important;
-    padding-top:40px;  
+    padding-top: 40px;  
     margin: 0;          
     padding-left: 0;
     padding-right: 0;
@@ -38,92 +45,136 @@
     background-color: rgba(255,255,255,0.95);
   }
 
-   @media (max-width: 767px) {
+  @media (max-width: 767px) {
     body {
-    padding-top: 15px;
-    margin-top: 0;
+      padding-top: 60px; 
+    }
+    
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      position: absolute;
+      left: 0;
+    }
+    
+    header .mx-auto {
+      position: relative;
+    }
+    
+    #mobileSearchToggle {
+      position: relative;
+      z-index: 10;
+    }
+    
+    .flex.items-center.justify-between.md\:h-20 {
+      height: 60px; 
+    }
   }
-  #mobileMenu {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 280px;
-    height: 100vh;
-    background-color: #0c1033;
-    color: white;
-    padding: 2rem 1.5rem;
-    z-index: 60;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .mx-auto.max-w-screen-xl {
+      max-width: 95% !important; 
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+    
+    .logo-img {
+      max-height: 45px; 
+    }
+    
+    nav ul.flex.items-center.gap-6 {
+      gap: 3rem; 
+    }
+    
+    .relative.hidden.md\:block input {
+      width: 200px; 
+    }
   }
-  #mobileMenu.open { transform: translateX(0); }
-  #mobileMenu .close-btn {
-    position: absolute;
-    top: 1.2rem;
-    right: 1.2rem;
-    font-size: 2rem;
-    cursor: pointer;
+
+  @media (max-width: 767px) {
+    #mobileMenu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100vh;
+      background-color: #0c1033;
+      color: white;
+      padding: 2rem 1.5rem;
+      z-index: 60;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    #mobileMenu.open { transform: translateX(0); }
+    #mobileMenu .close-btn {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    #mobileMenu .icons-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+    }
+    #mobileMenu .icons-row a { color: white; position: relative; }
+    #mobileMenu .icons-row span {
+      font-size: 0.75rem;
+      height: 1.2rem;
+      width: 1.2rem;
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: #c72c2c;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #mobileMenu .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 999px;
+      border: none;
+      background: white;
+      color: #333;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    #mobileMenu nav a {
+      color: white;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 0.6rem 0;
+      display: block;
+    }
+    #mobileMenu nav a:hover { color: #c72c2c; }
+    #mobileMenu .social-icons {
+      display: flex;
+      gap: 1rem;
+      font-size: 1.4rem;
+      margin-top: auto;
+    }
+    #whatsapp-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: #25d366;
+      color: white;
+      border-radius: 50%;
+      padding: 0.8rem;
+      font-size: 1.8rem;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+      z-index: 70;
+    }
   }
-  #mobileMenu .icons-row {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    font-size: 1.6rem;
-    margin-bottom: 1.5rem;
-  }
-  #mobileMenu .icons-row a { color: white; position: relative; }
-  #mobileMenu .icons-row span {
-    font-size: 0.75rem;
-    height: 1.2rem;
-    width: 1.2rem;
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background: #c72c2c;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  #mobileMenu .search-input {
-    width: 100%;
-    padding: 0.7rem 1rem;
-    border-radius: 999px;
-    border: none;
-    background: white;
-    color: #333;
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
-  }
-  #mobileMenu nav a {
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin: 0.6rem 0;
-    display: block;
-  }
-  #mobileMenu nav a:hover { color: #c72c2c; }
-  #mobileMenu .social-icons {
-    display: flex;
-    gap: 1rem;
-    font-size: 1.4rem;
-    margin-top: auto;
-  }
-  #whatsapp-btn {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    background: #25d366;
-    color: white;
-    border-radius: 50%;
-    padding: 0.8rem;
-    font-size: 1.8rem;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-    z-index: 70;
-  }
-  }
+  
   @media (max-width: 1023px) {
     .footer-mobile-center {
       display: flex;
@@ -160,6 +211,38 @@
       }
     }
   }
+
+  @media (min-width: 768px) and (max-width: 898px) {
+  header .mx-auto.max-w-screen-xl {
+    max-width: 95% !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  
+  nav ul.flex.items-center.gap-6 {
+    gap: 1.5rem !important;
+    margin-left: 0.5rem !important;
+  }
+  
+  .relative.hidden.md\:block input {
+    width: 160px !important;
+  }
+  
+  main .container {
+    max-width: 95% !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  
+  footer .container {
+    max-width: 95% !important;
+  }
+  
+  .grid.grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+  }
 </style>
 <body>
 <div class="sticky-header hidden md:block">
@@ -181,115 +264,137 @@
   </div>
 </div>
 
-<header x-data="{ mobileOpen: false }" class="bg-white shadow-sm">
-  <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-    <div class="flex items-start justify-between md:items-center md:h-20">
-
-      <div class="flex items-center gap-3 md:gap-8 w-full md:w-auto">
-        <button
-          id="mobileSearchToggle"
-          class="md:hidden text-gray-700 hover:text-blue-600 p-2"
-          aria-label="Search">
-          <i class='bx bx-search text-2xl'></i>
-        </button>
-
-        <a href="/home" aria-label="Home" class="flex-1 flex justify-center md:justify-start">
+  <header x-data="{ mobileOpen: false }" class="bg-white shadow-sm">
+    <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between md:h-20">
+        <div class="flex items-center gap-3 md:gap-8">
+          <button
+            id="mobileSearchToggle"
+            class="md:hidden text-gray-700 hover:text-blue-600 p-2"
+            aria-label="Search">
+            <i class='bx bx-search text-2xl'></i>
+          </button>
+        <a href="/home" aria-label="Home" class="logo-container flex justify-center md:justify-start">
           <img src="{{ asset('images/salmanLogo2.png') }}"
-            alt="Salman Electric Logo"
-            class="h-10 w-auto object-contain">
+              alt="Salman Electric Logo"
+              class="logo-img object-contain">
         </a>
 
-        <nav aria-label="Global" class="hidden md:block ml-8">
-          <ul class="flex items-center gap-6 text-sm font-bold">
-            <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/home">HOME</a></li>
-            <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/shop">SHOP</a></li>
-            <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/about">ABOUT</a></li>
-            <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/contact">CONTACT</a></li>
-          </ul>
-        </nav>
 
+          <nav aria-label="Global" class="hidden md:block ml-8">
+            <ul class="flex items-center gap-6 text-sm font-bold">
+              <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/home">HOME</a></li>
+              <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/shop">SHOP</a></li>
+              <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/about">ABOUT</a></li>
+              <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/contact">CONTACT</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="flex items-center gap-6">
+          <div class="relative hidden md:block">
+            <input type="text" placeholder="Search products..."
+              class="w-64 px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <button class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+              <i class='bx bx-search text-xl'></i>
+            </button>
+          </div>
+
+          <div class="hidden md:flex items-center gap-4">
+            <a href="{{ route('wishlist.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Wishlist">
+              <i class='bx bx-heart text-2xl'></i>
+              <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
+            </a>
+            <a href="{{ route('cart.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Cart">
+              <i class='bx bx-cart text-2xl'></i>
+              <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
+            </a>
+
+            <div x-data="{ open: false }" class="relative">
+              @auth
+                <button @click="open = !open" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
+                  <i class='bx bx-user text-2xl'></i>
+                </button>
+
+                <div 
+                  x-show="open" 
+                  @click.away="open = false" 
+                  x-transition 
+                  class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+                >
+                  <a href="{{ url('/profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Account</a>
+                  <a href="{{ url('/profile/orders') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Orders</a>
+                  <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
+                  </form>
+                </div>
+              @endauth
+
+              @guest
+                <a href="{{ route('login') }}" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
+                  <i class='bx bx-user text-2xl'></i>
+                </a>
+              @endguest
+            </div>
+          </div>
+
+          <div class="block md:hidden">
+            <button @click="mobileOpen = true" class="p-2 text-gray-700 transition hover:text-blue-600" aria-label="Menu">
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobileSearchBar" class="hidden md:hidden px-4 py-2 bg-white shadow">
+      <form action="/search" method="GET" class="flex">
+        <input
+          type="text"
+          name="q"
+          placeholder="Search products..."
+          class="flex-1 px-4 py-2 border border-gray-300 rounded-l-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          autocomplete="off"
+        />
+        <button type="submit" class="px-4 bg-blue-600 text-white rounded-r-full">
+          <i class='bx bx-search'></i>
+        </button>
+      </form>
+    </div>
+
+    <div id="mobileMenu" :class="{ 'open': mobileOpen }" x-show="mobileOpen" x-transition @click.away="mobileOpen = false" style="display: none;">
+      <button @click="mobileOpen = false" aria-label="Close Menu" class="close-btn text-white hover:text-red-500">&times;</button>
+      <div class="icons-row">
+        <a href="{{ url('/account') }}"><i class='bx bx-user'></i></a>
+        <a href="{{ route('wishlist.index') }}">
+          <i class='bx bx-heart'></i>
+          <span id="heart-count-mobile">0</span>
+        </a>
+        <a href="{{ route('cart.index') }}">
+          <i class='bx bx-cart'></i>
+          <span id="cart-count-mobile">0</span>
+        </a>
       </div>
 
-      <div class="flex items-center gap-6">
-        <div class="relative hidden md:block">
-          <input type="text" placeholder="Search products..."
-            class="w-64 px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-          <button class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
-            <i class='bx bx-search text-xl'></i>
-          </button>
-        </div>
+      <input type="text" placeholder="Search for product..." class="search-input">
+      <nav>
+        <a href="/home">Home</a>
+        <a href="/shop">Shop Now</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+      </nav>
 
-        <div class="flex items-center gap-4 hidden md:flex">
-          <a href="{{ route('wishlist.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Wishlist">
-            <i class='bx bx-heart text-2xl'></i>
-            <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
-          </a>
-          <a href="{{ route('cart.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Cart">
-            <i class='bx bx-cart text-2xl'></i>
-            <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
-          </a>
-          <a href="{{ url('/account') }}" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
-            <i class='bx bx-user text-2xl'></i>
-          </a>
-        </div>
-
-        <div class="block md:hidden">
-          <button @click="mobileOpen = true" class="rounded-sm bg-white-100 p-2 text-gray-700 transition hover:text-blue-600"style="margin-left:10px;" aria-label="Menu">
-            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
+      <div class="social-icons">
+        <a href="#"><i class='bx bxl-facebook'></i></a>
+        <a href="#"><i class='bx bxl-instagram'></i></a>
+        <a href="#"><i class='bx bx-map'></i></a>
       </div>
-
     </div>
-  </div>
+  </header>
 
-  <div id="mobileSearchBar" class="hidden md:hidden px-4 py-2 bg-white shadow">
-    <form action="/search" method="GET" class="flex">
-      <input
-        type="text"
-        name="q"
-        placeholder="Search products..."
-        class="flex-1 px-4 py-2 border border-gray-300 rounded-l-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        autocomplete="off"
-      />
-      <button type="submit" class="px-4 bg-blue-600 text-white rounded-r-full">
-        <i class='bx bx-search'></i>
-      </button>
-    </form>
-  </div>
-
-  <div id="mobileMenu" :class="{ 'open': mobileOpen }" x-show="mobileOpen" x-transition @click.away="mobileOpen = false" style="display: none;">
-
-    <button @click="mobileOpen = false" aria-label="Close Menu" class="close-btn text-white hover:text-red-500">&times;</button>
-    <div class="icons-row">
-      <a href="{{ url('/account') }}"><i class='bx bx-user'></i></a>
-      <a href="{{ route('wishlist.index') }}">
-        <i class='bx bx-heart'></i>
-        <span id="heart-count-mobile">0</span>
-      </a>
-      <a href="{{ route('cart.index') }}">
-        <i class='bx bx-cart'></i>
-        <span id="cart-count-mobile">0</span>
-      </a>
-    </div>
-
-    <input type="text" placeholder="Search for product..." class="search-input">
-    <nav>
-      <a href="/home">Home</a>
-      <a href="/shop">Shop Now</a>
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
-    </nav>
-
-    <div class="social-icons">
-      <a href="#"><i class='bx bxl-facebook'></i></a>
-      <a href="#"><i class='bx bxl-instagram'></i></a>
-      <a href="#"><i class='bx bx-map'></i></a>
-    </div>
-  </div>
-</header>
 
     </div>
 
