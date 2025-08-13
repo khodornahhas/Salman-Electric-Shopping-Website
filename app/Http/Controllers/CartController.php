@@ -270,7 +270,7 @@ class CartController extends Controller
             'apartment' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
-            'shipping' => 'required|in:5.00,4.00,0.00',
+            'shipping' => 'required|in:0.00',
         ]);
 
         $cart = Auth::check()
@@ -297,8 +297,8 @@ class CartController extends Controller
             }
         }
 
-        $shipping = floatval($validated['shipping']);
-        $total = $subtotal + $shipping;
+        $shipping = 0; // no delivery for now
+        $total = $subtotal; // total = subtotal only
 
         $order = Order::create([
             'user_id' => Auth::check() ? Auth::id() : null,
