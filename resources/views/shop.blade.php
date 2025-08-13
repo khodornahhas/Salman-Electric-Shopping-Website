@@ -1,5 +1,9 @@
 @extends('layouts.main')
-
+@section('head')
+    <title>Salman Electric - Shop</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/salmanlogo.png') }}?v={{ time() }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+@endsection
 @section('content')
 <head>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>

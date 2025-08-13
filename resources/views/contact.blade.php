@@ -1,4 +1,9 @@
 @extends('layouts.main')
+@section('head')
+    <title>Salman Electric - Contact</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/salmanlogo.png') }}?v={{ time() }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+@endsection
 @section('content')
 
 <div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mb-6 text-base md:text-lg" style="margin-top: 30px; font-family: 'Open Sans', sans-serif;">

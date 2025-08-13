@@ -1,4 +1,9 @@
 @extends('layouts.main')
+@section('head')
+    <title>Salman Electric - About</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/salmanlogo.png') }}?v={{ time() }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+@endsection
 @section('content')
 
 <!DOCTYPE html>
@@ -23,7 +28,6 @@
 </head>
 <body class="font-['Urbanist'] bg-white">
 
-<!-- Animated Breadcrumbs -->
 <div class="hero-gradient text-white font-bold py-4 px-4 md:px-16 text-left" style="margin-top: 30px;">
     <div class="max-w-7xl mx-auto">
         <a href="{{ url('/home') }}" class="hover:underline opacity-70 transition-opacity duration-300">Home</a>
@@ -32,7 +36,6 @@
     </div>
 </div>
 
-<!-- Who We Are Section -->
 <div class="max-w-7xl mx-auto px-4 md:px-16 py-16 flex flex-col md:flex-row items-center gap-8 md:gap-16">
     <div class="w-full md:w-1/2" data-aos="fade-right">
         <img src="{{ asset('images/sm.png') }}" alt="Salman Electric Storefront" 
@@ -46,7 +49,6 @@
     </div>
 </div>
 
-<!-- Rebranding Section -->
 <div class="py-16">
     <div class="max-w-7xl mx-auto px-4 md:px-16 flex flex-col-reverse md:flex-row items-center gap-8 md:gap-16">
         <div class="w-full md:w-1/2 text-center md:text-left" data-aos="fade-right" data-aos-delay="200">
@@ -62,7 +64,6 @@
     </div>
 </div>
 
-<!-- Values Section -->
 <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 md:px-16">
         <h2 class="text-3xl font-bold text-center mb-16 text-gray-800" data-aos="fade-up">Our Values</h2>
@@ -105,7 +106,6 @@
 
 
 <script>
-    // Initialize animations
     AOS.init({
         duration: 800,
         easing: 'ease-in-out',
