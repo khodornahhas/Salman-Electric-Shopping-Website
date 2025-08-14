@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    @yield('head') {{-- this lets child pages add extra <head> content --}}
+    @yield('head') 
 </head>
 <style>
   body {
@@ -236,9 +236,39 @@
         <i class='bx bx-cart text-2xl'></i>
         <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
       </a>
-      <a href="" class="p-2 text-gray-700 hover:text-amber-500">
-        <i class='bx bx-user text-2xl'></i>
-      </a>
+      @guest
+        <a href="/account" class="p-2 text-gray-700 hover:text-amber-500">
+            <i class='bx bx-user text-2xl'></i>
+        </a>
+      @endguest
+
+      @auth
+          <div class="relative">
+              <button id="userMenuButton" class="p-2 text-gray-700 hover:text-amber-500 focus:outline-none">
+                  <i class='bx bx-user text-2xl'></i>
+              </button>
+
+              <div id="userDropdown" 
+                  class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg z-50">
+                  <a href="/profile" 
+                    class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <i class='bx bx-user-circle mr-2 text-lg'></i> Account
+                  </a>
+                  <a href="{{ route('orders.index') }}" 
+                    class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <i class='bx bx-package mr-2 text-lg'></i> Orders
+                  </a>
+                  <form method="POST" action="{{ route('logout') }}">
+                      @csrf
+                      <button type="submit" 
+                              class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <i class='bx bx-log-out mr-2 text-lg'></i> Logout
+                      </button>
+                  </form>
+              </div>
+          </div>
+      @endauth
+
       <button id="toggleOpen" class="lg:hidden p-2">
         <svg class="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd"
@@ -374,36 +404,36 @@
 <script src="{{ asset('js/wishlist.js') }}"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const toggleOpen = document.getElementById('toggleOpen');
-    const toggleClose = document.getElementById('toggleClose');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const menuOverlay = document.getElementById('menuOverlay');
+  document.addEventListener('DOMContentLoaded', function () {
+      const toggleOpen = document.getElementById('toggleOpen');
+      const toggleClose = document.getElementById('toggleClose');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const menuOverlay = document.getElementById('menuOverlay');
 
-    if (toggleOpen) {
-        toggleOpen.addEventListener('click', function () {
-            mobileMenu.classList.add('open');
-            menuOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; 
-        });
-    }
+      if (toggleOpen) {
+          toggleOpen.addEventListener('click', function () {
+              mobileMenu.classList.add('open');
+              menuOverlay.classList.add('active');
+              document.body.style.overflow = 'hidden'; 
+          });
+      }
 
-   
-    if (toggleClose) {
-        toggleClose.addEventListener('click', function () {
-            mobileMenu.classList.remove('open');
-            menuOverlay.classList.remove('active');
-            document.body.style.overflow = ''; 
-        });
-    }
+    
+      if (toggleClose) {
+          toggleClose.addEventListener('click', function () {
+              mobileMenu.classList.remove('open');
+              menuOverlay.classList.remove('active');
+              document.body.style.overflow = ''; 
+          });
+      }
 
-    if (menuOverlay) {
-        menuOverlay.addEventListener('click', function() {
-            mobileMenu.classList.remove('open');
-            menuOverlay.classList.remove('active');
-            document.body.style.overflow = ''; 
-        });
-    }
+      if (menuOverlay) {
+          menuOverlay.addEventListener('click', function() {
+              mobileMenu.classList.remove('open');
+              menuOverlay.classList.remove('active');
+              document.body.style.overflow = ''; 
+          });
+      }
 
     updateCartCount();
     updateWishlistCount();
@@ -466,7 +496,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (mobileHeart) mobileHeart.innerText = data.count;
             });
     }
-});
-</script>
+  });
 
+  document.addEventListener("DOMContentLoaded", function () {
+      const userMenuButton = document.getElementById("userMenuButton");
+      const userDropdown = document.getElementById("userDropdown");
+
+      if (userMenuButton) {
+          userMenuButton.addEventListener("click", function (e) {
+              e.stopPropagation();
+              userDropdown.classList.toggle("hidden");
+          });
+
+          document.addEventListener("click", function () {
+              if (!userDropdown.classList.contains("hidden")) {
+                  userDropdown.classList.add("hidden");
+              }
+          });
+      }
+  });
+</script>
 </html>
