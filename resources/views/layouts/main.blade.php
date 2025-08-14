@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    {{-- Favicon --}}
     <link rel="icon" type="image/png" href="{{ asset('images/salman.png') }}?v={{ time() }}">
-
+  
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -19,13 +18,6 @@
     @yield('head') {{-- this lets child pages add extra <head> content --}}
 </head>
 <style>
-  .logo-img {
-    max-height: 40px; 
-    min-width: 100px; 
-    height: auto;
-    width: auto; 
-  }
-  
   body {
     font-family: 'Urbanist', sans-serif !important;
     padding-top: 40px;  
@@ -77,71 +69,54 @@
     }
   }
 
-  @media (min-width: 768px) and (max-width: 1024px) {
-    .mx-auto.max-w-screen-xl {
-      max-width: 95% !important; 
-      padding-left: 20px !important;
-      padding-right: 20px !important;
-    }
-    
-    .logo-img {
-      max-height: 45px; 
-    }
-    
-    nav ul.flex.items-center.gap-6 {
-      gap: 3rem; 
-    }
-    
-    .relative.hidden.md\:block input {
-      width: 200px; 
-    }
-  }
-
   @media (max-width: 767px) {
     #mobileMenu {
       position: fixed;
       top: 0;
-      right: 0;
+      right: -280px;
       width: 280px;
       height: 100vh;
       background-color: #0c1033;
       color: white;
       padding: 2rem 1.5rem;
       z-index: 60;
-      transform: translateX(100%);
       transition: transform 0.3s ease;
       display: flex;
       flex-direction: column;
+      overflow-y: auto;
     }
-    #mobileMenu.open { transform: translateX(0); }
+
+    #mobileMenu.open {
+      transform: translateX(-280px);
+    }
+
     #mobileMenu .close-btn {
       position: absolute;
       top: 1.2rem;
       right: 1.2rem;
       font-size: 2rem;
       cursor: pointer;
+      color: white;
     }
-    #mobileMenu .icons-row {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      font-size: 1.6rem;
-      margin-bottom: 1.5rem;
+
+    #menuOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 55;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
     }
-    #mobileMenu .icons-row a { color: white; position: relative; }
-    #mobileMenu .icons-row span {
-      font-size: 0.75rem;
-      height: 1.2rem;
-      width: 1.2rem;
-      position: absolute;
-      top: -8px;
-      right: -10px;
-      background: #c72c2c;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+
+    #menuOverlay.active {
+      opacity: 1;
+      visibility: visible;
     }
+
     #mobileMenu .search-input {
       width: 100%;
       padding: 0.7rem 1rem;
@@ -152,34 +127,28 @@
       font-size: 0.9rem;
       margin-bottom: 1.5rem;
     }
+
     #mobileMenu nav a {
       color: white;
       font-weight: bold;
       text-transform: uppercase;
       margin: 0.6rem 0;
       display: block;
+      font-size: 0.9rem;
     }
-    #mobileMenu nav a:hover { color: #c72c2c; }
+
+    #mobileMenu nav a:hover { 
+      color: #c72c2c; 
+    }
+
     #mobileMenu .social-icons {
       display: flex;
       gap: 1rem;
       font-size: 1.4rem;
       margin-top: auto;
     }
-    #whatsapp-btn {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      background: #25d366;
-      color: white;
-      border-radius: 50%;
-      padding: 0.8rem;
-      font-size: 1.8rem;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-      z-index: 70;
-    }
   }
-  
+
   @media (max-width: 1023px) {
     .footer-mobile-center {
       display: flex;
@@ -216,38 +185,6 @@
       }
     }
   }
-
-  @media (min-width: 768px) and (max-width: 898px) {
-  header .mx-auto.max-w-screen-xl {
-    max-width: 95% !important;
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
-  }
-  
-  nav ul.flex.items-center.gap-6 {
-    gap: 1.5rem !important;
-    margin-left: 0.5rem !important;
-  }
-  
-  .relative.hidden.md\:block input {
-    width: 160px !important;
-  }
-  
-  main .container {
-    max-width: 95% !important;
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
-  }
-  
-  footer .container {
-    max-width: 95% !important;
-  }
-  
-  .grid.grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 1rem !important;
-  }
-  }
 </style>
 <body>
 <div class="sticky-header hidden md:block">
@@ -269,137 +206,80 @@
   </div>
 </div>
 
-  <header x-data="{ mobileOpen: false }" class="bg-white shadow-sm">
-    <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between md:h-20">
-        <div class="flex items-center gap-3 md:gap-8">
-          <button
-            id="mobileSearchToggle"
-            class="md:hidden text-gray-700 hover:text-blue-600 p-2"
-            aria-label="Search">
-            <i class='bx bx-search text-2xl'></i>
-          </button>
-        <a href="/home" aria-label="Home" class="logo-container flex justify-center md:justify-start">
-          <img src="{{ asset('images/salmanLogo2.png') }}"
-              alt="Salman Electric Logo"
-              class="logo-img object-contain">
-        </a>
+<header class="sticky top-0 z-50 bg-white shadow-md tracking-wide font-[Urbanist]">
+  <div class="flex flex-wrap items-center justify-between w-full px-4 sm:px-6 lg:px-10 min-h-[70px]">
 
+    <a href="/" class="hidden sm:block shrink-0">
+      <img src="{{ asset('images/S8.PNG') }}" alt="logo" class="w-40 h-auto">
+    </a>
 
-          <nav aria-label="Global" class="hidden md:block ml-8">
-            <ul class="flex items-center gap-6 text-sm font-bold">
-              <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/home">HOME</a></li>
-              <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/shop">SHOP</a></li>
-              <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/about">ABOUT</a></li>
-              <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/contact">CONTACT</a></li>
-              <li><a class="text-gray-900 hover:text-blue-600 transition-colors" href="/portfolio">PORTFOLIO</a></li>
-            </ul>
-          </nav>
-        </div>
+    <a href="/" class="block sm:hidden shrink-0">
+      <img src="{{ asset('images/S8.PNG') }}" alt="logo" class="w-20 h-auto">
+    </a>
 
-        <div class="flex items-center gap-6">
-          <div class="relative hidden md:block">
-            <input type="text" placeholder="Search products..."
-              class="w-64 px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            <button class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
-              <i class='bx bx-search text-xl'></i>
-            </button>
-          </div>
-
-          <div class="hidden md:flex items-center gap-4">
-            <a href="{{ route('wishlist.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Wishlist">
-              <i class='bx bx-heart text-2xl'></i>
-              <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
-            </a>
-            <a href="{{ route('cart.index') }}" class="p-2 text-gray-700 hover:text-amber-500 transition-colors relative" aria-label="Cart">
-              <i class='bx bx-cart text-2xl'></i>
-              <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
-            </a>
-
-            <div x-data="{ open: false }" class="relative">
-              @auth
-                <button @click="open = !open" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
-                  <i class='bx bx-user text-2xl'></i>
-                </button>
-
-                <div 
-                  x-show="open" 
-                  @click.away="open = false" 
-                  x-transition 
-                  class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
-                >
-                  <a href="{{ url('/profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Account</a>
-                  <a href="{{ url('/profile/orders') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Orders</a>
-                  <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
-                  </form>
-                </div>
-              @endauth
-
-              @guest
-                <a href="{{ route('login') }}" class="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
-                  <i class='bx bx-user text-2xl'></i>
-                </a>
-              @endguest
-            </div>
-          </div>
-
-          <div class="block md:hidden">
-            <button @click="mobileOpen = true" class="p-2 text-gray-700 transition hover:text-blue-600" aria-label="Menu">
-              <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
+    <div id="collapseMenu" class="hidden lg:block">
+      <ul class="flex justify-center gap-x-6">
+        <li><a href="/home" class="block text-[15px] font-medium {{ request()->is('home') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Home</a></li>
+        <li><a href="/shop" class="block text-[15px] font-medium {{ request()->is('shop') || request()->is('shop/*') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Shop</a></li>
+        <li><a href="/about" class="block text-[15px] font-medium {{ request()->is('about') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">About</a></li>
+        <li><a href="/contact" class="block text-[15px] font-medium {{ request()->is('contact') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Contact</a></li>
+        <li><a href="/portfolio" class="block text-[15px] font-medium {{ request()->is('portfolio') || request()->is('portfolio/*') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Portfolio</a></li>
+      </ul>
     </div>
 
-    <div id="mobileSearchBar" class="hidden md:hidden px-4 py-2 bg-white shadow">
-      <form action="/search" method="GET" class="flex">
-        <input
-          type="text"
-          name="q"
-          placeholder="Search products..."
-          class="flex-1 px-4 py-2 border border-gray-300 rounded-l-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          autocomplete="off"
-        />
-        <button type="submit" class="px-4 bg-blue-600 text-white rounded-r-full">
-          <i class='bx bx-search'></i>
-        </button>
-      </form>
+    <div class="flex items-center gap-3 sm:gap-4 ml-auto lg:ml-0">
+      <a href="{{ route('wishlist.index') }}" class="relative p-2 text-gray-700 hover:text-amber-500">
+        <i class='bx bx-heart text-2xl'></i>
+        <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
+      </a>
+      <a href="{{ route('cart.index') }}" class="relative p-2 text-gray-700 hover:text-amber-500">
+        <i class='bx bx-cart text-2xl'></i>
+        <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
+      </a>
+      <a href="" class="p-2 text-gray-700 hover:text-amber-500">
+        <i class='bx bx-user text-2xl'></i>
+      </a>
+      <button id="toggleOpen" class="lg:hidden p-2">
+        <svg class="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </button>
     </div>
+  </div>
 
-    <div id="mobileMenu" :class="{ 'open': mobileOpen }" x-show="mobileOpen" x-transition @click.away="mobileOpen = false" style="display: none;">
-      <button @click="mobileOpen = false" aria-label="Close Menu" class="close-btn text-white hover:text-red-500">&times;</button>
-      <div class="icons-row">
-        <a href="{{ url('/account') }}"><i class='bx bx-user'></i></a>
-        <a href="{{ route('wishlist.index') }}">
-          <i class='bx bx-heart'></i>
-          <span id="heart-count-mobile">0</span>
-        </a>
-        <a href="{{ route('cart.index') }}">
-          <i class='bx bx-cart'></i>
-          <span id="cart-count-mobile">0</span>
-        </a>
-      </div>
+<div id="mobileMenu" class="fixed top-0 right-0 h-full w-64 bg-[#0c1033] shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex flex-col p-6">
+  <button id="toggleClose" class="self-end mb-6 p-2 text-white hover:text-red-500">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
 
-      <input type="text" placeholder="Search for product..." class="search-input">
-      <nav>
-        <a href="/home">Home</a>
-        <a href="/shop">Shop Now</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
-      </nav>
+  <input type="text" placeholder="Search..." class="mb-6 p-3 border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-      <div class="social-icons">
-        <a href="#"><i class='bx bxl-facebook'></i></a>
-        <a href="#"><i class='bx bxl-instagram'></i></a>
-        <a href="#"><i class='bx bx-map'></i></a>
-      </div>
+  <ul class="flex flex-col gap-4">
+    <li><a href="/home" class="text-white font-medium hover:text-red-500 uppercase text-sm">Home</a></li>
+    <li><a href="/shop" class="text-white font-medium hover:text-red-500 uppercase text-sm">Shop</a></li>
+    <li><a href="/about" class="text-white font-medium hover:text-red-500 uppercase text-sm">About</a></li>
+    <li><a href="/contact" class="text-white font-medium hover:text-red-500 uppercase text-sm">Contact</a></li>
+    <li><a href="/portfolio" class="text-white font-medium hover:text-red-500 uppercase text-sm">Portfolio</a></li>
+  </ul>
+
+  <div class="mt-auto pt-6">
+    <div class="flex gap-4 text-white text-xl mb-6">
+      <a href="#" class="hover:text-red-500"><i class='bx bxl-facebook'></i></a>
+      <a href="#" class="hover:text-red-500"><i class='bx bxl-instagram'></i></a>
+      <a href="#" class="hover:text-red-500"><i class='bx bxl-twitter'></i></a>
     </div>
-  </header>
+  </div>
+</div>
+
+<div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-opacity duration-300"></div>
+</header>
+
+
 
 
     </div>
@@ -492,42 +372,80 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/wishlist.js') }}"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        updateCartCount();
-        updateWishlistCount();
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleOpen = document.getElementById('toggleOpen');
+    const toggleClose = document.getElementById('toggleClose');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
 
-        document.querySelectorAll('.add-to-wishlist').forEach(button => {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-                const productId = this.getAttribute('data-product-id');
-                const heartIcon = this.querySelector('i');
+    if (toggleOpen) {
+        toggleOpen.addEventListener('click', function () {
+            mobileMenu.classList.add('open');
+            menuOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        });
+    }
 
-                fetch(`/wishlist`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ product_id: productId })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    updateWishlistCount();
+   
+    if (toggleClose) {
+        toggleClose.addEventListener('click', function () {
+            mobileMenu.classList.remove('open');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = ''; 
+        });
+    }
 
-                    if (data.inWishlist) {
-                        heartIcon.classList.remove('bx-heart', 'text-gray-400');
-                        heartIcon.classList.add('bxs-heart', 'text-red-500');
-                    } else {
-                        heartIcon.classList.remove('bxs-heart', 'text-red-500');
-                        heartIcon.classList.add('bx-heart', 'text-gray-400');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            });
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', function() {
+            mobileMenu.classList.remove('open');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = ''; 
+        });
+    }
+
+    updateCartCount();
+    updateWishlistCount();
+
+    document.querySelectorAll('.add-to-wishlist').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            const productId = this.getAttribute('data-product-id');
+            const heartIcon = this.querySelector('i');
+
+            fetch(`/wishlist`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ product_id: productId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                updateWishlistCount();
+
+                if (data.inWishlist) {
+                    heartIcon.classList.remove('bx-heart', 'text-gray-400');
+                    heartIcon.classList.add('bxs-heart', 'text-red-500');
+                } else {
+                    heartIcon.classList.remove('bxs-heart', 'text-red-500');
+                    heartIcon.classList.add('bx-heart', 'text-gray-400');
+                }
+            })
+            .catch(error => console.error('Error:', error));
         });
     });
+
+    const mobileSearchToggle = document.getElementById('mobileSearchToggle');
+    if (mobileSearchToggle) {
+        mobileSearchToggle.addEventListener('click', function() {
+            const searchBar = document.getElementById('mobileSearchBar');
+            searchBar.classList.toggle('hidden');
+        });
+    }
 
     function updateCartCount() {
         fetch('/cart/count')
@@ -548,10 +466,7 @@
                 if (mobileHeart) mobileHeart.innerText = data.count;
             });
     }
-
-    document.getElementById('mobileSearchToggle').addEventListener('click', function() {
-    const searchBar = document.getElementById('mobileSearchBar');
-    searchBar.classList.toggle('hidden');
-    });
+});
 </script>
+
 </html>

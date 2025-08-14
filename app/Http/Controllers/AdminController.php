@@ -50,22 +50,35 @@ class AdminController extends Controller
         $brands = Brand::all();
         $categories = Category::all();
         $query = Product::with(['brand', 'category']);
+
         if ($request->search) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
+
         if ($request->brand_id) {
             $query->where('brand_id', $request->brand_id);
         }
+
         if ($request->category_id) {
             $query->where('category_id', $request->category_id);
         }
 
+        if ($request->price_sort === 'low_high') {
+            $query->orderBy('price', 'asc');
+        } elseif ($request->price_sort === 'high_low') {
+            $query->orderBy('price', 'desc');
+        }
+
         $products = $query->paginate(4)->appends($request->query());
-        if ($request->ajax()) {
+
+       if ($request->ajax()) {
             return view('admin.partials.products-table', compact('products'))->render();
         }
+
+
         return view('admin.products', compact('products', 'brands', 'categories'));
     }
+
 
 
     public function users(Request $request)
