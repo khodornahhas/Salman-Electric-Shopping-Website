@@ -1,5 +1,4 @@
 @extends('layouts.main')
-
 @section('head')
     <title>Salman Electric - Home</title>
     <link rel="icon" type="image/png" href="{{ asset('images/salmanlogo.png') }}?v={{ time() }}">
@@ -7,22 +6,23 @@
 @endsection
 @section('content')
 <style>
-    .logos {
-        overflow: hidden;
-        position: relative;
-        width: 100%;
-        white-space: nowrap; 
+   .logos {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    white-space: nowrap;
     }
 
     .logos-slide {
-        display: inline-block; 
-        animation: slide 20s linear infinite;
+        display: inline-block;
         white-space: nowrap;
+        will-change: transform;
     }
 
     .logos-slide a {
+        scroll-snap-align: start;
         margin: 0 35px;
-        display: inline-flex; 
+        display: inline-flex;
         align-items: center;
         justify-content: center;
         min-height: 50px;
@@ -36,26 +36,23 @@
         object-fit: contain;
         display: inline-block;
         vertical-align: middle;
+        user-select: none; 
+        pointer-events: auto; 
     }
 
     @media (max-width: 767px) {
-    .logos {
-        padding: 0 10px;
-    }
-    
-    .logos-slide a {
-        margin: 0 10px;
-    }
-    
-    .logos-slide img {
-        max-height: 40px;
-        max-width: 100px;
-    }
-    }
-
-    @keyframes slide {
-        from { transform: translateX(0); }
-        to { transform: translateX(-50%); } 
+        .logos {
+            padding: 0 10px;
+        }
+        
+        .logos-slide a {
+            margin: 0 10px;
+        }
+        
+        .logos-slide img {
+            max-height: 40px;
+            max-width: 100px;
+        }
     }
 
     .animate-float {
@@ -78,7 +75,7 @@
         100% { transform: translateY(-10px); }
     }
     .product-card {
-    transition: all 0.3s ease;
+        transition: all 0.3s ease;
     }
 
     .show-more-btn {
@@ -129,15 +126,15 @@
         color: #f59e0b !important;
     }
     .slide-enter-active, .slide-leave-active {
-    transition: all 0.5s ease;
+        transition: all 0.5s ease;
     }
     .slide-enter-from {
-    transform: translateX(100%);
-    opacity: 0;
+        transform: translateX(100%);
+        opacity: 0;
     }
     .slide-leave-to {
-    transform: translateX(-100%);
-    opacity: 0;
+        transform: translateX(-100%);
+        opacity: 0;
     }
     .slider-container {
         overflow: hidden;
@@ -168,7 +165,6 @@
         transform: scale(1.2);
     }
 </style>
-
 <!-- Image Slider DISPLAY -->
 <div x-data="{
     activeSlide: 0,
@@ -313,23 +309,20 @@
         </template>
     </div>
 </div>
-
 @php
-    $imageMap = [
-        'Lamps and Lighting' => 'images/light.png',
-        'Cables' => 'images/cables.png',           
-        'Electricity essentials' => 'images/e.png',
-        'EV chargers' => 'images/charger.png',
-        'Connectors' => 'images/Connectors.png',
-        'Inverters' => 'images/inverters.png',       
-        'Batteries' => 'images/batteries.png',
-        'UPS' => 'images/ups.png',
+    $categoryImages = [
+        '3d Printing' => 'images/3dprinting.png',
+        'EV chargers' => 'images/evchargers.png',
+        'Inverters' => 'images/inverter.jpg',
+        'Batteries' => 'images/battery.avif',
     ];
 @endphp
 
 <div class="bg-white py-8">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid gap-6 sm:gap-8 grid-cols-[repeat(auto-fit,minmax(120px,1fr))] justify-items-center">
+        <h2 class="text-2xl md:text-3xl  text-gray-800 mb-6 text-center">Explore Our Categories</h2>
+        
+        <div class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             @foreach ($categories as $category)
                 <a href="{{ route('shop.filters', [
                     'categorySlug' => $category->slug ?? Str::slug($category->name),
@@ -337,46 +330,26 @@
                     'minPrice' => 0,
                     'maxPrice' => 2500
                 ]) }}" 
-                class="group flex flex-col items-center p-3 hover:bg-gray-50 rounded-lg transition-all duration-200 transform hover:scale-105">
-                    <div class="flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 mb-2">
-                        <img src="{{ asset($imageMap[$category->name] ?? 'images/default.png') }}" 
-                            alt="{{ $category->name }}" 
-                            class="w-full h-full object-contain">
+                class="group relative overflow-hidden rounded-xl shadow-md hover:shadow-lg transition-all duration-300 h-48 sm:h-56 md:h-64">
+                    <img src="{{ asset($categoryImages[$category->name] ?? 'images/categories/default-showcase.jpg') }}" 
+                         alt="{{ $category->name }}"
+                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                         loading="lazy">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-gray-900/30 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-4 text-center">
+                        <h3 class="text-xl font-bold text-white drop-shadow-md">{{ $category->name }}</h3>
+                        <p class="text-blue-200 text-sm mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            Shop Now →
+                        </p>
                     </div>
-                    <span class="text-gray-800 text-center font-medium text-xs sm:text-sm md:text-base leading-tight px-1">
-                        {{ $category->name }}
-                    </span>
+                    
+
                 </a>
             @endforeach
         </div>
     </div>
 </div>
-
-
-<section class="bg-blue-900 py-10 mt-[15px]">
-    <div class="max-w-6xl mx-auto">
-        <div class="logos bg-white rounded-lg shadow-md py-6 px-4">
-            <div class="logos-slide" id="brandSlide">
-                @foreach ($brands as $brand)
-                    <a href="{{ route('shop.filters', [
-                        'categorySlug' => 'all',
-                        'brandSlugs' => $brand->slug ?? Str::slug($brand->name),
-                        'minPrice' => 0,
-                        'maxPrice' => 2500
-                    ]) }}">
-                        <img src="{{ asset('images/' . $brand->image) }}" alt="{{ $brand->name }}">
-                    </a>
-                @endforeach
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-
-
-
 <!-- Featured Products Section -->
 <section class="bg-white py-12">
     <div class="container mx-auto px-4 text-center">
@@ -926,23 +899,92 @@
     </div>
 </div>
 </section>
+
+<section class="bg-blue-900 py-10 mt-6">
+    <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">Featured Brands</h2>
+        <div class="logos bg-white rounded-xl shadow-lg py-6 px-4 relative overflow-hidden">
+            <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-blue-900 to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-blue-900 to-transparent z-10 pointer-events-none"></div>
+            
+            <div class="logos-slide" id="brandSlide">
+                @foreach ($brands as $brand)
+                    <a href="{{ route('shop.filters', [
+                        'categorySlug' => 'all',
+                        'brandSlugs' => $brand->slug ?? Str::slug($brand->name),
+                        'minPrice' => 0,
+                        'maxPrice' => 2500
+                    ]) }}" 
+                    class="mx-6 sm:mx-8 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                        <img src="{{ asset('images/' . $brand->image) }}" 
+                             alt="{{ $brand->name }}"
+                             class="max-h-12 sm:max-h-14 w-auto object-contain"
+                             loading="lazy">
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</section>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const slide = document.getElementById('brandSlide');
-    const container = slide.parentNode;
-    
-    // Clone the slide for seamless looping
-    const clone = slide.cloneNode(true);
-    container.appendChild(clone);
-    
-    // Reset animation when it completes to create infinite loop
-    slide.addEventListener('animationiteration', function() {
-        // Reset position when animation completes one cycle
-        if (this.style.animationPlayState !== 'paused') {
-            this.style.animation = 'none';
-            void this.offsetWidth; // Trigger reflow
-            this.style.animation = 'slide 20s linear infinite';
+    document.addEventListener('DOMContentLoaded', function() {
+        const sliderContainer = document.querySelector('.logos');
+        const sliderTrack = document.getElementById('brandSlide');
+        const brandItems = Array.from(sliderTrack.children);
+        const itemCount = brandItems.length;
+        
+        brandItems.forEach(item => {
+            sliderTrack.appendChild(item.cloneNode(true));
+        });
+        
+        let currentIndex = 0;
+        let stepInterval;
+        const stepDuration = 4000; 
+        const itemWidth = brandItems[0].offsetWidth + 70; 
+        
+        function stepToNextBrand() {
+            currentIndex = (currentIndex + 1) % itemCount;
+            const newPosition = -currentIndex * itemWidth;
+            
+            sliderTrack.style.transition = 'transform 0.5s ease-in-out';
+            sliderTrack.style.transform = `translateX(${newPosition}px)`;
+            
+            if (currentIndex === 0) {
+                setTimeout(() => {
+                    sliderTrack.style.transition = 'none';
+                    sliderTrack.style.transform = 'translateX(0)';
+                }, 800);
+            }
         }
+        
+        function startAnimation() {
+            stepInterval = setInterval(stepToNextBrand, stepDuration);
+        }
+        
+        sliderContainer.addEventListener('mouseenter', () => {
+            clearInterval(stepInterval);
+        });
+        
+        sliderContainer.addEventListener('mouseleave', () => {
+            startAnimation();
+        });
+        
+        function handleVisibility() {
+            if (document.hidden) {
+                clearInterval(stepInterval);
+            } else {
+                startAnimation();
+            }
+        }
+        
+        document.addEventListener('visibilitychange', handleVisibility);
+        startAnimation();
+        
+        return () => {
+            clearInterval(stepInterval);
+            document.removeEventListener('visibilitychange', handleVisibility);
+        };
     });
-});</script>
+</script>
 @endsection

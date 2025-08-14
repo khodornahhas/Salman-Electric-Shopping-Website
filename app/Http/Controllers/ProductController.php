@@ -16,12 +16,10 @@ class ProductController extends Controller
         $latestProducts = Product::where('is_latest', true)->get();
 
         $allowedCategories = [
-            'Lamps and Lighting',
+            '3d Printing',
             'EV chargers',
-            'Electricity essentials',
             'Inverters',
             'Batteries',
-            'UPS',
         ];
         $categories = Category::whereIn('name', $allowedCategories)->get();
 
