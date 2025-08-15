@@ -69,12 +69,36 @@
             </div>
 
             <div class="text-2xl font-semibold text-gray-800">
+                @php
+                    $discountPercent = 0;
+                    $user = Auth::user();
+                    if($user && session('user_promo_code')) {
+                        $promo = \App\Models\PromoCode::with('products')->find(session('user_promo_code'));
+                        if($promo 
+                        && $promo->products->contains($product->id) 
+                        && !$promo->users()->where('user_id', $user->id)->exists()) 
+                        {
+                            $discountPercent = $promo->discount_percent;
+                        }
+                    }
+                @endphp
+
                 @if($product->coming_soon)
                     <span class="text-yellow-600 text-[22px] font-semibold">Coming Soon</span>
                 @elseif($product->contact_for_price)
                     <span class="text-blue-600 text-[22px] font-semibold">Contact for Price</span>
                 @elseif($product->quantity == 0 || $product->out_of_stock)
                     <span class="text-red-600 text-[22px] font-semibold">Out of Stock</span>
+                @elseif($discountPercent > 0)
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="line-through text-gray-400 text-xl">${{ number_format($product->price, 2) }}</span>
+                        <span class="text-green-600 text-3xl">
+                            ${{ number_format($product->price * (1 - $discountPercent/100), 2) }}
+                        </span>
+                        <span class="text-green-700 text-sm font-bold uppercase">
+                            Special Price ({{ $discountPercent }}% off)
+                        </span>
+                    </div>
                 @elseif($product->sale_price && $product->sale_price < $product->price)
                     <div class="flex flex-wrap items-center gap-3">
                         <span class="text-red-500 text-3xl">${{ number_format($product->sale_price, 2) }}</span>
@@ -85,6 +109,7 @@
                     <span class="text-red-600 text-[35px]">${{ number_format($product->price, 2) }}</span>
                 @endif
             </div>
+
 
             <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
                 @csrf
@@ -193,39 +218,65 @@
                             {{ $related->name }}
                         </h3>
 
-                        <div class="mt-auto text-center mb-0">
-    @if($related->coming_soon)
-        <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
-        <p class="text-sm text-gray-500 italic">Stay tuned</p>
-    @elseif($related->contact_for_price)
-        <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
-        <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
-    @elseif($related->quantity == 0 || $related->out_of_stock)
-        <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
-        <button
-            class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50"
-            disabled
-        >
-            Add to Cart
-        </button>
-    @elseif($related->sale_price && $related->sale_price < $related->price)
-        <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
-        <p class="text-red-600 text-lg font-bold underline">${{ number_format($related->sale_price, 2) }}</p>
-        <button
-            class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-        >
-            Add to Cart
-        </button>
-    @else
-        <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
-        <button
-            class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-        >
-            Add to Cart
-        </button>
-    @endif
-</div>
+                       <div class="mt-auto text-center mb-0">
+                            @php
+                                $discountPercent = 0;
+                                $user = Auth::user();
+                                if($user && session('user_promo_code')) {
+                                    $promo = \App\Models\PromoCode::with('products')->find(session('user_promo_code'));
+                                    if($promo 
+                                    && $promo->products->contains($related->id) 
+                                    && !$promo->users()->where('user_id', $user->id)->exists()) 
+                                    {
+                                        $discountPercent = $promo->discount_percent;
+                                    }
+                                }
+                            @endphp
 
+                            @if($related->coming_soon)
+                                <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
+                                <p class="text-sm text-gray-500 italic">Stay tuned</p>
+                            @elseif($related->contact_for_price)
+                                <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
+                                <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                            @elseif($related->quantity == 0 || $related->out_of_stock)
+                                <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
+                                <button
+                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50"
+                                    disabled
+                                >
+                                    Add to Cart
+                                </button>
+                            @elseif($discountPercent > 0)
+                                <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
+                                <p class="text-green-600 text-lg font-bold underline">
+                                    ${{ number_format($related->price * (1 - $discountPercent/100), 2) }}
+                                </p>
+                                <p class="text-green-700 text-sm font-bold uppercase">
+                                    Special Price ({{ $discountPercent }}% off)
+                                </p>
+                                <button
+                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
+                                >
+                                    Add to Cart
+                                </button>
+                            @elseif($related->sale_price && $related->sale_price < $related->price)
+                                <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
+                                <p class="text-red-600 text-lg font-bold underline">${{ number_format($related->sale_price, 2) }}</p>
+                                <button
+                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
+                                >
+                                    Add to Cart
+                                </button>
+                            @else
+                                <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
+                                <button
+                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
+                                >
+                                    Add to Cart
+                                </button>
+                            @endif
+                        </div>
                     </div>
                 </div>
             @endforeach

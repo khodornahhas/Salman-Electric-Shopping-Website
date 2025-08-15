@@ -17,8 +17,25 @@
             {{ $order->street }}, {{ $order->apartment }}, {{ $order->city }}
         </li>
         <li><strong>Shipping Cost:</strong> ${{ number_format($order->shipping, 2) }}</li>
+        <li><strong>Order Items:</strong>
+            <ul>
+                @foreach($order->orderItems as $item)
+                    <li>
+                        {{ $item->product->name }} x{{ $item->quantity }} — 
+                        ${{ number_format($item->price, 2) }}
+                    </li>
+                @endforeach
+            </ul>
+        </li>
         <li><strong>Total:</strong> ${{ number_format($order->total, 2) }}</li>
     </ul>
+
+    @if($order->promo_code_id)
+        <p style="color:green; font-weight:bold;">
+            Promo code applied: {{ $order->promoCode->code }} — 
+            {{ $order->promoCode->discount_percent }}% off
+        </p>
+    @endif
 
     <p>We will contact you shortly to confirm your order status.</p>
 

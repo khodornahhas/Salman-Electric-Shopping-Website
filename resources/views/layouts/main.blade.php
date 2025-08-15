@@ -241,33 +241,105 @@
             <i class='bx bx-user text-2xl'></i>
         </a>
       @endguest
-
       @auth
-          <div class="relative">
-              <button id="userMenuButton" class="p-2 text-gray-700 hover:text-amber-500 focus:outline-none">
-                  <i class='bx bx-user text-2xl'></i>
+      <div class="relative">
+          <button id="userMenuButton" class="p-2 text-gray-700 hover:text-amber-500 focus:outline-none">
+              <i class='bx bx-user text-2xl'></i>
+          </button>
+
+          <div id="userDropdown" 
+              class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg z-50">
+              <a href="/profile" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <i class='bx bx-user-circle mr-2 text-lg'></i> Account
+              </a>
+              <a href="{{ route('orders.index') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <i class='bx bx-package mr-2 text-lg'></i> Orders
+              </a>
+              
+              {{-- Trigger for Modal --}}
+              <button type="button" id="openPromoModal" 
+                  class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <i class='bx bx-purchase-tag-alt mr-2 text-lg'></i> Redeem Promo Code
               </button>
 
-              <div id="userDropdown" 
-                  class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg z-50">
-                  <a href="/profile" 
-                    class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <i class='bx bx-user-circle mr-2 text-lg'></i> Account
-                  </a>
-                  <a href="{{ route('orders.index') }}" 
-                    class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <i class='bx bx-package mr-2 text-lg'></i> Orders
-                  </a>
-                  <form method="POST" action="{{ route('logout') }}">
-                      @csrf
-                      <button type="submit" 
-                              class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                          <i class='bx bx-log-out mr-2 text-lg'></i> Logout
-                      </button>
-                  </form>
-              </div>
+              <form method="POST" action="{{ route('logout') }}">
+                  @csrf
+                  <button type="submit" 
+                          class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <i class='bx bx-log-out mr-2 text-lg'></i> Logout
+                  </button>
+              </form>
           </div>
+      </div>
+
+    <div id="promoModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="max-w-md w-full bg-white p-6 rounded-lg shadow-md relative">
+          <button type="button" id="closePromoModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
+              &times;
+          </button>
+
+          <h2 class="text-xl font-bold mb-4">Redeem Promo Code</h2>
+            @if($errors->any())
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 relative rounded">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            @foreach($errors->all() as $error)
+                                <p class="font-medium">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                        <button type="button" onclick="this.parentElement.parentElement.remove()" 
+                            class="text-red-700 hover:text-red-900 ml-4 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            @endif
+            <form method="POST" action="{{ route('user.promocodes.apply') }}">
+                @csrf
+                <label for="code" class="block font-medium mb-1">Promo Code</label>
+                <input type="text" name="code" id="code" maxlength="8"
+                    class="w-full border px-3 py-2 rounded mb-4" required>
+
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Apply
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+      const promoModal = document.getElementById('promoModal');
+      const openBtn = document.getElementById('openPromoModal');
+      const closeBtn = document.getElementById('closePromoModal');
+
+      openBtn.addEventListener('click', () => {
+          promoModal.classList.remove('hidden');
+          document.getElementById('code').focus();
+      });
+
+      closeBtn.addEventListener('click', () => {
+          promoModal.classList.add('hidden');
+      });
+
+      promoModal.addEventListener('click', (e) => {
+          if (e.target === promoModal) {
+              promoModal.classList.add('hidden');
+          }
+      });
+
+      @if(session('message_type') === 'success')
+          promoModal.classList.add('hidden');
+      @elseif($errors->any())
+          promoModal.classList.remove('hidden');
+          document.getElementById('code').focus();
+      @endif
+    </script>
+
       @endauth
+
 
       <button id="toggleOpen" class="lg:hidden p-2">
         <svg class="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -279,43 +351,92 @@
     </div>
   </div>
 
-<div id="mobileMenu" class="fixed top-0 right-0 h-full w-64 bg-[#0c1033] shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex flex-col p-6">
-  <button id="toggleClose" class="self-end mb-6 p-2 text-white hover:text-red-500">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-    </svg>
-  </button>
+    <div id="mobileMenu" class="fixed top-0 right-0 h-full w-64 bg-[#0c1033] shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex flex-col p-6">
+      <button id="toggleClose" class="self-end mb-6 p-2 text-white hover:text-red-500">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
 
-  <input type="text" placeholder="Search..." class="mb-6 p-3 border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <input type="text" placeholder="Search..." class="mb-6 p-3 border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-  <ul class="flex flex-col gap-4">
-    <li><a href="/home" class="text-white font-medium hover:text-red-500 uppercase text-sm">Home</a></li>
-    <li><a href="/shop" class="text-white font-medium hover:text-red-500 uppercase text-sm">Shop</a></li>
-    <li><a href="/about" class="text-white font-medium hover:text-red-500 uppercase text-sm">About</a></li>
-    <li><a href="/contact" class="text-white font-medium hover:text-red-500 uppercase text-sm">Contact</a></li>
-    <li><a href="/portfolio" class="text-white font-medium hover:text-red-500 uppercase text-sm">Portfolio</a></li>
-  </ul>
+      <ul class="flex flex-col gap-4">
+        <li><a href="/home" class="text-white font-medium hover:text-red-500 uppercase text-sm">Home</a></li>
+        <li><a href="/shop" class="text-white font-medium hover:text-red-500 uppercase text-sm">Shop</a></li>
+        <li><a href="/about" class="text-white font-medium hover:text-red-500 uppercase text-sm">About</a></li>
+        <li><a href="/contact" class="text-white font-medium hover:text-red-500 uppercase text-sm">Contact</a></li>
+        <li><a href="/portfolio" class="text-white font-medium hover:text-red-500 uppercase text-sm">Portfolio</a></li>
+      </ul>
 
-  <div class="mt-auto pt-6">
-    <div class="flex gap-4 text-white text-xl mb-6">
-      <a href="#" class="hover:text-red-500"><i class='bx bxl-facebook'></i></a>
-      <a href="#" class="hover:text-red-500"><i class='bx bxl-instagram'></i></a>
-      <a href="#" class="hover:text-red-500"><i class='bx bxl-twitter'></i></a>
+      <div class="mt-auto pt-6">
+        <div class="flex gap-4 text-white text-xl mb-6">
+          <a href="#" class="hover:text-red-500"><i class='bx bxl-facebook'></i></a>
+          <a href="#" class="hover:text-red-500"><i class='bx bxl-instagram'></i></a>
+          <a href="#" class="hover:text-red-500"><i class='bx bxl-twitter'></i></a>
+        </div>
+      </div>
     </div>
+
+      <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-opacity duration-300"></div>
+    </header>
   </div>
-</div>
-
-<div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-opacity duration-300"></div>
-</header>
-
-
-
-
-    </div>
 
     <main>
-        @yield('content')
+        @if(session('message_type') === 'success')
+            <div id="flashMessage" class="fixed top-4 right-4 max-w-md w-full z-50 transition-all duration-300 transform">
+                <div class="bg-white rounded-lg shadow-lg border border-green-200 overflow-hidden">
+                    <div class="flex items-start justify-between p-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-lg font-medium text-gray-900">Success!</h3>
+                                <div class="mt-1 text-sm text-gray-600">
+                                    {{ session('message') }}
+                                </div>
+                                <div class="mt-2">
+                                    <a href="{{ route('shop') }}" class="text-sm font-medium text-blue-600 hover:text-blue-500 underline">
+                                        Go to Shop →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="closeFlashMessage()" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="bg-green-500 h-1 w-full" id="progressBar"></div>
+                </div>
+            </div>
+
+            <script>
+                let timeLeft = 100;
+                const progressBar = document.getElementById('progressBar');
+                const interval = setInterval(() => {
+                    timeLeft -= 1;
+                    progressBar.style.width = timeLeft + '%';
+                    if(timeLeft <= 0) {
+                        clearInterval(interval);
+                        closeFlashMessage();
+                    }
+                }, 50);
+
+                function closeFlashMessage() {
+                    const flashMessage = document.getElementById('flashMessage');
+                    flashMessage.classList.add('opacity-0', 'translate-y-2');
+                    setTimeout(() => flashMessage.remove(), 300);
+                }
+
+                document.getElementById('flashMessage').querySelector('button').addEventListener('click', closeFlashMessage);
+            </script>
+        @endif
+      @yield('content')
     </main>
   <div class="fixed bottom-6 right-6 z-50">
     <a href="https://wa.me/yourphonenumber" target="_blank">
@@ -323,6 +444,7 @@
     </a>
 </div>
 </body>
+
 <footer class="px-4 bg-gray-100 text-gray-800 footer-mobile-center">
     <div class="container flex flex-col lg:flex-row justify-between py-10 mx-auto space-y-8 lg:space-y-0 max-w-screen-xl">
         <div class="footer-logo lg:w-1/3 flex justify-center lg:justify-start">

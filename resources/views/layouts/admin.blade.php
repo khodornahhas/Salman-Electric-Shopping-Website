@@ -1026,6 +1026,11 @@
             <span class="material-icons-outlined">store</span> Brands
           </a>
         </li>
+         <li class="sidebar-list-item">
+          <a href="{{ route('admin.promocodes.index') }}">
+              <span class="material-icons-outlined">inventory_2</span>View Promo Codes
+          </a>
+        </li>
         <li class="sidebar-list-item">
           <a href="{{ route('admin.users') }}">
             <span class="material-icons-outlined">account_circle</span> Users

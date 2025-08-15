@@ -8,6 +8,9 @@ use App\Models\Product;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\RedeemedPromoCode;
+use App\Mail\OrderNotificationMail;
+use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
@@ -158,20 +161,43 @@ class CartController extends Controller
 
     public function total()
     {
+        $promoId = session('user_promo_code');
+        $promo = $promoId ? \App\Models\PromoCode::with('products')->find($promoId) : null;
+
         if (Auth::check()) {
-            $total = CartItem::where('user_id', Auth::id())
-                ->with('product')
-                ->get()
-                ->sum(fn($item) => $item->product->price * $item->quantity);
+            $cartItems = CartItem::with('product')->where('user_id', Auth::id())->get();
         } else {
             $cart = session()->get('cart', []);
-            $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+            $cartItems = [];
+            foreach ($cart as $productId => $item) {
+                $cartItems[] = (object)[
+                    'product' => (object)[
+                        'id' => $productId,
+                        'price' => $item['price'],
+                    ],
+                    'quantity' => $item['quantity'],
+                ];
+            }
+        }
+
+        $total = 0;
+        foreach ($cartItems as $item) {
+            $price = $item->product->price;
+            $qty = $item->quantity;
+
+            if ($promo && $promo->products->contains($item->product->id)) {
+                $discountedUnit = $price * (1 - ($promo->discount_percent / 100));
+                $total += $discountedUnit + ($price * ($qty - 1));
+            } else {
+                $total += $price * $qty;
+            }
         }
 
         return response()->json([
             'total' => number_format($total, 2)
         ]);
     }
+
 
     public function count()
     {
@@ -228,10 +254,21 @@ class CartController extends Controller
                 return (object) array_merge(['id' => $productId], $item);
             });
 
-        $subtotal = $cart->sum(function ($item) {
-            $price = $item->price ?? ($item->product->price ?? 0);
-            return $price * $item->quantity;
-        });
+        $promoId = session('user_promo_code');
+        $promo = $promoId ? \App\Models\PromoCode::with('products')->find($promoId) : null;
+
+        $subtotal = 0;
+        foreach ($cart as $item) {
+            $price = Auth::check() ? $item->product->price : ($item->price ?? 0);
+            $qty = $item->quantity;
+
+            if ($promo && $promo->products->contains($item->product->id ?? $item->id)) {
+                $discountedUnit = $price * (1 - ($promo->discount_percent / 100));
+                $subtotal += $discountedUnit + ($price * ($qty - 1));
+            } else {
+                $subtotal += $price * $qty;
+            }
+        }
 
         return view('cart.checkout', compact('cart', 'subtotal'));
     }
@@ -259,7 +296,7 @@ class CartController extends Controller
     }
 
 
-   public function placeOrder(Request $request)
+    public function placeOrder(Request $request)
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -281,24 +318,25 @@ class CartController extends Controller
             return redirect('/cart')->with('error', 'Your cart is empty!');
         }
 
-        $subtotal = 0;
+        $promoId = session('user_promo_code');
+        $promo = $promoId ? \App\Models\PromoCode::with('products')->find($promoId) : null;
+        $user = Auth::user();
 
+        $subtotal = 0;
         foreach ($cart as $item) {
-            if (Auth::check()) {
-                $product = $item->product;
-                if ($product) {
-                    $subtotal += $product->price * $item->quantity;
-                }
+            $price = Auth::check() ? $item->product->price : ($item['price'] ?? 0);
+            $qty = $item->quantity;
+
+            if ($promo && $promo->products->pluck('id')->contains($item->product->id ?? $item['product_id'])) {
+                $discountedUnit = $price * (1 - ($promo->discount_percent / 100));
+                $subtotal += $discountedUnit * $qty;
             } else {
-                $product = Product::find($item['product_id']);
-                if ($product) {
-                    $subtotal += ($item['price'] ?? $product->price) * $item['quantity'];
-                }
+                $subtotal += $price * $qty;
             }
         }
 
-        $shipping = 0; // no delivery for now
-        $total = $subtotal; // total = subtotal only
+        $shipping = 0;
+        $total = $subtotal + $shipping;
 
         $order = Order::create([
             'user_id' => Auth::check() ? Auth::id() : null,
@@ -316,27 +354,32 @@ class CartController extends Controller
         ]);
 
         foreach ($cart as $item) {
-            if (Auth::check()) {
-                $product = $item->product;
-                if ($product) {
-                    OrderItem::create([
-                        'order_id' => $order->id,
-                        'product_id' => $product->id,
-                        'quantity' => $item->quantity,
-                        'price' => $product->price,
-                    ]);
-                }
-            } else {
-                $product = Product::find($item['product_id']);
-                if ($product) {
-                    OrderItem::create([
-                        'order_id' => $order->id,
-                        'product_id' => $product->id,
-                        'quantity' => $item['quantity'],
-                        'price' => $item['price'] ?? $product->price,
-                    ]);
-                }
+            $productId = Auth::check() ? $item->product->id : $item['product_id'];
+            $price = Auth::check() ? $item->product->price : ($item['price'] ?? 0);
+            $qty = $item->quantity;
+
+            $appliedPromo = null;
+            if ($promo && $promo->products->pluck('id')->contains($productId)) {
+                $price = $price * (1 - ($promo->discount_percent / 100));
+                $appliedPromo = $promo;
             }
+
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $productId,
+                'quantity' => $qty,
+                'price' => $price,
+                'promo_code_id' => $appliedPromo?->id,
+                'original_price' => Auth::check() ? $item->product->price : ($item['price'] ?? 0),
+            ]);
+        }
+
+        if ($promo && $user) {
+            RedeemedPromoCode::create([
+                'user_id' => $user->id,
+                'promocode_id' => $promo->id,
+            ]);
+            session()->forget('user_promo_code');
         }
 
         if (Auth::check()) {
@@ -344,21 +387,38 @@ class CartController extends Controller
         } else {
             session()->forget('cart');
         }
+
+        $order->load([
+            'orderItems.product.promocodes',
+            'orderItems.product',
+            'orderItems.promoCode',
+        ]);
+
         try {
             Mail::send('emails.order_confirmation', ['order' => $order], function ($message) use ($order) {
                 $message->to($order->email)
-                        ->subject('Your Order Confirmation');
+                    ->subject('Your Order Confirmation #' . $order->id);
+                Log::info('Customer email sent', ['order' => $order->id, 'email' => $order->email]);
             });
 
-            Mail::send('emails.new_order_notification', ['order' => $order], function ($message) {
-                $message->to(env('OWNER_EMAIL'))
-                        ->subject('New Order Received');
-            });
+            $ownerEmail = config('mail.owner_email');
+            if ($ownerEmail && filter_var($ownerEmail, FILTER_VALIDATE_EMAIL)) {
+                Mail::send('emails.new_order_notification', ['order' => $order], function ($message) use ($order, $ownerEmail) {
+                    $message->from(config('mail.from.address'), config('mail.from.name'))
+                        ->to($ownerEmail)
+                        ->subject('🚨 New Order #' . $order->id);
+                    Log::info('Owner notification sent', ['order' => $order->id]);
+                });
+            } else {
+                Log::error('Invalid owner email', ['email' => $ownerEmail]);
+            }
         } catch (\Exception $e) {
-            Log::error('Order email failed: ' . $e->getMessage());
+            Log::error('Mail Error: ' . $e->getMessage(), [
+                'order' => $order->id,
+                'trace' => $e->getTraceAsString()
+            ]);
         }
         return redirect('/home')->with('success', 'Your order has been placed! We will contact you shortly.');
     }
-    
 }
 

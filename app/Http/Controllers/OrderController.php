@@ -20,17 +20,4 @@ class OrderController extends Controller
 
         return view('profile.orders', compact('orders'));
     }
-
-    public function placeOrder(Request $request)
-    {
-        $order = Order::create([
-            'user_id' => Auth::id(),
-        ]);
-
-        Mail::to(Auth::user()->email)->send(new OrderConfirmationMail($order));
-
-        Mail::to(config('mail.owner_email'))->send(new OrderNotificationMail($order));
-
-        return redirect()->route('order.success')->with('message', 'Order placed successfully!');
-    }
 }

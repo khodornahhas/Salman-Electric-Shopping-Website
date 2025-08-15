@@ -16,7 +16,9 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    public function promoCode() {
+    return $this->belongsTo(PromoCode::class, 'promo_code_id');
+    }
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);

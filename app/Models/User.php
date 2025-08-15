@@ -39,6 +39,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Order::class);
     }
 
+    public function promocodes()
+    {
+        return $this->belongsToMany(PromoCode::class, 'redeemed_promocodes')->withPivot('redeemed_at');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

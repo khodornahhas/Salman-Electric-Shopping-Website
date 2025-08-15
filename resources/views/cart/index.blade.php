@@ -285,7 +285,40 @@
                         <button class="quantity-btn" onclick="updateQuantity({{ $item->product->id }}, 1)">+</button>
                     </div>
 
-                    <div class="product-price sm:text-center">${{ number_format($item->product->price, 2) }}</div>
+                    <div class="product-price sm:text-center">
+                       @php
+                            $displayPrice = $item->product->price;
+                            $discountPercent = 0;
+                            $user = Auth::user();
+
+                        if(session('user_promo_code')) {
+                            $promo = \App\Models\PromoCode::with('products')->find(session('user_promo_code'));
+                            if($promo && $promo->products->contains($item->product->id)) {
+                                $alreadyRedeemed = $user ? $promo->orders()->where('user_id', $user->id)->exists() : false;
+                                if(!$alreadyRedeemed) {
+                                    $discountPercent = $promo->discount_percent;
+                                    $displayPrice = $item->product->price * (1 - $discountPercent / 100);
+                                }
+                            }
+                        }
+
+                        @endphp
+
+                        @if($discountPercent > 0)
+                            <span class="line-through text-gray-500 text-sm">
+                                ${{ number_format($item->product->price, 2) }}
+                            </span>
+                            <br>
+                            <span class="text-green-600 font-bold">
+                                ${{ number_format($displayPrice, 2) }}
+                            </span>
+                            <p class="text-green-700 text-xs uppercase font-bold">
+                                ({{ $discountPercent }}% off)
+                            </p>
+                        @else
+                            ${{ number_format($displayPrice, 2) }}
+                        @endif
+                    </div>
 
                     <div class="delete-icon flex justify-end sm:justify-center">
                         <form method="POST" action="{{ route('cart.remove', $item->product->id) }}">
@@ -304,12 +337,32 @@
 
         <div class="summary-section w-full lg:w-1/3 border border-gray-200 p-4 rounded-md shadow-sm">
             <h2 class="summary-title text-lg font-semibold mb-4">Order Summary</h2>
-            @php
+                @php
                 $total = 0;
+                $user = Auth::user();
+                $promo = session('user_promo_code') 
+                    ? \App\Models\PromoCode::with('products')->find(session('user_promo_code')) 
+                    : null;
+
                 foreach ($cartItems as $item) {
-                    $total += $item->product->price * $item->quantity;
+                    $price = $item->product->price ?? 0;
+                    $itemDiscount = 0;
+
+                    if($item->product && $promo && $promo->products->contains($item->product->id)) {
+                        $alreadyRedeemed = $user ? $promo->orders()->where('user_id', $user->id)->exists() : false;
+                        if(!$alreadyRedeemed) {
+                            $itemDiscount = $promo->discount_percent;
+                            $total += $price * (1 - $itemDiscount / 100); 
+                            if ($item->quantity > 1) {
+                                $total += $price * ($item->quantity - 1); 
+                            }
+                            continue; 
+                        }
+                    }
+
+                    $total += $price * $item->quantity;
                 }
-            @endphp
+                @endphp
 
             <div class="summary-details">
                 <div class="summary-row total-row flex justify-between font-bold text-gray-800 text-lg mb-4">

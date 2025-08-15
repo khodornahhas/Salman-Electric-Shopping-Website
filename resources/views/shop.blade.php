@@ -373,14 +373,39 @@
                                     $disableAddToCart = $product->coming_soon || $product->contact_for_price || $product->quantity == 0 || $product->out_of_stock;
                                 @endphp
 
-                                @if(!$disableAddToCart)
-                                    @if($product->sale_price && $product->sale_price < $product->price)
-                                        <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
-                                        <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
-                                    @else
-                                        <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
-                                    @endif
+                             @if(!$disableAddToCart)
+                                @php
+                                    $discountPercent = 0;
+                                    $user = Auth::user();
+
+                                    if(session('user_promo_code')) {
+                                        $promo = \App\Models\PromoCode::with('products')->find(session('user_promo_code'));
+
+                                        if($promo && $promo->products->contains($product->id)) {
+                                            $alreadyRedeemed = $user 
+                                                ? $promo->orders()->where('user_id', $user->id)->exists()
+                                                : false;
+
+                                            if(!$alreadyRedeemed) {
+                                                $discountPercent = $promo->discount_percent;
+                                            }
+                                        }
+                                    }
+                                @endphp
+
+                                @if($discountPercent > 0)
+                                    <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
+                                    <p class="text-green-600 text-lg font-bold">
+                                        Special Price: ${{ number_format($product->price * (1 - $discountPercent/100), 2) }}
+                                    </p>
+                                @elseif($product->sale_price && $product->sale_price < $product->price)
+                                    <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
+                                    <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
+                                @else
+                                    <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
                                 @endif
+                            @endif
+
 
                                 <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
                                     @csrf
@@ -398,7 +423,7 @@
                         </div>
                     </div>
                 @endforeach
-</div>
+        </div>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

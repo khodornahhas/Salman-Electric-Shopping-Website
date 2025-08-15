@@ -11,6 +11,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
@@ -68,12 +69,15 @@ Route::get('/product-details/{id}', [ProductController::class, 'show'])->name('p
 
 
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/profile/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/promocodes/redeem', [PromoCodeController::class, 'redeemForm'])->name('user.promocodes.redeem');
+    Route::post('/promocodes/apply', [PromoCodeController::class, 'apply'])->name('user.promocodes.apply');
+    Route::get('/check-promo', [PromoCodeController::class, 'checkActivePromo'])
+    ->middleware('auth');
 });
 
 
@@ -84,6 +88,12 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->name('admi
         Route::get('/', function () {
             return redirect()->route('admin.dashboard');
         })->name('index');
+
+        Route::get('/promocodes', [PromoCodeController::class, 'index'])->name('promocodes.index'); 
+        Route::get('/promocodes/create', [PromoCodeController::class, 'create'])->name('promocodes.create'); 
+        Route::post('/promocodes', [PromoCodeController::class, 'store'])->name('promocodes.store');
+        Route::delete('/promocodes/{promocode}', [PromoCodeController::class, 'destroy'])->name('promocodes.destroy');
+
 
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 

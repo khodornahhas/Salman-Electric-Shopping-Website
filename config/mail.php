@@ -115,5 +115,5 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
     
-    'owner_email' => env('OWNER_EMAIL', 'defaultowner@example.com'),
+    'owner_email' => env('MAIL_OWNER_EMAIL', 'owner@example.com'),
 ];
