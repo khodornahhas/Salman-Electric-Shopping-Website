@@ -9,7 +9,7 @@ class PromoCode extends Model
 {
     use HasFactory;
     protected $table = 'promocodes';
-    protected $fillable = ['code', 'discount_percent', 'expires_at'];
+    protected $fillable = ['code', 'discount_percent', 'expires_at', 'is_active'];
     protected $casts = ['expires_at' => 'datetime',];
     
     public function products()
@@ -24,6 +24,11 @@ class PromoCode extends Model
     public function orders()
     {
         return $this->hasMany(\App\Models\Order::class, 'promo_code_id');
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(\App\Models\OrderItem::class, 'promo_code_id');
     }
 
     public static function generateCode($length = 8){

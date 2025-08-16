@@ -41,9 +41,20 @@ class PromoCodeController extends Controller
 
     public function destroy(PromoCode $promocode)
     {
+        $usedInOrders = $promocode->orders()->exists() || \App\Models\OrderItem::where('promo_code_id', $promocode->id)->exists();
+
+        if ($usedInOrders) {
+            $promocode->is_active = false;
+            $promocode->save();
+
+            return redirect()->route('admin.promocodes.index')
+                ->with('info', 'Promo code was used in orders, so it has been deactivated instead of deleted.');
+        }
+
         $promocode->delete();
-        return redirect()->route('admin.promocodes.index')->with('success', 'Promo code deleted.');
+        return redirect()->route('admin.promocodes.index')->with('success', 'Promo code deleted successfully.');
     }
+
 
     public function redeemForm()
     {
@@ -57,11 +68,13 @@ class PromoCodeController extends Controller
         ]);
 
         $promo = PromoCode::with('products')
-            ->where('code', $request->code)
-            ->where(function ($q) {
-                $q->whereNull('expires_at')->orWhere('expires_at', '>=', now());
-            })
-            ->first();
+        ->where('code', $request->code)
+        ->where('is_active', true)
+        ->where(function ($q) {
+            $q->whereNull('expires_at')->orWhere('expires_at', '>=', now());
+        })
+        ->first();
+
 
         if (!$promo) {
             return back()->withErrors(['code' => 'Invalid or expired promo code.']);
@@ -72,7 +85,7 @@ class PromoCodeController extends Controller
         return redirect()->route('home')->with('success', 'Promo code applied! Discount will be visible on eligible products.');
     }
 
-   public function apply(Request $request)
+    public function apply(Request $request)
     {
         $request->validate([
             'code' => 'required|string|size:8',
