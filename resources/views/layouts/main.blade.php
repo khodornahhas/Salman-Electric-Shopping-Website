@@ -316,47 +316,60 @@
             </a>
           @endguest
 
-          @auth
-          <div class="relative" x-data="{ open: false }">
-            <button 
-              @click="open = !open" 
-              class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500 focus:outline-none"
-            >
-              <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
-            </button>
+         @auth
+          <div class="relative" x-data="{ open: false, redeemOpen: false }" @mouseenter="open = true" @mouseleave="open = false">
+              <!-- User Icon / Dropdown Toggle -->
+              <button @click="open = !open" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500 focus:outline-none">
+                  <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
+              </button>
 
-            <div 
-              x-show="open" 
-              @click.away="open = false"
-              x-transition
-              class="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-lg shadow-lg z-50"
-            >
-              <a href="{{ url('/profile') }}" 
-                class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-                <i class='bx bx-user-circle text-lg'></i> Account
-              </a>
+              <!-- Dropdown Menu -->
+              <div x-show="open" x-transition class="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-lg shadow-lg z-50">
+                  <a href="{{ url('/profile') }}" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
+                      <i class='bx bx-user-circle text-lg'></i> Account
+                  </a>
+                  <a href="{{ url('/profile/orders') }}" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
+                      <i class='bx bx-package text-lg'></i> Orders
+                  </a>
 
-              <a href="{{ url('/profile/orders') }}" 
-                class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-                <i class='bx bx-package text-lg'></i> Orders
-              </a>
+                  <button @click="redeemOpen = true" class="w-full text-left flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
+                      <i class='bx bx-gift text-lg'></i> Redeem Code
+                  </button>
 
-              <a href="{{ url('/redeem') }}" 
-                class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-                <i class='bx bx-gift text-lg'></i> Redeem Code
-              </a>
+                  <form method="POST" action="{{ route('logout') }}">
+                      @csrf
+                      <button type="submit" class="w-full text-left flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
+                          <i class='bx bx-log-out text-lg'></i> Logout
+                      </button>
+                  </form>
+              </div>
 
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" 
-                  class="w-full text-left flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-                  <i class='bx bx-log-out text-lg'></i> Logout
-                </button>
-              </form>
-            </div>
+              <div 
+                  x-show="redeemOpen" 
+                  x-transition 
+                  class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+              >
+                  <div class="bg-white rounded-lg p-6 w-full max-w-md">
+                      <div class="flex justify-between items-center mb-4">
+                          <h2 class="text-lg font-semibold">Redeem Promo Code</h2>
+                          <button @click="redeemOpen = false" class="text-gray-600 hover:text-gray-800">&times;</button>
+                      </div>
+                      <form method="POST" action="{{ route('user.promocodes.apply') }}">
+                          @csrf
+                          <input 
+                              type="text" 
+                              name="code" 
+                              placeholder="Enter your code" 
+                              class="w-full border px-3 py-2 rounded mb-4"
+                          >
+                          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700">
+                              Apply
+                          </button>
+                      </form>
+                  </div>
+              </div>
           </div>
           @endauth
-
 
           <button id="toggleOpen" class="lg:hidden p-1 sm:p-1.5">
             <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="#000" viewBox="0 0 20 20">
@@ -439,7 +452,6 @@
 <footer class="bg-white text-gray-800">
   <div class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-5 gap-8 max-w-screen-xl text-center md:text-left">
 
-    <!-- Logo + Extra Info -->
     <div class="flex flex-col items-center md:items-start">
       <a href="/" class="flex items-center mb-4">
         <img src="{{ asset('images/SalmanLogo2.png') }}" alt="Salman Electric Logo" class="h-12 object-contain">
@@ -447,8 +459,7 @@
       <p class="text-sm text-gray-600">Your Trusted Solar & Electric Solutions</p>
     </div>
     
-         <!-- Keep in Touch -->
-<div class="flex flex-col items-center md:items-start md:ml-[25px]">
+    <div class="flex flex-col items-center md:items-start md:ml-[25px]">
       <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Keep In Touch</h3>
       <ul class="space-y-2 text-sm">
         <li><a href="#" class="hover:text-blue-600 transition-colors">About Us</a></li>
@@ -506,7 +517,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/wishlist.js') }}"></script>
-
 <script>
 
   document.addEventListener('DOMContentLoaded', function () {

@@ -37,12 +37,14 @@
                     </div>
 
                     <div class="bg-white p-6">
-                        <h3 class="text-md font-medium text-gray-700 mb-4">Order Items</h3>
                         <div class="space-y-4">
                             @foreach($order->orderItems as $item)
                                 <div class="flex items-start space-x-4 p-3 hover:bg-gray-50 rounded-lg transition duration-150">
-                                    <img src="{{ asset($item->product->image) }}" alt="{{ $item->product->name }}" 
-                                        class="w-20 h-20 object-contain rounded-md border border-gray-200">
+                                <a href="{{ route('product.details', $item->product->id) }}">
+                                <img src="{{ asset('storage/' . $item->product->image) }}" 
+                                    alt="{{ $item->product->name }}" 
+                                    class="w-20 h-20 object-cover rounded">
+                                    </a>
                                     <div class="flex-1">
                                         <h4 class="font-medium text-gray-800">{{ $item->product->name }}</h4>
                                         <p class="text-sm text-gray-500 mt-1">Quantity: {{ $item->quantity }}</p>
