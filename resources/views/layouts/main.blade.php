@@ -185,6 +185,61 @@
       }
     }
   }
+
+  /* New mobile-specific styles */
+  @media (max-width: 767px) {
+    /* Hide desktop search on mobile */
+    .desktop-search {
+      display: none;
+    }
+
+    /* Adjust header layout for mobile */
+    header .flex.items-center.justify-between {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    /* Center logo on mobile */
+    .logo-container {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Adjust icon sizes for mobile */
+    .mobile-icons .bx {
+      font-size: 1.5rem;
+    }
+
+    /* Make cart/wishlist icons closer together */
+    .mobile-icons > a {
+      padding: 0.5rem;
+    }
+
+    /* Mobile menu search input */
+    #mobileMenu input[type="text"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+      border: none;
+      background: rgba(255,255,255,0.9);
+    }
+  }
+
+  /* Tablet styles */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    /* Adjust header padding */
+    header .flex.items-center.justify-between {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    /* Make search bar slightly smaller */
+    .desktop-search {
+      max-width: 300px;
+    }
+  }
 </style>
 <body>
 <div class="sticky-header hidden md:block">
@@ -206,181 +261,85 @@
   </div>
 </div>
 
-<header class="sticky top-0 z-50 bg-white shadow-md tracking-wide font-[Urbanist]">
-  <div class="flex flex-wrap items-center justify-between w-full px-4 sm:px-6 lg:px-10 min-h-[70px]">
+  <header class="sticky top-0 z-50 bg-white shadow-md tracking-wide font-[Urbanist]">
+    <div class="flex items-center justify-between w-full px-4 sm:px-5 lg:px-6 min-h-[70px]">
+      <div class="flex items-center gap-3 lg:gap-8 xl:gap-10">
 
-    <a href="/" class="hidden sm:block shrink-0">
-      <img src="{{ asset('images/S8.PNG') }}" alt="logo" class="w-40 h-auto">
-    </a>
-
-    <a href="/" class="block sm:hidden shrink-0">
-      <img src="{{ asset('images/S8.PNG') }}" alt="logo" class="w-20 h-auto">
-    </a>
-
-    <div id="collapseMenu" class="hidden lg:block">
-      <ul class="flex justify-center gap-x-6">
-        <li><a href="/home" class="block text-[15px] font-medium {{ request()->is('home') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Home</a></li>
-        <li><a href="/shop" class="block text-[15px] font-medium {{ request()->is('shop') || request()->is('shop/*') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Shop</a></li>
-        <li><a href="/about" class="block text-[15px] font-medium {{ request()->is('about') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">About</a></li>
-        <li><a href="/contact" class="block text-[15px] font-medium {{ request()->is('contact') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Contact</a></li>
-        <li><a href="/portfolio" class="block text-[15px] font-medium {{ request()->is('portfolio') || request()->is('portfolio/*') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Portfolio</a></li>
-      </ul>
-    </div>
-
-    <div class="flex items-center gap-3 sm:gap-4 ml-auto lg:ml-0">
-      <a href="{{ route('wishlist.index') }}" class="relative p-2 text-gray-700 hover:text-amber-500">
-        <i class='bx bx-heart text-2xl'></i>
-        <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
-      </a>
-      <a href="{{ route('cart.index') }}" class="relative p-2 text-gray-700 hover:text-amber-500">
-        <i class='bx bx-cart text-2xl'></i>
-        <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
-      </a>
-      @guest
-        <a href="/account" class="p-2 text-gray-700 hover:text-amber-500">
-            <i class='bx bx-user text-2xl'></i>
+        <a href="/" class="shrink-0">
+          <img src="{{ asset('images/S8.PNG') }}" alt="logo" class="hidden sm:block w-36 lg:w-40 h-auto lg:ml-[20px] xl:ml-[130px]">
+          <img src="{{ asset('images/S8.PNG') }}" alt="logo" class="block sm:hidden w-20 h-auto">
         </a>
-      @endguest
-      @auth
-      <div class="relative">
-          <button id="userMenuButton" class="p-2 text-gray-700 hover:text-amber-500 focus:outline-none">
-              <i class='bx bx-user text-2xl'></i>
-          </button>
 
-          <div id="userDropdown" 
-              class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg z-50">
-              <a href="/profile" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  <i class='bx bx-user-circle mr-2 text-lg'></i> Account
-              </a>
-              <a href="{{ route('orders.index') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  <i class='bx bx-package mr-2 text-lg'></i> Orders
-              </a>
-              
-              {{-- Trigger for Modal --}}
-              <button type="button" id="openPromoModal" 
-                  class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  <i class='bx bx-purchase-tag-alt mr-2 text-lg'></i> Redeem Promo Code
-              </button>
-
-              <form method="POST" action="{{ route('logout') }}">
-                  @csrf
-                  <button type="submit" 
-                          class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <i class='bx bx-log-out mr-2 text-lg'></i> Logout
-                  </button>
-              </form>
-          </div>
+        <div id="collapseMenu" class="hidden lg:block">
+          <ul class="flex gap-x-3 lg:gap-x-4 xl:gap-x-6">
+            <li><a href="/home" class="block text-[14px] lg:text-[15px] font-medium {{ request()->is('home') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Home</a></li>
+            <li><a href="/shop" class="block text-[14px] lg:text-[15px] font-medium {{ request()->is('shop') || request()->is('shop/*') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Shop</a></li>
+            <li><a href="/about" class="block text-[14px] lg:text-[15px] font-medium {{ request()->is('about') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">About</a></li>
+            <li><a href="/contact" class="block text-[14px] lg:text-[15px] font-medium {{ request()->is('contact') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Contact</a></li>
+            <li><a href="/portfolio" class="block text-[14px] lg:text-[15px] font-medium {{ request()->is('portfolio') || request()->is('portfolio/*') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Portfolio</a></li>
+          </ul>
+        </div>
       </div>
 
-    <div id="promoModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-      <div class="max-w-md w-full bg-white p-6 rounded-lg shadow-md relative">
-          <button type="button" id="closePromoModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
-              &times;
+      <div class="flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
+
+        <div class="desktop-search relative hidden sm:flex items-center w-[160px] md:w-[180px] lg:w-[220px] xl:w-[280px] 2xl:w-[320px] mx-auto rounded-full bg-white shadow-sm border border-gray-200 focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400 transition-all duration-200">
+          <input 
+            type="text" 
+            name="q" 
+            placeholder="Search..." 
+            class="w-full py-[6px] lg:py-2 pl-3 lg:pl-4 xl:pl-5 pr-8 lg:pr-10 text-gray-700 rounded-full focus:outline-none bg-transparent text-xs lg:text-sm xl:text-base"
+            autocomplete="off"
+          >
+          <button 
+            type="submit" 
+            class="absolute right-0 px-2 lg:px-3 xl:px-4 text-gray-400 hover:text-amber-500 transition-colors duration-200"
+          >
+            <i class='bx bx-search text-base lg:text-lg xl:text-xl'></i>
           </button>
-
-          <h2 class="text-xl font-bold mb-4">Redeem Promo Code</h2>
-            @if($errors->any())
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 relative rounded">
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            @foreach($errors->all() as $error)
-                                <p class="font-medium">{{ $error }}</p>
-                            @endforeach
-                        </div>
-                        <button type="button" onclick="this.parentElement.parentElement.remove()" 
-                            class="text-red-700 hover:text-red-900 ml-4 mt-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            @endif
-            <form method="POST" action="{{ route('user.promocodes.apply') }}">
-                @csrf
-                <label for="code" class="block font-medium mb-1">Promo Code</label>
-                <input type="text" name="code" id="code" maxlength="8"
-                    class="w-full border px-3 py-2 rounded mb-4" required>
-
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                    Apply
-                </button>
-            </form>
         </div>
+        
+        <div class="mobile-icons flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
+          <a href="{{ route('wishlist.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
+            <i class='bx bx-heart text-lg sm:text-xl lg:text-2xl'></i>
+            <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center"></span>
+          </a>
+
+          <a href="{{ route('cart.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
+            <i class='bx bx-cart text-lg sm:text-xl lg:text-2xl'></i>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center"></span>
+          </a>
+
+          @guest
+            <a href="/account" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
+              <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
+            </a>
+          @endguest
+
+          @auth
+          <div class="relative">
+            <button id="userMenuButton" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500 focus:outline-none">
+              <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
+            </button>
+            <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg z-50">
+            </div>
+          </div>
+          @endauth
+
+          <button id="toggleOpen" class="lg:hidden p-1 sm:p-1.5">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="#000" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
-
-
-    <script>
-      const promoModal = document.getElementById('promoModal');
-      const openBtn = document.getElementById('openPromoModal');
-      const closeBtn = document.getElementById('closePromoModal');
-
-      openBtn.addEventListener('click', () => {
-          promoModal.classList.remove('hidden');
-          document.getElementById('code').focus();
-      });
-
-      closeBtn.addEventListener('click', () => {
-          promoModal.classList.add('hidden');
-      });
-
-      promoModal.addEventListener('click', (e) => {
-          if (e.target === promoModal) {
-              promoModal.classList.add('hidden');
-          }
-      });
-
-      @if(session('message_type') === 'success')
-          promoModal.classList.add('hidden');
-      @elseif($errors->any())
-          promoModal.classList.remove('hidden');
-          document.getElementById('code').focus();
-      @endif
-    </script>
-
-      @endauth
-
-
-      <button id="toggleOpen" class="lg:hidden p-2">
-        <svg class="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            clip-rule="evenodd"></path>
-        </svg>
-      </button>
-    </div>
-  </div>
 
     <div id="mobileMenu" class="fixed top-0 right-0 h-full w-64 bg-[#0c1033] shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex flex-col p-6">
-      <button id="toggleClose" class="self-end mb-6 p-2 text-white hover:text-red-500">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
-
-      <input type="text" placeholder="Search..." class="mb-6 p-3 border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-      <ul class="flex flex-col gap-4">
-        <li><a href="/home" class="text-white font-medium hover:text-red-500 uppercase text-sm">Home</a></li>
-        <li><a href="/shop" class="text-white font-medium hover:text-red-500 uppercase text-sm">Shop</a></li>
-        <li><a href="/about" class="text-white font-medium hover:text-red-500 uppercase text-sm">About</a></li>
-        <li><a href="/contact" class="text-white font-medium hover:text-red-500 uppercase text-sm">Contact</a></li>
-        <li><a href="/portfolio" class="text-white font-medium hover:text-red-500 uppercase text-sm">Portfolio</a></li>
-      </ul>
-
-      <div class="mt-auto pt-6">
-        <div class="flex gap-4 text-white text-xl mb-6">
-          <a href="#" class="hover:text-red-500"><i class='bx bxl-facebook'></i></a>
-          <a href="#" class="hover:text-red-500"><i class='bx bxl-instagram'></i></a>
-          <a href="#" class="hover:text-red-500"><i class='bx bxl-twitter'></i></a>
-        </div>
-      </div>
     </div>
 
-      <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-opacity duration-300"></div>
-    </header>
-  </div>
+    <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-opacity duration-300"></div>
+  </header>
 
     <main>
         @if(session('message_type') === 'success')
@@ -445,87 +404,79 @@
 </div>
 </body>
 
-<footer class="px-4 bg-gray-100 text-gray-800 footer-mobile-center">
-    <div class="container flex flex-col lg:flex-row justify-between py-10 mx-auto space-y-8 lg:space-y-0 max-w-screen-xl">
-        <div class="footer-logo lg:w-1/3 flex justify-center lg:justify-start">
-            <a href="/" class="flex items-center max-w-[280px]">
-                <img 
-                    src="{{ asset('images/SalmanLogo2.png') }}" 
-                    alt="Salman Electric Logo" 
-                    class="h-auto w-full max-h-14 object-contain"
-                >
-            </a>
-        </div>
+<footer class="bg-white text-gray-800">
+  <div class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-5 gap-8 max-w-screen-xl text-center md:text-left">
 
-        <div class="lg:grid lg:grid-cols-3 text-sm gap-8 sm:gap-12 w-full lg:w-1/3">
-            <div class="space-y-3 sm:space-y-4"> 
-                <h3 class="text-base sm:text-lg font-bold text-gray-900 uppercase tracking-wider mb-2 sm:mb-4">Stay In Touch</h3>
-                <ul class="space-y-2 sm:space-y-3 text-sm sm:text-base"> 
-                    <li>
-                        <a href="#" class="hover:text-blue-600 transition-colors">Contact Us</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:text-blue-600 transition-colors">About Us</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="space-y-3 sm:space-y-4">
-                <h3 class="text-base sm:text-lg font-bold text-gray-900 uppercase tracking-wider mb-2 sm:mb-4">Company</h3>
-                <ul class="space-y-2 sm:space-y-3 text-sm sm:text-base">
-                    <li>
-                        <a href="#" class="hover:text-blue-600 transition-colors">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:text-blue-600 transition-colors">Return and Exchange Policy</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="space-y-3 sm:space-y-4">
-                <h3 class="text-base sm:text-lg font-bold text-gray-900 uppercase tracking-wider mb-2 sm:mb-4">Reach Out</h3>
-                <ul class="space-y-2 sm:space-y-3 text-sm sm:text-base">
-                    <li>
-                        <a href="tel:+96176765561" class="hover:text-blue-600 transition-colors">+961 76 765 561</a>
-                    </li>
-                    <li>
-                        <a href="tel:+96181966742" class="hover:text-blue-600 transition-colors">+961 81 966 742</a>
-                    </li>
-                    <li>
-                        <a href="mailto:walidsalman@gmail.com" class="hover:text-blue-600 transition-colors">walidsalman@gmail.com</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="footer-socials lg:w-1/3 flex flex-col items-center lg:items-end space-y-3 sm:space-y-4 mt-8 lg:mt-0">
-            <h3 class="text-base sm:text-lg font-bold text-gray-900 uppercase tracking-wider mb-2 sm:mb-4">Our Socials</h3>
-
-            <div class="flex space-x-4 sm:space-x-5">
-                <a href="#" aria-label="Facebook" class="text-gray-600 hover:text-blue-600 transition-colors text-xl sm:text-2xl">
-                    <i class='bx bxl-facebook'></i>
-                </a>
-                <a href="#" aria-label="Instagram" class="text-gray-600 hover:text-pink-500 transition-colors text-xl sm:text-2xl">
-                    <i class='bx bxl-instagram'></i>
-                </a>
-                 <a href="https://maps.google.com/?q=Your+Business+Address" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                class="text-gray-600 hover:text-red-600 transition-colors text-xl sm:text-2xl">
-                <i class='bx bx-map text-xl sm:text-2xl mr-2'></i></a>
-            </div>
-        </div>
+    <!-- Logo + Extra Info -->
+    <div class="flex flex-col items-center md:items-start">
+      <a href="/" class="flex items-center mb-4">
+        <img src="{{ asset('images/SalmanLogo2.png') }}" alt="Salman Electric Logo" class="h-12 object-contain">
+      </a>
+      <p class="text-sm text-gray-600">Your Trusted Solar & Electric Solutions</p>
+    </div>
+    
+         <!-- Keep in Touch -->
+<div class="flex flex-col items-center md:items-start md:ml-[25px]">
+      <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Keep In Touch</h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#" class="hover:text-blue-600 transition-colors">About Us</a></li>
+        <li><a href="#" class="hover:text-blue-600 transition-colors">Contact Us</a></li>
+      </ul>
     </div>
 
-    <div class="py-6 text-sm sm:text-base text-center text-gray-700 border-t border-gray-300 mt-8">
-        © {{ date('Y') }} Salman Electric. All rights reserved.
+
+
+
+    <div class="flex flex-col items-center md:items-start">
+      <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Useful Links</h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#" class="hover:text-blue-600 transition-colors">Privacy Policy</a></li>
+        <li><a href="#" class="hover:text-blue-600 transition-colors">Return & Exchange Policy</a></li>
+      </ul>
     </div>
+    
+    <div class="flex flex-col items-center md:items-start">
+      <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Contact Us</h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="tel:+96176765561" class="hover:text-blue-600 transition-colors">+961 76 765 561</a></li>
+        <li><a href="tel:+96181966742" class="hover:text-blue-600 transition-colors">+961 81 966 742</a></li>
+        <li><a href="mailto:walidsalman@gmail.com" class="hover:text-blue-600 transition-colors">walidsalman@gmail.com</a></li>
+      </ul>
+    </div>
+
+    <div class="flex flex-col items-center md:items-start">
+      <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Follow Us</h3>
+      <div class="flex space-x-4">
+        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="text-gray-600 hover:text-blue-600 text-xl transition">
+          <i class='bx bxl-facebook'></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="text-gray-600 hover:text-pink-500 text-xl transition">
+          <i class='bx bxl-instagram'></i>
+        </a>
+        <a href="https://maps.google.com/?q=Your+Business+Address" target="_blank" aria-label="Google Maps" class="text-gray-600 hover:text-red-600 text-xl transition">
+          <i class='bx bx-map'></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-gray-300 py-6 text-center text-sm text-gray-600 relative">
+    <p>© {{ date('Y') }} Salman Electric. All rights reserved.</p>
+    <a href="#" class="absolute right-1/2 top-[-20px] transform translate-x-1/2 bg-gray-200 p-2 rounded hover:bg-gray-300 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+      </svg>
+    </a>
+  </div>
 </footer>
+
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/wishlist.js') }}"></script>
 
 <script>
+
   document.addEventListener('DOMContentLoaded', function () {
       const toggleOpen = document.getElementById('toggleOpen');
       const toggleClose = document.getElementById('toggleClose');
