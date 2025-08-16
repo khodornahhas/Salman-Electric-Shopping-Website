@@ -145,6 +145,8 @@ Route::get('/portfolio', function () {
     return view('portfolio');
 })->name('portfolio');
 
+Route::get('/order/success/{order}', [CartController::class, 'showSuccess']);
+
 Route::get('/mail-test', function () {
     Mail::raw('This is a test email from Laravel via Gmail SMTP', function ($message) {
         $message->to('khodornahhas8@gmail.com')->subject('Test Email');

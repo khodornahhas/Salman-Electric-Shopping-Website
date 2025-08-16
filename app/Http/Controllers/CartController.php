@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
-    public function add(Request $request, $productId)
-    {
+    public function add(Request $request, $productId){
         try {
             $product = Product::findOrFail($productId);
             $quantity = (int) $request->input('quantity') ?: 1;
@@ -69,8 +68,7 @@ class CartController extends Controller
     }
 
 
-    public function index()
-    {
+    public function index(){
         if (Auth::check()) {
             $cartItems = CartItem::with('product')
                 ->where('user_id', Auth::id())
@@ -94,8 +92,7 @@ class CartController extends Controller
     }
 
 
-    public function update(Request $request, $productId)
-    {
+    public function update(Request $request, $productId){
         $change = $request->input('change', 0);
         $user = Auth::user();
 
@@ -159,8 +156,7 @@ class CartController extends Controller
     }
 
 
-    public function total()
-    {
+    public function total(){
         $promoId = session('user_promo_code');
         $promo = $promoId ? \App\Models\PromoCode::with('products')->find($promoId) : null;
 
@@ -199,8 +195,7 @@ class CartController extends Controller
     }
 
 
-    public function count()
-    {
+    public function count(){
         if (Auth::check()) {
             $count = CartItem::where('user_id', Auth::id())->sum('quantity');
         } else {
@@ -212,8 +207,7 @@ class CartController extends Controller
     }
 
 
-    public function remove($productId)
-    {
+    public function remove($productId){
         if (Auth::check()) {
             CartItem::where('user_id', Auth::id())
                     ->where('product_id', $productId)
@@ -227,8 +221,7 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Item removed!');
     }
 
-    public function clear()
-    {
+    public function clear(){
         if (Auth::check()) {
             CartItem::where('user_id', Auth::id())->delete();
         } else {
@@ -238,8 +231,7 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Cart cleared!');
     }
 
-    public function checkout()
-    {
+    public function checkout(){
         $hasItems = Auth::check()
             ? CartItem::where('user_id', Auth::id())->exists()
             : !empty(session('cart', []));
@@ -274,8 +266,7 @@ class CartController extends Controller
     }
 
 
-    public function confirm(Request $request)
-    {
+    public function confirm(Request $request){
         if (!$request->isMethod('post') || !$request->has('first_name')) {
             return redirect()->route('cart.checkout')->with('error', 'Please complete the checkout form first.');
         }
@@ -296,8 +287,7 @@ class CartController extends Controller
     }
 
 
-    public function placeOrder(Request $request)
-    {
+    public function placeOrder(Request $request){
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
@@ -418,7 +408,11 @@ class CartController extends Controller
                 'trace' => $e->getTraceAsString()
             ]);
         }
-        return redirect('/home')->with('success', 'Your order has been placed! We will contact you shortly.');
+         return redirect("/order/success/{$order->id}");
+    }
+
+    public function showSuccess(Order $order){
+        return view('cart.success', ['order' => $order]);
     }
 }
 
