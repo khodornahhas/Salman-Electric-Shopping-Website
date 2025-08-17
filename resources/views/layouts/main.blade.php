@@ -17,6 +17,7 @@
 
     @yield('head') 
 </head>
+
 <style>
   body {
     font-family: 'Urbanist', sans-serif !important;
@@ -42,9 +43,19 @@
     background-color: rgba(255,255,255,0.95);
   }
 
+  @media (max-width: 1023px) {
+    #toggleOpen {
+      display: block !important;
+    }
+    
+    #collapseMenu {
+      display: none;
+    }
+  }
+
   @media (max-width: 767px) {
     body {
-      padding-top: 60px; 
+      padding-top: 0px; 
     }
     
     .logo-container {
@@ -69,178 +80,131 @@
     }
   }
 
-  @media (max-width: 767px) {
-    #mobileMenu {
-      position: fixed;
-      top: 0;
-      right: -280px;
-      width: 280px;
-      height: 100vh;
-      background-color: #0c1033;
-      color: white;
-      padding: 2rem 1.5rem;
-      z-index: 60;
-      transition: transform 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-    }
-
-    #mobileMenu.open {
-      transform: translateX(-280px);
-    }
-
-    #mobileMenu .close-btn {
-      position: absolute;
-      top: 1.2rem;
-      right: 1.2rem;
-      font-size: 2rem;
-      cursor: pointer;
-      color: white;
-    }
-
-    #menuOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0,0,0,0.5);
-      z-index: 55;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    #menuOverlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    #mobileMenu .search-input {
-      width: 100%;
-      padding: 0.7rem 1rem;
-      border-radius: 999px;
-      border: none;
-      background: white;
-      color: #333;
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-
-    #mobileMenu nav a {
-      color: white;
-      font-weight: bold;
-      text-transform: uppercase;
-      margin: 0.6rem 0;
-      display: block;
-      font-size: 0.9rem;
-    }
-
-    #mobileMenu nav a:hover { 
-      color: #c72c2c; 
-    }
-
-    #mobileMenu .social-icons {
-      display: flex;
-      gap: 1rem;
-      font-size: 1.4rem;
-      margin-top: auto;
-    }
+  #mobileMenu {
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 280px;
+    height: 100vh;
+    background-color: #0c1033;
+    color: white;
+    padding: 2rem 1.5rem;
+    z-index: 60;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
   }
 
-  @media (max-width: 1023px) {
-    .footer-mobile-center {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    
-    .footer-mobile-center > div {
-      width: 100%;
-      max-width: 280px;
-      margin-bottom: 2rem;
-    }
-    
-    .footer-mobile-center .footer-logo {
-      margin-bottom: 1.5rem;
-    }
-    
-    .footer-mobile-center .footer-socials {
-      margin-top: 1rem;
-    }
-    
-    @media (min-width: 768px) {
-      .footer-mobile-center .footer-nav-sections {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2.5rem;
-      }
-      
-      .footer-mobile-center .footer-nav-sections > div {
-        width: 100%;
-        max-width: 220px;
-      }
-    }
+  #mobileMenu.open {
+    transform: translateX(-280px);
   }
 
-  /* New mobile-specific styles */
+  #mobileMenu .close-btn {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    font-size: 2rem;
+    cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+  }
+
+  #menuOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 55;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  #menuOverlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  #mobileMenu .search-input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    border: none;
+    background: white;
+    color: #333;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  #mobileMenu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  #mobileMenu nav a {
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block;
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+  }
+
+  #mobileMenu nav a:hover { 
+    color: #c72c2c; 
+  }
+
+  #mobileMenu .social-icons {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.4rem;
+    margin-top: auto;
+    padding-top: 2rem;
+    justify-content: center;
+  }
+
   @media (max-width: 767px) {
-    /* Hide desktop search on mobile */
     .desktop-search {
       display: none;
     }
 
-    /* Adjust header layout for mobile */
     header .flex.items-center.justify-between {
       padding-left: 0.5rem;
       padding-right: 0.5rem;
     }
 
-    /* Center logo on mobile */
     .logo-container {
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
     }
 
-    /* Adjust icon sizes for mobile */
     .mobile-icons .bx {
       font-size: 1.5rem;
     }
 
-    /* Make cart/wishlist icons closer together */
     .mobile-icons > a {
       padding: 0.5rem;
     }
-
-    /* Mobile menu search input */
-    #mobileMenu input[type="text"] {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border-radius: 999px;
-      margin-bottom: 1.5rem;
-      border: none;
-      background: rgba(255,255,255,0.9);
-    }
   }
 
-  /* Tablet styles */
   @media (min-width: 768px) and (max-width: 1023px) {
-    /* Adjust header padding */
     header .flex.items-center.justify-between {
       padding-left: 1rem;
       padding-right: 1rem;
     }
 
-    /* Make search bar slightly smaller */
     .desktop-search {
       max-width: 300px;
     }
   }
 </style>
+
 <body>
 <div class="sticky-header hidden md:block">
   <div class="bg-gray-100 py-2 text-sm">
@@ -318,12 +282,10 @@
 
          @auth
           <div class="relative" x-data="{ open: false, redeemOpen: false }" @mouseenter="open = true" @mouseleave="open = false">
-              <!-- User Icon / Dropdown Toggle -->
               <button @click="open = !open" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500 focus:outline-none">
                   <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
               </button>
 
-              <!-- Dropdown Menu -->
               <div x-show="open" x-transition class="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-lg shadow-lg z-50">
                   <a href="{{ url('/profile') }}" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
                       <i class='bx bx-user-circle text-lg'></i> Account
@@ -518,116 +480,127 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/wishlist.js') }}"></script>
 <script>
-
-  document.addEventListener('DOMContentLoaded', function () {
-      const toggleOpen = document.getElementById('toggleOpen');
-      const toggleClose = document.getElementById('toggleClose');
+  document.addEventListener('DOMContentLoaded', function() {
+      const toggleButton = document.getElementById('toggleOpen');
       const mobileMenu = document.getElementById('mobileMenu');
       const menuOverlay = document.getElementById('menuOverlay');
-
-      if (toggleOpen) {
-          toggleOpen.addEventListener('click', function () {
-              mobileMenu.classList.add('open');
-              menuOverlay.classList.add('active');
-              document.body.style.overflow = 'hidden'; 
+      
+      mobileMenu.innerHTML = `
+          <div class="flex flex-col h-full">
+              <button id="toggleClose" class="close-btn self-end text-2xl">&times;</button>
+              <div class="mt-4">
+                  <input type="text" placeholder="Search..." class="search-input">
+                  <nav class="mt-4">
+                      <a href="/home" class="${window.location.pathname === '/home' ? 'text-blue-400' : ''}">Home</a>
+                      <a href="/shop" class="${window.location.pathname.includes('/shop') ? 'text-blue-400' : ''}">Shop</a>
+                      <a href="/about" class="${window.location.pathname === '/about' ? 'text-blue-400' : ''}">About</a>
+                      <a href="/contact" class="${window.location.pathname === '/contact' ? 'text-blue-400' : ''}">Contact</a>
+                      <a href="/portfolio" class="${window.location.pathname.includes('/portfolio') ? 'text-blue-400' : ''}">Portfolio</a>
+                  </nav>
+              </div>
+              <div class="social-icons mt-auto">
+                  <a href="#" class="text-white hover:text-blue-400"><i class='bx bxl-facebook'></i></a>
+                  <a href="#" class="text-white hover:text-pink-400"><i class='bx bxl-instagram'></i></a>
+              </div>
+          </div>
+      `;
+      
+      const closeButton = document.getElementById('toggleClose');
+      
+      function openMenu() {
+          mobileMenu.classList.add('open');
+          menuOverlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+      }
+      
+      function closeMenu() {
+          mobileMenu.classList.remove('open');
+          menuOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+      }
+      
+      if (toggleButton) toggleButton.addEventListener('click', openMenu);
+      if (closeButton) closeButton.addEventListener('click', closeMenu);
+      if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
+      
+      updateCartCount();
+      updateWishlistCount();
+      
+      document.querySelectorAll('.add-to-wishlist').forEach(button => {
+          button.addEventListener('click', function(e) {
+              e.preventDefault();
+              const productId = this.getAttribute('data-product-id');
+              const heartIcon = this.querySelector('i');
+              
+              fetch(`/wishlist`, {
+                  method: 'POST',
+                  headers: {
+                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json'
+                  },
+                  body: JSON.stringify({ product_id: productId })
+              })
+              .then(res => res.json())
+              .then(data => {
+                  updateWishlistCount();
+                  
+                  if (data.inWishlist) {
+                      heartIcon.classList.remove('bx-heart', 'text-gray-400');
+                      heartIcon.classList.add('bxs-heart', 'text-red-500');
+                  } else {
+                      heartIcon.classList.remove('bxs-heart', 'text-red-500');
+                      heartIcon.classList.add('bx-heart', 'text-gray-400');
+                  }
+              })
+              .catch(error => console.error('Error:', error));
+          });
+      });
+      
+      const mobileSearchToggle = document.getElementById('mobileSearchToggle');
+      if (mobileSearchToggle) {
+          mobileSearchToggle.addEventListener('click', function() {
+              const searchBar = document.getElementById('mobileSearchBar');
+              if (searchBar) searchBar.classList.toggle('hidden');
           });
       }
-
-    
-      if (toggleClose) {
-          toggleClose.addEventListener('click', function () {
-              mobileMenu.classList.remove('open');
-              menuOverlay.classList.remove('active');
-              document.body.style.overflow = ''; 
-          });
-      }
-
-      if (menuOverlay) {
-          menuOverlay.addEventListener('click', function() {
-              mobileMenu.classList.remove('open');
-              menuOverlay.classList.remove('active');
-              document.body.style.overflow = ''; 
-          });
-      }
-
-    updateCartCount();
-    updateWishlistCount();
-
-    document.querySelectorAll('.add-to-wishlist').forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-            const productId = this.getAttribute('data-product-id');
-            const heartIcon = this.querySelector('i');
-
-            fetch(`/wishlist`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ product_id: productId })
-            })
-            .then(res => res.json())
-            .then(data => {
-                updateWishlistCount();
-
-                if (data.inWishlist) {
-                    heartIcon.classList.remove('bx-heart', 'text-gray-400');
-                    heartIcon.classList.add('bxs-heart', 'text-red-500');
-                } else {
-                    heartIcon.classList.remove('bxs-heart', 'text-red-500');
-                    heartIcon.classList.add('bx-heart', 'text-gray-400');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    });
-
-    const mobileSearchToggle = document.getElementById('mobileSearchToggle');
-    if (mobileSearchToggle) {
-        mobileSearchToggle.addEventListener('click', function() {
-            const searchBar = document.getElementById('mobileSearchBar');
-            searchBar.classList.toggle('hidden');
-        });
-    }
-
-    function updateCartCount() {
-        fetch('/cart/count')
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('cart-count').innerText = data.count;
-                const mobileCart = document.getElementById('cart-count-mobile');
-                if (mobileCart) mobileCart.innerText = data.count;
-            });
-    }
-
-    function updateWishlistCount() {
-        fetch('/wishlist/count')
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('heart-count').innerText = data.count;
-                const mobileHeart = document.getElementById('heart-count-mobile');
-                if (mobileHeart) mobileHeart.innerText = data.count;
-            });
-    }
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
+      
       const userMenuButton = document.getElementById("userMenuButton");
       const userDropdown = document.getElementById("userDropdown");
-
-      if (userMenuButton) {
-          userMenuButton.addEventListener("click", function (e) {
+      
+      if (userMenuButton && userDropdown) {
+          userMenuButton.addEventListener("click", function(e) {
               e.stopPropagation();
               userDropdown.classList.toggle("hidden");
           });
-
-          document.addEventListener("click", function () {
+          
+          document.addEventListener("click", function() {
               if (!userDropdown.classList.contains("hidden")) {
                   userDropdown.classList.add("hidden");
               }
           });
+      }
+      
+      function updateCartCount() {
+          fetch('/cart/count')
+              .then(res => res.json())
+              .then(data => {
+                  const cartCount = document.getElementById('cart-count');
+                  if (cartCount) cartCount.innerText = data.count;
+                  const mobileCart = document.getElementById('cart-count-mobile');
+                  if (mobileCart) mobileCart.innerText = data.count;
+              });
+      }
+      
+      function updateWishlistCount() {
+          fetch('/wishlist/count')
+              .then(res => res.json())
+              .then(data => {
+                  const heartCount = document.getElementById('heart-count');
+                  if (heartCount) heartCount.innerText = data.count;
+                  const mobileHeart = document.getElementById('heart-count-mobile');
+                  if (mobileHeart) mobileHeart.innerText = data.count;
+              });
       }
   });
 </script>
