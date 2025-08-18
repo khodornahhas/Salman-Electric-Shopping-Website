@@ -28,7 +28,7 @@
 </head>
 <body class="font-['Urbanist'] bg-white">
 
-<div class="hero-gradient text-white font-bold py-4 px-4 md:px-16 text-left" style="margin-top: 30px;">
+            <div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
     <div class="max-w-7xl mx-auto">
         <a href="{{ url('/home') }}" class="hover:underline opacity-70 transition-opacity duration-300">Home</a>
         <span class="opacity-50 mx-2"> &gt; </span>

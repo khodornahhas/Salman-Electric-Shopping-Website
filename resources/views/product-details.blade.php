@@ -8,22 +8,22 @@
         font-family: 'Urbanist', sans-serif !important;
     }
 </style>
-        <div class="bg-blue-600 text-white font-bold py-4 px-4 md:pl-32 text-left mb-6 mt-[30px] text-[20px] font-[Open Sans, sans-serif]">
-            <div class="flex flex-wrap items-center space-x-2">
-                <a href="{{ url('/home') }}" class="hover:underline opacity-40">Home</a>
-                <span class="opacity-40">&gt;</span>
+            <div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
+                <div class="max-w-7xl mx-auto">
+                    <a href="{{ url('/home') }}" class="hover:underline opacity-70 transition-opacity duration-300">Home</a>
+                    <span class="opacity-50 mx-2">&gt;</span>
 
-                @if($product->category)
-                    <a href="{{ route('shop', ['category' => $product->category->id, 'brands[]' => 'all', 'min_price' => 10, 'max_price' => 1000, 'min_price_manual' => 10, 'max_price_manual' => 1000]) }}"
-                    class="hover:underline opacity-40">
-                    {{ $product->category->name }}
-                    </a>
-                    <span class="opacity-40">&gt;</span>
-                @endif
+                    @if($product->category)
+                        <a href="{{ url('/shop/' . $product->category->slug . '/brands/all/min-price/0/max-price/2500') }}"
+                        class="hover:underline opacity-70 transition-opacity duration-300">
+                            {{ $product->category->name }}
+                        </a>
+                        <span class="opacity-50 mx-2">&gt;</span>
+                    @endif
 
-                <span class="opacity-100">{{ $product->name }}</span>
+                    <span class="opacity-90">{{ $product->name }}</span>
+                </div>
             </div>
-        </div>
 
             <div class="container mx-auto px-4 py-10">
                 <div class="flex flex-col md:flex-row gap-10 items-center">
@@ -56,15 +56,16 @@
             <h1 class="text-4xl font-bold text-gray-900">{{ $product->name }}</h1>
             <p class="text-lg text-gray-500 text-[20px]">{{ $product->description }}</p>
 
-            <div class="text-sm text-gray-500 space-x-2 text-[20px]">
-                <a href="{{ route('shop', ['category' => $product->category->id]) }}"
-                   class="text-black hover:underline cursor-pointer">
-                    Category: {{ $product->category->name ?? 'N/A' }}
+            <div class="text-gray-500 text-[20px]">
+                <a href="{{ url('/shop/' . $product->category->slug . '/brands/all/min-price/0/max-price/2500') }}"
+                class="hover:underline cursor-pointer">
+                    Category: <span class="text-black">{{ $product->category->name ?? 'N/A' }}</span>
                 </a>
-                <span>|</span>
-                <a href="{{ route('shop', ['brands[]' => $product->brand->id]) }}"
-                   class="text-black hover:underline cursor-pointer">
-                    Brand: {{ $product->brand->name ?? 'N/A' }}
+
+                <span class="mx-2">|</span>
+                <a href="{{ url('/shop/all/brands/' . $product->brand->slug . '/min-price/0/max-price/2500') }}"
+                class="hover:underline cursor-pointer">
+                    Brand: <span class="text-black">{{ $product->brand->name ?? 'N/A' }}</span>
                 </a>
             </div>
 

@@ -6,7 +6,7 @@
 @endsection
 @section('content')
 
-<div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mb-6 text-base md:text-lg" style="margin-top: 30px; font-family: 'Open Sans', sans-serif;">
+<div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
     <a href="{{ url('/home') }}" class="hover:underline opacity-40">Home</a>
     <span style="opacity: 0.4;"> &gt; </span>
     <span style="opacity: 0.8;">Contact Us</span>
