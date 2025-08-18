@@ -88,6 +88,128 @@
             gap: 1.5rem; 
         }
     }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .container {
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+        
+        #filter-sidebar {
+            width: 240px;
+            min-width: 240px;
+            margin-right: 1rem;
+            padding: 1rem !important;
+            border-right: 1px solid #e5e7eb;
+        }
+        
+        #filter-sidebar .bg-white {
+            padding: 0;
+            background: transparent;
+            box-shadow: none;
+            border: none;
+        }
+        
+        #filter-sidebar h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        
+        #filter-sidebar .space-y-2.text-sm {
+            font-size: 0.875rem;
+            padding-left: 0.5rem;
+        }
+        
+        .bg-white.border.border-gray-300 {
+            background-color: #f3f4f6;
+            margin-bottom: 1.25rem;
+        }
+        
+        .product-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .product-grid > div {
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .product-grid a.bg-white {
+            height: 180px;
+            padding: 0.5rem;
+        }
+        
+        .product-grid h3 {
+            font-size: 0.9375rem;
+            height: auto;
+            margin: 0.75rem 0;
+            line-height: 1.3;
+        }
+        
+        .product-grid .text-lg {
+            font-size: 1.125rem;
+            margin: 0.5rem 0;
+        }
+        
+        .product-grid .text-sm.line-through {
+            font-size: 0.875rem;
+        }
+        
+        .product-grid .add-to-cart {
+            width: 100%;
+            font-size: 0.875rem;
+            padding: 0.5rem;
+            margin-top: 0.75rem;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .flex-col.md\:flex-row.md\:justify-between.md\:items-center.gap-4.mb-6 {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        #filter-form {
+            width: 100%;
+            max-width: 280px;
+            order: 1;
+        }
+        
+        .text-sm.text-gray-500 {
+            order: 2;
+            margin-left: auto;
+        }
+        
+        .flex.items-center.justify-between.flex-wrap.gap-4.text-sm {
+            width: 100%;
+            order: 3;
+            margin-top: 0.5rem;
+        }
+        
+        #sort-select {
+            width: 160px;
+            order: 4;
+        }
+        
+        .relative.h-10 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .brand-checkbox {
+            margin-right: 0.5rem;
+        }
+        
+        button[type="submit"].w-full.bg-blue-600 {
+            padding: 0.5rem;
+            font-size: 0.875rem;
+        }
+    }
+
 </style>
 
 <div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mb-6 text-base md:text-lg" style="margin-top: 30px; font-family: 'Open Sans', sans-serif;">

@@ -4,9 +4,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <link rel="icon" type="image/png" href="{{ asset('images/salman.png') }}?v={{ time() }}">
-  
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -14,7 +12,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     @yield('head') 
 </head>
 
@@ -206,24 +203,24 @@
 </style>
 
 <body>
-<div class="sticky-header hidden md:block">
-  <div class="bg-gray-100 py-2 text-sm">
-    <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between">
-        <div class="text-gray-700">
-          <div class="bg-blue-50 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
-            <i class='bx bx-package text-blue-500'></i>
-            <span class="text-blue-600">Free Delivery</span> on Orders Over <span class="text-blue-800">$30</span>
+  <div class="sticky-header hidden md:block">
+    <div class="bg-gray-100 py-2 text-sm">
+      <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+          <div class="text-gray-700">
+            <div class="bg-blue-50 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+              <i class='bx bx-package text-blue-500'></i>
+              <span class="text-blue-600">Free Delivery</span> on Orders Over <span class="text-blue-800">$30</span>
+            </div>
           </div>
-        </div>
-        <div class="flex items-center space-x-4">
-          <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors"><i class='bx bxl-facebook'></i></a>
-          <a href="#" class="text-gray-600 hover:text-pink-500 transition-colors"><i class='bx bxl-instagram'></i></a>
+          <div class="flex items-center space-x-4">
+            <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors"><i class='bx bxl-facebook'></i></a>
+            <a href="#" class="text-gray-600 hover:text-pink-500 transition-colors"><i class='bx bxl-instagram'></i></a>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
   <header class="sticky top-0 z-50 bg-white shadow-md tracking-wide font-[Urbanist]">
     <div class="flex items-center justify-between w-full px-4 sm:px-5 lg:px-6 min-h-[70px]">
@@ -404,11 +401,11 @@
         @endif
       @yield('content')
     </main>
-  <div class="fixed bottom-6 right-6 z-50">
-    <a href="https://wa.me/yourphonenumber" target="_blank">
-        <img src="{{ asset('images/whatsapp.png') }}" alt="WhatsApp" class="w-10 h-10">
-    </a>
-</div>
+    <div class="fixed bottom-6 right-6 z-50">
+      <a href="https://wa.me/yourphonenumber" target="_blank">
+          <img src="{{ asset('images/whatsapp.png') }}" alt="WhatsApp" class="w-10 h-10">
+      </a>
+    </div>
 </body>
 
 <footer class="bg-white text-gray-800">
