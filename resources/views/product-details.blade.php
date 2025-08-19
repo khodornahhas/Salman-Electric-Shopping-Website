@@ -65,10 +65,10 @@
 
                 <div class="relative">
                     <img id="main-product-image" 
-                         src="{{ asset('storage/' . $product->image) }}" 
-                         alt="{{ $product->name }}" 
-                         class="w-full h-96 object-contain rounded-lg shadow-xl cursor-zoom-in"
-                         onclick="openModal()">
+                    src="{{ asset('storage/' . $product->image) }}" 
+                    alt="{{ $product->name }}" 
+                    class="w-full h-96 object-contain rounded-lg cursor-zoom-in"
+                    onclick="openModal()">
 
                    @if($totalImages > 1)
                         <button id="prev-image" 
@@ -97,9 +97,6 @@
                 @endif
 
                 <div class="absolute top-4 right-4 flex gap-3">
-                    <button class="text-xl bg-white rounded-full p-2 shadow hover:text-red-500 transition">
-                        <i class='bx bx-heart'></i>
-                    </button>
                     <button class="text-xl bg-white rounded-full p-2 shadow hover:text-green-600 transition" onclick="openModal()">
                         <i class='bx bx-search-alt-2'></i>
                     </button>
@@ -290,8 +287,14 @@
                             @endphp
 
                             @if($related->coming_soon)
-                                <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
-                                <p class="text-sm text-gray-500 italic">Stay tuned</p>
+                            <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
+                            <p class="text-sm text-gray-500 italic">Stay tuned</p>
+                            <button
+                                class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50"
+                                disabled
+                            >
+                                Add to Cart
+                            </button>
                             @elseif($related->contact_for_price)
                                 <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
                                 <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
