@@ -7,10 +7,13 @@
 @section('content')
 
 <div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
-    <a href="{{ url('/home') }}" class="hover:underline opacity-40">Home</a>
-    <span style="opacity: 0.4;"> &gt; </span>
-    <span style="opacity: 0.8;">Contact Us</span>
+    <div class="max-w-7xl mx-auto">
+        <a href="{{ url('/home') }}" class="hover:underline opacity-70 transition-opacity duration-300">Home</a>
+        <span class="opacity-50 mx-2"> &gt; </span>
+        <span class="opacity-90">Contact Us</span>
+    </div>
 </div>
+
 
 <div class="bg-white py-12 px-4 sm:px-6 lg:py-16 lg:px-8 max-w-7xl mx-auto">
     <div class="text-center mb-12">

@@ -212,11 +212,14 @@
 
 </style>
 
-            <div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
-    <a href="{{ url('/home') }}" class="hover:underline opacity-40">Home</a>
-    <span style="opacity: 0.4;"> &gt; </span>
-    <span style="opacity: 0.8;">Shop</span>
+<div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
+    <div class="max-w-7xl mx-auto">
+        <a href="{{ url('/home') }}" class="hover:underline opacity-70 transition-opacity duration-300">Home</a>
+        <span class="opacity-50 mx-2"> &gt; </span>
+        <span class="opacity-90">Shop</span>
+    </div>
 </div>
+
 
 <div class="container mx-auto px-4 py-8">
 

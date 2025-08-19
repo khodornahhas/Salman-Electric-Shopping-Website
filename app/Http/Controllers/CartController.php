@@ -14,7 +14,7 @@ use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
-{
+{  
     public function add(Request $request, $productId){
         try {
             $product = Product::findOrFail($productId);
@@ -413,6 +413,20 @@ class CartController extends Controller
 
     public function showSuccess(Order $order){
         return view('cart.success', ['order' => $order]);
+    }
+    public function boot(){
+        View::composer('*', function ($view) {
+            $cartCount = (new CartController)->count()->getData()->count;
+            $view->with('cartCount', $cartCount);
+        });
+    }  
+
+    public static function getCartCount(){
+        if (Auth::check()) {
+            return CartItem::where('user_id', Auth::id())->sum('quantity');
+        }
+        $cart = session()->get('cart', []);
+        return collect($cart)->sum('quantity');
     }
 }
 

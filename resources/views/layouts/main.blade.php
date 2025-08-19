@@ -12,10 +12,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+     <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script defer src="{{ asset('js/wishlist.js') }}"></script>
+
     @yield('head') 
 </head>
 
 <style>
+  
   body {
     font-family: 'Urbanist', sans-serif !important;
     padding-top: 40px;  
@@ -200,6 +204,14 @@
       max-width: 300px;
     }
   }
+   #heart-count, #cart-count {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  
+  .counter-loading {
+    visibility: hidden;
+  }
 </style>
 
 <body>
@@ -262,14 +274,18 @@
         
         <div class="mobile-icons flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
           <a href="{{ route('wishlist.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
-            <i class='bx bx-heart text-lg sm:text-xl lg:text-2xl'></i>
-            <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center"></span>
-          </a>
+    <i class='bx bx-heart text-lg sm:text-xl lg:text-2xl'></i>
+    <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
+        {{ auth()->check() ? auth()->user()->wishlists()->count() : 0 }}
+    </span>
+</a>
 
-          <a href="{{ route('cart.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
-            <i class='bx bx-cart text-lg sm:text-xl lg:text-2xl'></i>
-            <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center"></span>
-          </a>
+<a href="{{ route('cart.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
+    <i class='bx bx-cart text-lg sm:text-xl lg:text-2xl'></i>
+    <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
+        {{ App\Http\Controllers\CartController::getCartCount() }}
+    </span>
+</a>
 
           @guest
             <a href="/account" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
@@ -278,7 +294,19 @@
           @endguest
 
          @auth
-          <div class="relative" x-data="{ open: false, redeemOpen: false }" @mouseenter="open = true" @mouseleave="open = false">
+          <div class="relative" x-data="{ open: false, redeemOpen: false }" 
+     x-init="
+         // Hide elements until Alpine is initialized
+         $el.style.visibility = 'hidden';
+         $nextTick(() => {
+             $el.style.visibility = '';
+             // Close any accidentally opened dropdowns
+             open = false;
+             redeemOpen = false;
+         })"
+     @mouseenter="open = true" 
+     @mouseleave="open = false"
+     style="visibility: hidden;">
               <button @click="open = !open" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500 focus:outline-none">
                   <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
               </button>
@@ -482,46 +510,54 @@
       const mobileMenu = document.getElementById('mobileMenu');
       const menuOverlay = document.getElementById('menuOverlay');
       
-      mobileMenu.innerHTML = `
-          <div class="flex flex-col h-full">
-              <button id="toggleClose" class="close-btn self-end text-2xl">&times;</button>
-              <div class="mt-4">
-                  <input type="text" placeholder="Search..." class="search-input">
-                  <nav class="mt-4">
-                      <a href="/home" class="${window.location.pathname === '/home' ? 'text-blue-400' : ''}">Home</a>
-                      <a href="/shop" class="${window.location.pathname.includes('/shop') ? 'text-blue-400' : ''}">Shop</a>
-                      <a href="/about" class="${window.location.pathname === '/about' ? 'text-blue-400' : ''}">About</a>
-                      <a href="/contact" class="${window.location.pathname === '/contact' ? 'text-blue-400' : ''}">Contact</a>
-                      <a href="/portfolio" class="${window.location.pathname.includes('/portfolio') ? 'text-blue-400' : ''}">Portfolio</a>
-                  </nav>
+      if (mobileMenu) {
+          mobileMenu.innerHTML = `
+              <div class="flex flex-col h-full">
+                  <button id="toggleClose" class="close-btn self-end text-2xl">&times;</button>
+                  <div class="mt-4">
+                      <input type="text" placeholder="Search..." class="search-input">
+                      <nav class="mt-4">
+                          <a href="/home" class="${window.location.pathname === '/home' ? 'text-blue-400' : ''}">Home</a>
+                          <a href="/shop" class="${window.location.pathname.includes('/shop') ? 'text-blue-400' : ''}">Shop</a>
+                          <a href="/about" class="${window.location.pathname === '/about' ? 'text-blue-400' : ''}">About</a>
+                          <a href="/contact" class="${window.location.pathname === '/contact' ? 'text-blue-400' : ''}">Contact</a>
+                          <a href="/portfolio" class="${window.location.pathname.includes('/portfolio') ? 'text-blue-400' : ''}">Portfolio</a>
+                      </nav>
+                  </div>
+                  <div class="social-icons mt-auto">
+                      <a href="#" class="text-white hover:text-blue-400"><i class='bx bxl-facebook'></i></a>
+                      <a href="#" class="text-white hover:text-pink-400"><i class='bx bxl-instagram'></i></a>
+                  </div>
               </div>
-              <div class="social-icons mt-auto">
-                  <a href="#" class="text-white hover:text-blue-400"><i class='bx bxl-facebook'></i></a>
-                  <a href="#" class="text-white hover:text-pink-400"><i class='bx bxl-instagram'></i></a>
-              </div>
-          </div>
-      `;
-      
-      const closeButton = document.getElementById('toggleClose');
-      
-      function openMenu() {
-          mobileMenu.classList.add('open');
-          menuOverlay.classList.add('active');
-          document.body.style.overflow = 'hidden';
+          `;
+          
+          const closeButton = document.getElementById('toggleClose');
+          
+          function openMenu() {
+              mobileMenu.classList.add('open');
+              menuOverlay.classList.add('active');
+              document.body.style.overflow = 'hidden';
+          }
+          
+          function closeMenu() {
+              mobileMenu.classList.remove('open');
+              menuOverlay.classList.remove('active');
+              document.body.style.overflow = '';
+          }
+          
+          if (toggleButton) toggleButton.addEventListener('click', openMenu);
+          if (closeButton) closeButton.addEventListener('click', closeMenu);
+          if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
       }
-      
-      function closeMenu() {
-          mobileMenu.classList.remove('open');
-          menuOverlay.classList.remove('active');
-          document.body.style.overflow = '';
-      }
-      
-      if (toggleButton) toggleButton.addEventListener('click', openMenu);
-      if (closeButton) closeButton.addEventListener('click', closeMenu);
-      if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
-      
-      updateCartCount();
-      updateWishlistCount();
+
+  const initialCartCount = {{ App\Http\Controllers\CartController::getCartCount() }};
+  const initialWishlistCount = {{ auth()->check() ? auth()->user()->wishlists()->count() : 0 }};
+
+  document.getElementById('cart-count').textContent = initialCartCount;
+  document.getElementById('heart-count').textContent = initialWishlistCount;
+
+  updateCartCount();
+  updateWishlistCount();
       
       document.querySelectorAll('.add-to-wishlist').forEach(button => {
           button.addEventListener('click', function(e) {
@@ -580,24 +616,49 @@
       
       function updateCartCount() {
           fetch('/cart/count')
-              .then(res => res.json())
+              .then(res => {
+                  if (!res.ok) throw new Error('Network response was not ok');
+                  return res.json();
+              })
               .then(data => {
                   const cartCount = document.getElementById('cart-count');
-                  if (cartCount) cartCount.innerText = data.count;
+                  if (cartCount) {
+                      cartCount.textContent = data.count;
+                      animateCounter(cartCount);
+                  }
                   const mobileCart = document.getElementById('cart-count-mobile');
-                  if (mobileCart) mobileCart.innerText = data.count;
-              });
+                  if (mobileCart) {
+                      mobileCart.textContent = data.count;
+                      animateCounter(mobileCart);
+                  }
+              })
+              .catch(error => console.error('Error updating cart count:', error));
       }
       
       function updateWishlistCount() {
           fetch('/wishlist/count')
-              .then(res => res.json())
+              .then(res => {
+                  if (!res.ok) throw new Error('Network response was not ok');
+                  return res.json();
+              })
               .then(data => {
                   const heartCount = document.getElementById('heart-count');
-                  if (heartCount) heartCount.innerText = data.count;
+                  if (heartCount) {
+                      heartCount.textContent = data.count;
+                      animateCounter(heartCount);
+                  }
                   const mobileHeart = document.getElementById('heart-count-mobile');
-                  if (mobileHeart) mobileHeart.innerText = data.count;
-              });
+                  if (mobileHeart) {
+                      mobileHeart.textContent = data.count;
+                      animateCounter(mobileHeart);
+                  }
+              })
+              .catch(error => console.error('Error updating wishlist count:', error));
+      }
+      
+      function animateCounter(element) {
+          element.classList.add('animate-pulse');
+          setTimeout(() => element.classList.remove('animate-pulse'), 300);
       }
   });
 </script>
