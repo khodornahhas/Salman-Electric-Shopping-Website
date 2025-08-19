@@ -87,7 +87,7 @@
     right: -280px;
     width: 280px;
     height: 100vh;
-    background-color: #0c1033;
+    background-color: #0E2795;
     color: white;
     padding: 2rem 1.5rem;
     z-index: 60;
@@ -238,18 +238,43 @@
     <div class="flex items-center justify-between w-full px-4 sm:px-5 lg:px-6 min-h-[70px]">
       <div class="flex items-center gap-3 lg:gap-8 xl:gap-10">
 
-        <a href="/" class="shrink-0">
+        <a href="/home" class="shrink-0">
           <img src="{{ asset('images/S8.PNG') }}" alt="logo" class="hidden sm:block w-36 lg:w-40 h-auto lg:ml-[20px] xl:ml-[130px]">
           <img src="{{ asset('images/S8.PNG') }}" alt="logo" class="block sm:hidden w-20 h-auto">
         </a>
 
         <div id="collapseMenu" class="hidden lg:block">
-          <ul class="flex gap-x-3 lg:gap-x-4 xl:gap-x-6">
-            <li><a href="/home" class="block text-[14px] lg:text-[15px] font-medium {{ request()->is('home') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Home</a></li>
-            <li><a href="/shop" class="block text-[14px] lg:text-[15px] font-medium {{ request()->is('shop') || request()->is('shop/*') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Shop</a></li>
-            <li><a href="/about" class="block text-[14px] lg:text-[15px] font-medium {{ request()->is('about') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">About</a></li>
-            <li><a href="/contact" class="block text-[14px] lg:text-[15px] font-medium {{ request()->is('contact') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Contact</a></li>
-            <li><a href="/portfolio" class="block text-[14px] lg:text-[15px] font-medium {{ request()->is('portfolio') || request()->is('portfolio/*') ? 'text-blue-700' : 'text-slate-900 hover:text-blue-700' }}">Portfolio</a></li>
+          <ul class="flex gap-x-4 lg:gap-x-6 xl:gap-x-8">
+            <li>
+              <a href="/home" 
+                class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('home') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="/shop" 
+                class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('shop') || request()->is('shop/*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+                Shop
+              </a>
+            </li>
+            <li>
+              <a href="/about" 
+                class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('about') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="/contact" 
+                class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('contact') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+                Contact
+              </a>
+            </li>
+            <li>
+              <a href="/portfolio" 
+                class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('portfolio') || request()->is('portfolio/*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+                Portfolio
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -430,8 +455,10 @@
       </div>
     </div>
 
-    <div id="mobileMenu" class="fixed top-0 right-0 h-full w-64 bg-[#0c1033] shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex flex-col p-6">
+    <div id="mobileMenu" 
+     class="fixed top-0 right-0 h-full w-64 bg-[#3254EC] shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex flex-col p-6">
     </div>
+
 
     <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-opacity duration-300"></div>
   </header>
