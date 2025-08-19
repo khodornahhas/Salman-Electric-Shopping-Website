@@ -93,26 +93,34 @@ class PromoCodeController extends Controller
 
         $promo = PromoCode::with('products')
             ->where('code', $request->code)
+            ->where('is_active', true)
             ->where(function ($q) {
                 $q->whereNull('expires_at')->orWhere('expires_at', '>=', now());
             })
             ->first();
 
         if (!$promo) {
-            return back()->withErrors(['code' => 'Invalid or expired promo code.']);
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid or expired promo code.'
+            ], 422);
         }
 
         if ($promo->users()->where('user_id', auth()->id())->exists()) {
-            return back()->withErrors(['code' => 'You already used this promo code!']);
+            return response()->json([
+                'success' => false,
+                'message' => 'You already used this promo code!'
+            ], 422);
         }
 
         session()->put('user_promo_code', $promo->id);
         session()->save(); 
 
-        return back()->with([
+        return response()->json([
+            'success' => true,
             'message' => 'Promo code applied successfully!',
-            'message_type' => 'success',
-            'applied_promo' => $promo->code 
+            'promo_code' => $promo->code,
+            'redirect_url' => url()->previous()
         ]);
     }
     public function checkActivePromo()

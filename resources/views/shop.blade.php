@@ -222,7 +222,6 @@
 
 
 <div class="container mx-auto px-4 py-8">
-
     <div class="flex flex-col md:flex-row">
         <button id="filter-toggle-btn" type="button">Filters</button>
 
