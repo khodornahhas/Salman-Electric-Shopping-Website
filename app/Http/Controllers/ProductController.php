@@ -44,25 +44,27 @@ class ProductController extends Controller
     }
 
 
-  public function show($id)
-  {
-      $product = Product::with(['category', 'brand'])->findOrFail($id);
-      $relatedProducts = Product::where('category_id', $product->category_id)
-          ->where('id', '!=', $product->id)
-          ->inRandomOrder()
-          ->take(3)
-          ->get();
+    public function show($id)
+    {
+        $product = Product::with(['category', 'brand', 'images'])->findOrFail($id); 
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->inRandomOrder()
+            ->take(3)
+            ->get();
 
-      $wishlistProductIds = [];
+        $wishlistProductIds = [];
 
-      if (auth()->check()) {
-          $wishlistProductIds = auth()->user()->wishlists()->pluck('product_id')->toArray();
-      } else {
-          $wishlistProductIds = session()->get('wishlist', []);
-      }
+        if (auth()->check()) {
+            $wishlistProductIds = auth()->user()->wishlists()->pluck('product_id')->toArray();
+        } else {
+            $wishlistProductIds = session()->get('wishlist', []);
+        }
 
-      return view('product-details', compact('product', 'relatedProducts', 'wishlistProductIds'));
-  }
+        $totalImages = 1 + $product->images->count();
+
+        return view('product-details', compact('product', 'relatedProducts', 'wishlistProductIds', 'totalImages'));
+    }
 
   public function getBrands(Request $request)
     {

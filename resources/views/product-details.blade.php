@@ -7,6 +7,30 @@
     * {
         font-family: 'Urbanist', sans-serif !important;
     }
+     #main-product-image {
+    transition: opacity 0.3s ease-in-out;
+    }
+
+    .thumbnail {
+        transition: all 0.2s ease-in-out;
+    }
+
+    .thumbnail:hover {
+        transform: scale(1.05);
+    }
+
+    .relative.group:hover #prev-image,
+    .relative.group:hover #next-image {
+        opacity: 1 !important;
+    }
+
+    .fixed.inset-0 {
+        cursor: pointer;
+    }
+
+    .fixed.inset-0 > div {
+        cursor: auto;
+    }
 </style>
             <div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
                 <div class="max-w-7xl mx-auto">
@@ -25,32 +49,63 @@
                 </div>
             </div>
 
-            <div class="container mx-auto px-4 py-10">
-                <div class="flex flex-col md:flex-row gap-10 items-center">
-                    <div class="w-full md:w-1/2 flex justify-center">
-                        <div class="relative w-full max-w-[600px]">
-                            @if($product->coming_soon)
-                                <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
-                                    Coming Soon
-                                </div>
-                            @elseif($product->quantity == 0 || $product->out_of_stock)
-                                <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                                    Out of Stock
-                                </div>
-                            @endif
+<div class="container mx-auto px-4 py-10">
+    <div class="flex flex-col md:flex-row gap-10 items-center">
+        <div class="w-full md:w-1/2 flex justify-center">
+            <div class="relative w-full max-w-[600px] group">
+                @if($product->coming_soon)
+                    <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        Coming Soon
+                    </div>
+                @elseif($product->quantity == 0 || $product->out_of_stock)
+                    <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                        Out of Stock
+                    </div>
+                @endif
 
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full rounded-lg shadow-xl">
+                <div class="relative">
+                    <img id="main-product-image" 
+                         src="{{ asset('storage/' . $product->image) }}" 
+                         alt="{{ $product->name }}" 
+                         class="w-full h-96 object-contain rounded-lg shadow-xl cursor-zoom-in"
+                         onclick="openModal()">
 
-                            <div class="absolute top-4 right-4 flex gap-3">
-                                <button class="text-xl bg-white rounded-full p-2 shadow hover:text-red-500 transition">
-                                    <i class='bx bx-heart'></i>
-                                </button>
-                                <button class="text-xl bg-white rounded-full p-2 shadow hover:text-green-600 transition" onclick="openModal()">
-                                    <i class='bx bx-search-alt-2'></i>
-                                </button>
-                            </div>
-                        </div>
+                   @if($totalImages > 1)
+                        <button id="prev-image" 
+                                class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition opacity-0 group-hover:opacity-100">
+                        </button>
+                        <button id="next-image" 
+                                class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition opacity-0 group-hover:opacity-100">
+                        </button>
+                    @endif
+                </div>
+
+                @if($totalImages > 1)
+                    <div class="mt-4 flex gap-2 justify-center">
+                        <img src="{{ asset('storage/' . $product->image) }}" 
+                             alt="Main thumbnail"
+                             class="w-16 h-16 object-cover rounded border-2 cursor-pointer hover:border-blue-500 transition-all duration-200 thumbnail"
+                             onclick="changeImage(0)">
+                        
+                        @foreach($product->images as $index => $image)
+                            <img src="{{ asset('storage/' . $image->image) }}" 
+                                 alt="Thumbnail {{ $index + 2 }}"
+                                 class="w-16 h-16 object-cover rounded border-2 cursor-pointer hover:border-blue-500 transition-all duration-200 thumbnail"
+                                 onclick="changeImage({{ $index + 1 }})">
+                        @endforeach
+                    </div>
+                @endif
+
+                <div class="absolute top-4 right-4 flex gap-3">
+                    <button class="text-xl bg-white rounded-full p-2 shadow hover:text-red-500 transition">
+                        <i class='bx bx-heart'></i>
+                    </button>
+                    <button class="text-xl bg-white rounded-full p-2 shadow hover:text-green-600 transition" onclick="openModal()">
+                        <i class='bx bx-search-alt-2'></i>
+                    </button>
+                </div>
             </div>
+        </div>
 
         <div class="w-full md:w-1/2 space-y-8 mb-[130px] font-[Open Sans, sans-serif]">
             <h1 class="text-4xl font-bold text-gray-900">{{ $product->name }}</h1>
@@ -367,6 +422,127 @@
             });
         });
     });
-});
+    });
+   let currentImageIndex = 0;
+    const images = [
+        "{{ asset('storage/' . $product->image) }}", 
+        @foreach($product->images as $image)
+            "{{ asset('storage/' . $image->image) }}", 
+        @endforeach
+    ].filter(image => image !== "{{ asset('storage/') }}"); 
+
+    const totalImages = images.length; 
+
+    function changeImage(index) {
+        if (index >= 0 && index < totalImages) {
+            currentImageIndex = index;
+            updateImageDisplay();
+        }
+    }
+
+    function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % totalImages;
+        updateImageDisplay();
+    }
+
+    function prevImage() {
+        currentImageIndex = (currentImageIndex - 1 + totalImages) % totalImages;
+        updateImageDisplay();
+    }
+
+    function updateImageDisplay() {
+        const mainImage = document.getElementById('main-product-image');
+        const currentImageSpan = document.getElementById('current-image');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        
+        mainImage.style.opacity = '0';
+        setTimeout(() => {
+            mainImage.src = images[currentImageIndex];
+            mainImage.style.opacity = '1';
+        }, 200);
+        
+        if (currentImageSpan) {
+            currentImageSpan.textContent = currentImageIndex + 1;
+        }
+        
+        thumbnails.forEach((thumb, thumbIndex) => {
+            thumb.style.borderColor = thumbIndex === currentImageIndex ? '#3b82f6' : 'transparent';
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (totalImages > 1) {
+            document.getElementById('next-image').addEventListener('click', nextImage);
+            document.getElementById('prev-image').addEventListener('click', prevImage);
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+            });
+            
+            const imageContainer = document.getElementById('main-product-image').parentElement;
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            imageContainer.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            imageContainer.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    nextImage(); 
+                } else if (touchEndX > touchStartX + swipeThreshold) {
+                    prevImage();
+                }
+            }  
+            updateImageDisplay();
+        }
+    });
+
+    function openModal() {
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center';
+        modal.innerHTML = `
+            <div class="relative max-w-4xl max-h-full">
+                <img src="${images[currentImageIndex]}" class="max-w-full max-h-screen object-contain">
+                ${totalImages > 1 ? `
+                    <button class="absolute left-4 top-1/2 text-white text-3xl" onclick="modalPrev()">‹</button>
+                    <button class="absolute right-4 top-1/2 text-white text-3xl" onclick="modalNext()">›</button>
+                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white">
+                        ${currentImageIndex + 1} / ${totalImages}
+                    </div>
+                ` : ''}
+                <button class="absolute top-4 right-4 text-white text-3xl" onclick="closeModal()">×</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        const modal = document.querySelector('.fixed.inset-0');
+        if (modal) {
+            modal.remove();
+            document.body.style.overflow = '';
+        }
+    }
+
+    function modalNext() {
+        nextImage();
+        const modalImg = document.querySelector('.fixed.inset-0 img');
+        if (modalImg) modalImg.src = images[currentImageIndex];
+    }
+
+    function modalPrev() {
+        prevImage();
+        const modalImg = document.querySelector('.fixed.inset-0 img');
+        if (modalImg) modalImg.src = images[currentImageIndex];
+    }
 </script>
 @endsection

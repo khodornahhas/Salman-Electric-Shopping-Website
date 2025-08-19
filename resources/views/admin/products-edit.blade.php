@@ -136,45 +136,50 @@
                 <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="w-40 h-auto border rounded mt-1">
             @endif
         </div>
+        <div>
+            <label class="block font-semibold mb-1">Additional Images (max 4)</label>
+            <input type="file" name="images[]" multiple accept="image/*" class="w-full">
+            <small class="text-gray-500">You can upload up to 4 images.</small>
+        </div>
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update</button>
     </form>
 </div>
 
 <script>
-function togglePriceInputs() {
-    const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
-    const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
-    const disablePrice = contactCheckbox.checked || comingSoonCheckbox.checked;
+    function togglePriceInputs() {
+        const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
+        const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
+        const disablePrice = contactCheckbox.checked || comingSoonCheckbox.checked;
 
-    document.querySelector('input[name="price"]').disabled = disablePrice;
-    document.querySelector('input[name="sale_price"]').disabled = disablePrice;
-}
-
-function toggleQuantity() {
-    const outOfStockCheckbox = document.getElementById('out-of-stock-checkbox');
-    const quantityInput = document.getElementById('quantity-input');
-
-    if (outOfStockCheckbox.checked) {
-        quantityInput.disabled = true;
-        quantityInput.value = 0;
-    } else {
-        quantityInput.disabled = false;
-        if (quantityInput.value == 0) quantityInput.value = 1;
+        document.querySelector('input[name="price"]').disabled = disablePrice;
+        document.querySelector('input[name="sale_price"]').disabled = disablePrice;
     }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
-    const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
-    const outOfStockCheckbox = document.getElementById('out-of-stock-checkbox');
+    function toggleQuantity() {
+        const outOfStockCheckbox = document.getElementById('out-of-stock-checkbox');
+        const quantityInput = document.getElementById('quantity-input');
 
-    togglePriceInputs();
-    toggleQuantity();
+        if (outOfStockCheckbox.checked) {
+            quantityInput.disabled = true;
+            quantityInput.value = 0;
+        } else {
+            quantityInput.disabled = false;
+            if (quantityInput.value == 0) quantityInput.value = 1;
+        }
+    }
 
-    contactCheckbox.addEventListener('change', togglePriceInputs);
-    comingSoonCheckbox.addEventListener('change', togglePriceInputs);
-    outOfStockCheckbox.addEventListener('change', toggleQuantity);
-});
+    document.addEventListener('DOMContentLoaded', () => {
+        const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
+        const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
+        const outOfStockCheckbox = document.getElementById('out-of-stock-checkbox');
+
+        togglePriceInputs();
+        toggleQuantity();
+
+        contactCheckbox.addEventListener('change', togglePriceInputs);
+        comingSoonCheckbox.addEventListener('change', togglePriceInputs);
+        outOfStockCheckbox.addEventListener('change', toggleQuantity);
+    });
 </script>
 
 @endsection

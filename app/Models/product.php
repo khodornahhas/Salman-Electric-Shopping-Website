@@ -28,21 +28,24 @@ class Product extends Model
         'coming_soon',
         'out_of_stock', 
     ];
-    public function category()
-    {
+
+    public function category(){
         return $this->belongsTo(Category::class);
     }
-    public function brand()
-    {
+
+    public function brand(){
         return $this->belongsTo(Brand::class);
     }
-    public function orderItems()
-    {
+
+    public function orderItems(){
         return $this->hasMany(OrderItem::class);
     }
-   public function promocodes()
-{
-    return $this->belongsToMany(PromoCode::class, 'product_promocode', 'product_id', 'promocode_id');
-}
 
+    public function promocodes(){
+        return $this->belongsToMany(PromoCode::class, 'product_promocode', 'product_id', 'promocode_id');
+    }
+
+    public function images(){
+        return $this->hasMany(ProductImage::class)->orderBy('order', 'asc')->orderBy('id', 'asc');
+    }
 }

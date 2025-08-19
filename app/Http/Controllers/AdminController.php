@@ -152,8 +152,9 @@ class AdminController extends Controller
             'price' => 'nullable|numeric',
             'sale_price' => 'nullable|numeric',
             'quantity' => 'nullable|integer',
-            'out_of_stock' => 'sometimes|boolean', 
+            'out_of_stock' => 'sometimes|boolean',
             'image' => 'nullable|image',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
             'is_available' => 'sometimes|boolean',
@@ -189,16 +190,28 @@ class AdminController extends Controller
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
-        Product::create($validated);
 
+        $product = Product::create($validated);
+
+        if ($request->hasFile('images')) {
+            $order = 1; 
+            foreach (array_slice($request->file('images'), 0, 4) as $img) {
+                $path = $img->store('products', 'public');
+                $product->images()->create([
+                    'image' => $path,
+                    'order' => $order++ 
+                ]);
+            }
+        }
         return redirect()->route('admin.products')->with('success', 'Product created!');
     }
 
-    public function edit(Product $product) {
+    public function edit(Product $product)
+    {
         $brands = Brand::all();
         $categories = Category::all(); 
         return view('admin.products-edit', compact('product', 'brands', 'categories'));
-    }   
+    }
 
     public function update(Request $request, Product $product)
     {
@@ -216,16 +229,17 @@ class AdminController extends Controller
             'information' => 'nullable|string',
             'price' => $isContact ? 'nullable' : 'required|numeric',
             'sale_price' => 'nullable|numeric',
-            'quantity' => 'nullable|integer', 
+            'quantity' => 'nullable|integer',
             'out_of_stock' => 'sometimes|boolean',
             'image' => 'nullable|image',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'brand_id' => 'nullable|exists:brands,id',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required|exists:brands,id',
             'is_on_sale' => 'nullable|boolean',
             'is_featured' => 'nullable|boolean',
             'is_latest' => 'nullable|boolean',
             'contact_for_price' => 'nullable|boolean',
-            'unit_price' => 'nullable|numeric',  
+            'unit_price' => 'nullable|numeric',
             'coming_soon' => 'nullable|boolean',
         ]);
 
@@ -251,8 +265,8 @@ class AdminController extends Controller
         $validated['coming_soon'] = $request->has('coming_soon') ? 1 : 0;
 
         if ($request->hasFile('image')) {
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
-                Storage::disk('public')->delete($product->image);
+            if ($product->image && \Storage::disk('public')->exists($product->image)) {
+                \Storage::disk('public')->delete($product->image);
             }
             $validated['image'] = $request->file('image')->store('products', 'public');
         } else {
@@ -261,9 +275,25 @@ class AdminController extends Controller
 
         $product->update($validated);
 
+        if ($request->hasFile('images')) {
+            $currentMaxOrder = $product->images()->max('order') ?? 0;
+            $order = $currentMaxOrder + 1;
+            
+            $remainingSlots = 4 - $product->images()->count();
+            
+            if ($remainingSlots > 0) {
+                foreach (array_slice($request->file('images'), 0, $remainingSlots) as $img) {
+                    $path = $img->store('products', 'public');
+                    $product->images()->create([
+                        'image' => $path,
+                        'order' => $order++
+                    ]);
+                }
+            }
+        }
+
         return redirect()->route('admin.products')->with('success', 'Product updated!');
     }
-
 
    public function destroy(Product $product, Request $request)
     {
