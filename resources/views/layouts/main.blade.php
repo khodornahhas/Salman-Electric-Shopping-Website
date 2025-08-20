@@ -19,7 +19,6 @@
 </head>
 
 <style>
-  
   body {
     font-family: 'Urbanist', sans-serif !important;
     padding-top: 40px;  
@@ -98,75 +97,128 @@
   }
 
   #mobileMenu.open {
-    transform: translateX(-280px);
+      transform: translateX(-280px);
   }
 
   #mobileMenu .close-btn {
-    position: absolute;
-    top: 1.2rem;
-    right: 1.2rem;
-    font-size: 2rem;
-    cursor: pointer;
-    color: white;
-    background: none;
-    border: none;
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-size: 2rem;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 70;
+  }
+
+  #mobileMenu .close-btn:hover {
+      color: #ff6b6b;
+  }
+
+  .mobile-menu-header {
+      position: relative;
+      margin-bottom: 1.5rem;
+      padding-right: 40px; 
+  }
+
+  .mobile-menu-close-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 70;
   }
 
   #menuOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 55;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 55;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
   }
 
   #menuOverlay.active {
-    opacity: 1;
-    visibility: visible;
+      opacity: 1;
+      visibility: visible;
   }
 
   #mobileMenu .search-input {
-    width: 100%;
-    padding: 0.7rem 1rem;
-    border-radius: 999px;
-    border: none;
-    background: white;
-    color: #333;
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 999px;
+      border: none;
+      background: white;
+      color: #333;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
   }
 
   #mobileMenu nav {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
   }
 
   #mobileMenu nav a {
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-    display: block;
-    font-size: 0.9rem;
-    padding: 0.5rem 0;
+      color: white;
+      font-weight: bold;
+      text-transform: uppercase;
+      display: block;
+      font-size: 0.9rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
   }
 
   #mobileMenu nav a:hover { 
-    color: #c72c2c; 
+      color: #c72c2c; 
   }
 
   #mobileMenu .social-icons {
-    display: flex;
-    gap: 1rem;
-    font-size: 1.4rem;
-    margin-top: auto;
-    padding-top: 2rem;
-    justify-content: center;
+      display: flex;
+      gap: 1rem;
+      font-size: 1.4rem;
+      margin-top: auto;
+      padding-top: 2rem;
+      justify-content: center;
+  }
+
+  #mobile-search-results {
+      max-height: 60vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+  }
+
+  #mobile-search-results a {
+      transition: background-color 0.2s ease;
+  }
+
+  #mobile-search-results .bg-gray-100 {
+      background-color: #f3f4f6;
+  }
+
+  #mobile-search-results .border-b {
+      border-bottom: 1px solid #e5e7eb;
+  }
+
+  #mobile-search-results::-webkit-scrollbar {
+      display: none;
+  }
+
+  #mobile-search-results {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
   }
 
   @media (max-width: 767px) {
@@ -211,6 +263,36 @@
   
   .counter-loading {
     visibility: hidden;
+  }
+
+  #search-results {
+      width: 450px;
+      max-height: none !important;
+      overflow-y: visible !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+  }
+
+  #search-results a {
+      transition: background-color 0.2s ease;
+  }
+
+  #search-results .bg-gray-100 {
+      background-color: #f3f4f6;
+  }
+
+  #search-results .border-b {
+      border-bottom: 1px solid #e5e7eb;
+  }
+
+  #search-results::-webkit-scrollbar {
+      display: none;
+  }
+
+  #search-results {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
   }
 </style>
 
@@ -281,22 +363,27 @@
 
       <div class="flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
 
-        <div class="desktop-search relative hidden sm:flex items-center w-[160px] md:w-[180px] lg:w-[220px] xl:w-[280px] 2xl:w-[320px] mx-auto rounded-full bg-white shadow-sm border border-gray-200 focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400 transition-all duration-200">
+       <div class="desktop-search relative hidden sm:flex items-center w-[320px] md:w-[380px] lg:w-[450px] mx-auto rounded-full bg-white shadow-sm border border-gray-200 focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400 transition-all duration-200">
           <input 
             type="text" 
             name="q" 
             placeholder="Search..." 
-            class="w-full py-[6px] lg:py-2 pl-3 lg:pl-4 xl:pl-5 pr-8 lg:pr-10 text-gray-700 rounded-full focus:outline-none bg-transparent text-xs lg:text-sm xl:text-base"
+            class="w-full py-3 pl-5 pr-10 text-gray-700 rounded-full focus:outline-none bg-transparent text-base"
             autocomplete="off"
           >
           <button 
             type="submit" 
-            class="absolute right-0 px-2 lg:px-3 xl:px-4 text-gray-400 hover:text-amber-500 transition-colors duration-200"
+            class="absolute right-0 px-4 text-gray-400 hover:text-amber-500 transition-colors duration-200"
           >
-            <i class='bx bx-search text-base lg:text-lg xl:text-xl'></i>
+            <i class='bx bx-search text-xl'></i>
           </button>
-        </div>
-        
+
+          <div id="search-results" 
+              class="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-xl hidden z-50">
+          </div>
+      </div>
+
+
         <div class="mobile-icons flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
           <a href="{{ route('wishlist.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
               <i class='bx bx-heart text-lg sm:text-xl lg:text-2xl'></i>
@@ -598,50 +685,65 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/wishlist.js') }}"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-      const toggleButton = document.getElementById('toggleOpen');
-      const mobileMenu = document.getElementById('mobileMenu');
-      const menuOverlay = document.getElementById('menuOverlay');
-      
-      if (mobileMenu) {
-          mobileMenu.innerHTML = `
-              <div class="flex flex-col h-full">
-                  <button id="toggleClose" class="close-btn self-end text-2xl">&times;</button>
-                  <div class="mt-4">
-                      <input type="text" placeholder="Search..." class="search-input">
-                      <nav class="mt-4">
-                          <a href="/home" class="${window.location.pathname === '/home' ? 'text-blue-400' : ''}">Home</a>
-                          <a href="/shop" class="${window.location.pathname.includes('/shop') ? 'text-blue-400' : ''}">Shop</a>
-                          <a href="/about" class="${window.location.pathname === '/about' ? 'text-blue-400' : ''}">About</a>
-                          <a href="/contact" class="${window.location.pathname === '/contact' ? 'text-blue-400' : ''}">Contact</a>
-                          <a href="/portfolio" class="${window.location.pathname.includes('/portfolio') ? 'text-blue-400' : ''}">Portfolio</a>
-                      </nav>
-                  </div>
-                  <div class="social-icons mt-auto">
-                      <a href="#" class="text-white hover:text-blue-400"><i class='bx bxl-facebook'></i></a>
-                      <a href="#" class="text-white hover:text-pink-400"><i class='bx bxl-instagram'></i></a>
-                  </div>
-              </div>
-          `;
-          
-          const closeButton = document.getElementById('toggleClose');
-          
-          function openMenu() {
-              mobileMenu.classList.add('open');
-              menuOverlay.classList.add('active');
-              document.body.style.overflow = 'hidden';
-          }
-          
-          function closeMenu() {
-              mobileMenu.classList.remove('open');
-              menuOverlay.classList.remove('active');
-              document.body.style.overflow = '';
-          }
-          
-          if (toggleButton) toggleButton.addEventListener('click', openMenu);
-          if (closeButton) closeButton.addEventListener('click', closeMenu);
-          if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
-      }
+ document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.getElementById('toggleOpen');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    
+    if (mobileMenu) {
+        mobileMenu.innerHTML = `
+            <div class="flex flex-col h-full">
+                <button id="toggleClose" class="close-btn self-end text-2xl p-4">&times;</button>
+                <div class="mt-4 px-4">
+                    <!-- Mobile Search Container -->
+                    <div class="mobile-search relative w-full mb-4">
+                        <input 
+                            type="text" 
+                            placeholder="Search..." 
+                            class="search-input w-full py-2 px-3 rounded-full border border-gray-300 focus:outline-none focus:border-amber-400"
+                            id="mobile-search-input"
+                        >
+                        <!-- Mobile Search Results -->
+                        <div id="mobile-search-results" 
+                            class="absolute top-full left-0 w-full bg-white shadow-lg border border-gray-200 rounded-md mt-1 hidden z-50 max-h-80 overflow-y-auto">
+                        </div>
+                    </div>
+                    <nav class="mt-4 space-y-2">
+                        <a href="/home" class="block py-2 ${window.location.pathname === '/home' ? 'text-blue-400' : 'text-white'}">Home</a>
+                        <a href="/shop" class="block py-2 ${window.location.pathname.includes('/shop') ? 'text-blue-400' : 'text-white'}">Shop</a>
+                        <a href="/about" class="block py-2 ${window.location.pathname === '/about' ? 'text-blue-400' : 'text-white'}">About</a>
+                        <a href="/contact" class="block py-2 ${window.location.pathname === '/contact' ? 'text-blue-400' : 'text-white'}">Contact</a>
+                        <a href="/portfolio" class="block py-2 ${window.location.pathname.includes('/portfolio') ? 'text-blue-400' : 'text-white'}">Portfolio</a>
+                    </nav>
+                </div>
+                <div class="social-icons mt-auto p-4">
+                    <a href="#" class="text-white hover:text-blue-400 mr-3"><i class='bx bxl-facebook'></i></a>
+                    <a href="#" class="text-white hover:text-pink-400"><i class='bx bxl-instagram'></i></a>
+                </div>
+            </div>
+        `;
+        
+        const closeButton = document.getElementById('toggleClose');
+        
+        function openMenu() {
+            mobileMenu.classList.add('open');
+            menuOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMenu() {
+            mobileMenu.classList.remove('open');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            $('#mobile-search-results').hide();
+        }
+        
+        if (toggleButton) toggleButton.addEventListener('click', openMenu);
+        if (closeButton) closeButton.addEventListener('click', closeMenu);
+        if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
+        
+        initMobileSearch();
+    }
 
   const initialCartCount = {{ App\Http\Controllers\CartController::getCartCount() }};
   const initialWishlistCount = {{ auth()->check() ? auth()->user()->wishlists()->count() : 0 }};
@@ -754,5 +856,228 @@
           setTimeout(() => element.classList.remove('animate-pulse'), 300);
       }
   });
+
+  $(document).ready(function () {
+      let $input = $('input[name="q"]');
+      let $results = $('#search-results');
+
+      $input.on('keyup', function () {
+          let query = $(this).val();
+          if (query.length < 2) {
+              $results.hide();
+              return;
+          }
+
+          console.log('Searching for:', query);
+          
+          $results.html('<div class="px-6 py-4 text-gray-500 text-lg">Searching...</div>').show();
+
+          $.ajax({
+              url: "{{ route('search.ajax') }}",
+              method: 'GET',
+              data: { q: query },
+              dataType: 'json',
+              success: function (data) {
+                  console.log('Search results:', data);
+                  
+                  let html = "";
+
+                  if (data.products && data.products.length > 0) {
+                      html += "<div class='px-6 py-3 font-bold text-gray-800 border-b bg-gray-100 text-lg'>PRODUCTS</div>";
+                      data.products.forEach(p => {
+                          const imageUrl = p.image ? "{{ asset('storage/') }}/" + p.image : '/placeholder-image.jpg';
+                          
+                          html += `
+                          <a href="/product-details/${p.id}" class="flex items-center px-6 py-4 hover:bg-gray-50 border-b">
+                              <div class="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-md overflow-hidden mr-4">
+                                  <img src="${imageUrl}" alt="${p.name}" class="w-full h-full object-cover">
+                              </div>
+                              <div class="flex-grow">
+                                  <div class="text-base font-medium text-gray-900">${p.name}</div>
+                              </div>
+                          </a>`;
+                      });
+                      
+                      html += `
+                      <div class="px-6 py-3 bg-gray-100 border-t">
+                          <a href="/shop/all/brands/all/min-price/0/max-price/2500?search=${encodeURIComponent(query)}" 
+                            class="text-base font-medium text-blue-600 hover:text-blue-800">
+                              SEE ALL PRODUCTS... (${data.total_products_count})
+                          </a>
+                      </div>`;
+                  }
+
+                  if (data.categories && data.categories.length > 0) {
+                      html += "<div class='px-6 py-3 font-bold text-gray-800 border-b bg-gray-100 text-lg'>CATEGORIES</div>";
+                      data.categories.forEach(c => {
+                          html += `
+                          <a href="/shop/${c.slug}/brands/all/min-price/0/max-price/2500" 
+                            class="block px-6 py-4 hover:bg-gray-50 border-b text-base text-gray-700">
+                              ${c.name}
+                          </a>`;
+                      });
+                  }
+
+                  if (data.brands && data.brands.length > 0) {
+                      html += "<div class='px-6 py-3 font-bold text-gray-800 border-b bg-gray-100 text-lg'>BRANDS</div>";
+                      data.brands.forEach(b => {
+                          html += `
+                          <a href="/shop/all/brands/${b.slug}/min-price/0/max-price/2500" 
+                            class="block px-6 py-4 hover:bg-gray-50 border-b text-base text-gray-700">
+                              ${b.name}
+                          </a>`;
+                      });
+                  }
+
+                  if (html === "") {
+                      html = "<div class='px-6 py-4 text-gray-500 text-base'>No results found</div>";
+                  }
+
+                  $results.html(html).show();
+              },
+              error: function(xhr, status, error) {
+                  console.error("AJAX Error Details:");
+                  console.error("Status:", status);
+                  console.error("Error:", error);
+                  
+                  let errorMsg = "Error loading results";
+                  if (xhr.status === 500) {
+                      errorMsg += " (Server Error)";
+                  } else if (xhr.status === 404) {
+                      errorMsg += " (Endpoint Not Found)";
+                  }
+                  
+                  $results.html(`<div class='px-6 py-4 text-red-500 text-base'>${errorMsg}</div>`).show();
+              }
+          });
+      });
+
+      $(document).click(function(e) {
+          if (!$(e.target).closest('.desktop-search').length) {
+              $results.hide();
+          }
+      });
+      
+      $results.on('click', function(e) {
+          e.stopPropagation();
+      });
+  });
+
+  function initMobileSearch() {
+      let $mobileInput = $('#mobile-search-input');
+      let $mobileResults = $('#mobile-search-results');
+      let mobileSearchTimer;
+    
+      $mobileInput.on('keyup', function() {
+          clearTimeout(mobileSearchTimer);
+          let query = $(this).val();
+          
+          if (query.length < 2) {
+              $mobileResults.hide();
+              return;
+          }
+          
+          mobileSearchTimer = setTimeout(function() {
+              performMobileSearch(query, $mobileResults);
+          }, 300);
+      });
+      
+      $(document).on('click', function(e) {
+          if (!$(e.target).closest('.mobile-search').length) {
+              $mobileResults.hide();
+          }
+      });
+    
+      $mobileResults.on('click', function(e) {
+          e.stopPropagation();
+      });
+  }
+
+  function performMobileSearch(query, $results) {
+      console.log('Mobile searching for:', query);
+      
+      $results.html('<div class="px-4 py-3 text-gray-500">Searching...</div>').show();
+      
+      $.ajax({
+          url: "{{ route('search.ajax') }}",
+          method: 'GET',
+          data: { q: query },
+          dataType: 'json',
+          success: function(data) {
+              console.log('Mobile search results:', data);
+              
+              let html = "";
+              
+              if (data.products && data.products.length > 0) {
+                  html += "<div class='px-4 py-2 font-bold text-gray-800 border-b bg-gray-100'>PRODUCTS</div>";
+                  data.products.forEach(p => {
+                      const imageUrl = p.image ? "{{ asset('storage/') }}/" + p.image : '/placeholder-image.jpg';
+                      
+                      html += `
+                      <a href="/product-items/${p.id}" class="flex items-center px-4 py-3 hover:bg-gray-50 border-b" onclick="closeMobileMenu()">
+                          <div class="flex-shrink-0 w-12 h-12 bg-gray-200 rounded-md overflow-hidden mr-3">
+                              <img src="${imageUrl}" alt="${p.name}" class="w-full h-full object-cover">
+                          </div>
+                          <div class="flex-grow">
+                              <div class="text-sm font-medium text-gray-900">${p.name}</div>
+                          </div>
+                      </a>`;
+                  });
+                  
+                  html += `
+                  <div class="px-4 py-2 bg-gray-100 border-t">
+                      <a href="/shop/all/brands/all/min-price/0/max-price/2500?search=${encodeURIComponent(query)}" 
+                        class="text-sm font-medium text-blue-600 hover:text-blue-800" onclick="closeMobileMenu()">
+                          SEE ALL PRODUCTS... (${data.total_products_count || data.products.length})
+                      </a>
+                  </div>`;
+              }
+              
+              if (data.categories && data.categories.length > 0) {
+                  html += "<div class='px-4 py-2 font-bold text-gray-800 border-b bg-gray-100'>CATEGORIES</div>";
+                  data.categories.forEach(c => {
+                      html += `
+                      <a href="/shop/${c.slug}/brands/all/min-price/0/max-price/2500" 
+                        class="block px-4 py-2 hover:bg-gray-50 border-b text-sm text-gray-700" onclick="closeMobileMenu()">
+                          ${c.name}
+                      </a>`;
+                  });
+              }
+              
+              if (data.brands && data.brands.length > 0) {
+                  html += "<div class='px-4 py-2 font-bold text-gray-800 border-b bg-gray-100'>BRANDS</div>";
+                  data.brands.forEach(b => {
+                      html += `
+                      <a href="/shop/all/brands/${b.slug}/min-price/0/max-price/2500" 
+                        class="block px-4 py-2 hover:bg-gray-50 border-b text-sm text-gray-700" onclick="closeMobileMenu()">
+                          ${b.name}
+                      </a>`;
+                  });
+              }
+              
+              if (html === "") {
+                  html = "<div class='px-4 py-3 text-gray-500'>No results found</div>";
+              }
+              
+              $results.html(html).show();
+          },
+          error: function(xhr, status, error) {
+              console.error("Mobile search error:", error);
+              $results.html('<div class="px-4 py-3 text-red-500">Error loading results</div>').show();
+          }
+      });
+  }
+
+  function closeMobileMenu() {
+      const mobileMenu = document.getElementById('mobileMenu');
+      const menuOverlay = document.getElementById('menuOverlay');
+      
+      if (mobileMenu) mobileMenu.classList.remove('open');
+      if (menuOverlay) menuOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+      
+      $('#mobile-search-results').hide();
+      $('#mobile-search-input').val('');
+  }
 </script>
 </html>

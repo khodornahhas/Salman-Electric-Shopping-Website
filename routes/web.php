@@ -147,11 +147,8 @@ Route::get('/portfolio', function () {
 
 Route::get('/order/success/{order}', [CartController::class, 'showSuccess']);
 
-Route::get('/mail-test', function () {
-    Mail::raw('This is a test email from Laravel via Gmail SMTP', function ($message) {
-        $message->to('khodornahhas8@gmail.com')->subject('Test Email');
-    });
 
-    return 'Test email sent! Check your inbox.';
-});
+Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search.ajax');
+Route::get('/search-all', [App\Http\Controllers\SearchController::class, 'searchAll'])->name('search.all');
+
 require __DIR__.'/auth.php';

@@ -482,60 +482,42 @@
                             {{ $product->name }}
                         </h3>
 
-                        <div class="mt-auto text-center">
+                       <div class="mt-auto text-center">
                             @if($product->coming_soon)
+                                <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
                             @elseif($product->contact_for_price)
                                 <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
                                 <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
                             @elseif($product->quantity == 0 || $product->out_of_stock)
                                 <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
-                            @endif
-
-                            @php
-                                $disableAddToCart = $product->coming_soon || $product->contact_for_price || $product->quantity == 0 || $product->out_of_stock;
-
-                                $discountPercent = 0;
-                                $user = Auth::user();
-
-                                if(session('user_promo_code')) {
-                                    $promo = \App\Models\PromoCode::with('products')->find(session('user_promo_code'));
-
-                                    if($promo && $promo->products->contains($product->id)) {
-                                        $alreadyRedeemed = $user 
-                                            ? $promo->orders()->where('user_id', $user->id)->exists()
-                                            : false;
-
-                                        if(!$alreadyRedeemed) {
-                                            $discountPercent = $promo->discount_percent;
-                                        }
-                                    }
-                                }
-                            @endphp
-
-                            @if($discountPercent > 0)
-                                <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
-                                <p class="text-green-600 text-lg font-bold">
-                                    Special Price: ${{ number_format($product->price * (1 - $discountPercent/100), 2) }}
-                                </p>
                             @elseif($product->sale_price && $product->sale_price < $product->price)
-                                <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
-                                <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
+                                <p class="text-gray-500 text-sm line-through">
+                                    ${{ number_format($product->price, 2) }}
+                                </p>
+                                <p class="text-red-600 text-lg font-bold underline">
+                                    ${{ number_format($product->sale_price, 2) }}
+                                </p>
                             @else
-                                <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
+                                <p class="text-red-600 text-lg font-bold">
+                                    ${{ number_format($product->price, 2) }}
+                                </p>
                             @endif
 
                             <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
-                                @csrf
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="submit"
-                                    class="mt-2 w-44 sm:w-44 w-auto mx-auto bg-gray-100 font-medium py-2 rounded transition add-to-cart
-                                        {{ $disableAddToCart ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-200' }}"
-                                    {{ $disableAddToCart ? 'disabled' : '' }}
-                                    data-product-id="{{ $product->id }}" data-quantity="1"
-                                    style="font-size:18px; color:grey;">
-                                    {{ $disableAddToCart ? 'Add to Cart' : 'Add to Cart' }}
-                                </button>
-                            </form>
+                            @csrf
+                            <input type="hidden" name="quantity" value="1">
+                            @php
+                                $disableAddToCart = $product->out_of_stock || $product->coming_soon || $product->contact_for_price;
+                            @endphp
+                            <button type="submit"
+                                class="mt-2 w-44 sm:w-44 w-auto mx-auto bg-gray-100 font-medium py-2 rounded transition add-to-cart
+                                    {{ $disableAddToCart ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-200' }}"
+                                {{ $disableAddToCart ? 'disabled' : '' }}
+                                data-product-id="{{ $product->id }}" data-quantity="1"
+                                style="font-size:18px; color:grey;">
+                                Add to Cart
+                            </button>
+                        </form>
                         </div>
                     </div>
                 </div>
