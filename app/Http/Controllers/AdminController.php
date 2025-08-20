@@ -162,11 +162,13 @@ class AdminController extends Controller
             'is_featured' => 'sometimes|boolean',
             'is_latest' => 'sometimes|boolean',
             'unit_price' => 'nullable|numeric',
+            'coming_soon' => 'sometimes|boolean', 
         ]);
 
         $contactForPrice = $request->has('contact_for_price');
+        $comingSoon = $request->has('coming_soon');
 
-        if (!$contactForPrice && (!$request->filled('price') || $request->price === null || $request->price === '')) {
+        if (!$comingSoon && !$contactForPrice && (!$request->filled('price') || $request->price === null || $request->price === '')) {
             $contactForPrice = true;
         }
 
@@ -176,16 +178,22 @@ class AdminController extends Controller
             $validated['quantity'] = $request->filled('quantity') ? $request->quantity : 1;
         }
 
+        if ($contactForPrice && !$comingSoon) {
+            $validated['price'] = null;
+            $validated['sale_price'] = null;
+        } else {
+            $validated['price'] = $request->filled('price') ? $request->price : null;
+            $validated['sale_price'] = $request->filled('sale_price') ? $request->sale_price : null;
+        }
+
         $validated['contact_for_price'] = $contactForPrice ? 1 : 0;
-        $validated['price'] = $contactForPrice ? null : $request->price;
-        $validated['sale_price'] = $contactForPrice ? null : $request->sale_price;
         $validated['unit_price'] = $request->filled('unit_price') ? $request->unit_price : null;
 
         $validated['is_available'] = $request->has('is_available') ? 1 : 0;
         $validated['is_on_sale'] = $request->has('is_on_sale') ? 1 : 0;
         $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
         $validated['is_latest'] = $request->has('is_latest') ? 1 : 0;
-        $validated['coming_soon'] = $request->has('coming_soon') ? 1 : 0;
+        $validated['coming_soon'] = $comingSoon ? 1 : 0;
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
@@ -216,6 +224,7 @@ class AdminController extends Controller
     public function update(Request $request, Product $product)
     {
         $isContact = $request->has('contact_for_price');
+        $comingSoon = $request->has('coming_soon');
 
         if ($request->has('out_of_stock') && $request->out_of_stock === 'on') {
             $request->merge(['out_of_stock' => true]);
@@ -227,14 +236,14 @@ class AdminController extends Controller
             'name' => 'required|string',
             'description' => 'nullable|string',
             'information' => 'nullable|string',
-            'price' => $isContact ? 'nullable' : 'required|numeric',
+            'price' => ($isContact && !$comingSoon) ? 'nullable' : 'nullable|numeric',
             'sale_price' => 'nullable|numeric',
             'quantity' => 'nullable|integer',
             'out_of_stock' => 'sometimes|boolean',
             'image' => 'nullable|image',
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'brand_id' => 'nullable|exists:brands,id',
-            'category_id' => 'required|exists:brands,id',
+            'category_id' => 'required|exists:categories,id', 
             'is_on_sale' => 'nullable|boolean',
             'is_featured' => 'nullable|boolean',
             'is_latest' => 'nullable|boolean',
@@ -243,9 +252,12 @@ class AdminController extends Controller
             'coming_soon' => 'nullable|boolean',
         ]);
 
-        if ($isContact) {
+        if ($isContact && !$comingSoon) {
             $validated['price'] = null;
             $validated['sale_price'] = null;
+        } else {
+            $validated['price'] = $request->filled('price') ? $request->price : null;
+            $validated['sale_price'] = $request->filled('sale_price') ? $request->sale_price : null;
         }
 
         if ($request->out_of_stock) {
@@ -262,7 +274,7 @@ class AdminController extends Controller
         $validated['is_featured'] = $request->has('is_featured') ? 1 : 0;
         $validated['is_latest'] = $request->has('is_latest') ? 1 : 0;
         $validated['contact_for_price'] = $isContact ? 1 : 0;
-        $validated['coming_soon'] = $request->has('coming_soon') ? 1 : 0;
+        $validated['coming_soon'] = $comingSoon ? 1 : 0;
 
         if ($request->hasFile('image')) {
             if ($product->image && \Storage::disk('public')->exists($product->image)) {
@@ -295,7 +307,7 @@ class AdminController extends Controller
         return redirect()->route('admin.products')->with('success', 'Product updated!');
     }
 
-   public function destroy(Product $product, Request $request)
+    public function destroy(Product $product, Request $request)
     {
         if ($product->image && Storage::disk('public')->exists($product->image)) {
             Storage::disk('public')->delete($product->image);

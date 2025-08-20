@@ -17,15 +17,19 @@
             @endif
         </td>
 
-        <td class="px-6 py-4">
-            @if ($product->coming_soon)
-                <span class="font-medium text-yellow-600">Coming Soon</span>
-            @elseif ($product->contact_for_price)
+       <td class="px-6 py-4">
+            @if ($product->contact_for_price)
                 <span class="font-medium text-blue-600">Contact for Price</span>
-            @else
+            @elseif ($product->price !== null)
                 <span class="font-medium">${{ number_format($product->price, 2) }}</span>
+                @if ($product->coming_soon)
+                    <span class="ml-2 text-yellow-600 italic">(Coming Soon)</span>
+                @endif
+            @else
+                <span class="text-gray-400 italic">N/A</span>
             @endif
         </td>
+
 
         <td class="px-6 py-4">
             @if($product->sale_price && $product->sale_price > 0)

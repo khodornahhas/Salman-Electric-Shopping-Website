@@ -248,31 +248,31 @@
             <li>
               <a href="/home" 
                 class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('home') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
-                Home
+                HOME
               </a>
             </li>
             <li>
               <a href="/shop" 
                 class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('shop') || request()->is('shop/*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
-                Shop
+                SHOP
               </a>
             </li>
             <li>
               <a href="/about" 
                 class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('about') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
-                About
+                ABOUT
               </a>
             </li>
             <li>
               <a href="/contact" 
                 class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('contact') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
-                Contact
+                CONTACT
               </a>
             </li>
             <li>
               <a href="/portfolio" 
                 class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('portfolio') || request()->is('portfolio/*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
-                Portfolio
+                PORTFOLIO
               </a>
             </li>
           </ul>

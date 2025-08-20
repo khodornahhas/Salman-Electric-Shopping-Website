@@ -107,10 +107,16 @@
     function togglePriceInputs() {
         const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
         const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
-        const disable = contactCheckbox.checked || comingSoonCheckbox.checked;
+        
+        const disable = contactCheckbox.checked && !comingSoonCheckbox.checked;
 
         document.querySelector('input[name="price"]').disabled = disable;
         document.querySelector('input[name="sale_price"]').disabled = disable;
+        
+        if (disable) {
+            document.querySelector('input[name="price"]').value = '';
+            document.querySelector('input[name="sale_price"]').value = '';
+        }
     }
 
     document.addEventListener('DOMContentLoaded', () => {

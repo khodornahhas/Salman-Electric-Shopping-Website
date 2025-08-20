@@ -149,10 +149,16 @@
     function togglePriceInputs() {
         const contactCheckbox = document.querySelector('input[name="contact_for_price"]');
         const comingSoonCheckbox = document.querySelector('input[name="coming_soon"]');
-        const disablePrice = contactCheckbox.checked || comingSoonCheckbox.checked;
+        
+        const disablePrice = contactCheckbox.checked && !comingSoonCheckbox.checked;
 
         document.querySelector('input[name="price"]').disabled = disablePrice;
         document.querySelector('input[name="sale_price"]').disabled = disablePrice;
+        
+        if (disablePrice) {
+            document.querySelector('input[name="price"]').value = '';
+            document.querySelector('input[name="sale_price"]').value = '';
+        }
     }
 
     function toggleQuantity() {
@@ -181,5 +187,4 @@
         outOfStockCheckbox.addEventListener('change', toggleQuantity);
     });
 </script>
-
 @endsection

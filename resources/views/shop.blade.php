@@ -451,102 +451,95 @@
 
         <div class="grid product-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @foreach($products as $product)
-                    <div class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
+                <div class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
 
-                        <div class="absolute top-2 right-2 z-10 flex items-center space-x-2">
-                            <div class="cursor-pointer wishlist-btn" data-product-id="{{ $product->id }}">
-                                <i class="wishlist-icon bx {{ in_array($product->id, $wishlistProductIds) ? 'bxs-heart text-red-500' : 'bx-heart text-gray-400' }} text-2xl"></i>
-                            </div>
-                        </div>
-
-                        @if($product->coming_soon)
-                            <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
-                                Coming Soon
-                            </div>
-                        @elseif($product->sale_price && $product->sale_price < $product->price)
-                            <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                                On Sale
-                            </div>
-                        @endif
-
-                        <a href="{{ route('product.details', $product->id) }}" class="bg-white w-full h-60 flex items-center justify-center overflow-hidden">
-                            @if($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
-                            @else
-                                <span class="text-gray-400">No Image</span>
-                            @endif
-                        </a>
-
-                        <div class="p-5 flex flex-col flex-grow">
-                            <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
-                                {{ $product->name }}
-                            </h3>
-
-                            <div class="mt-auto text-center">
-                                @if($product->coming_soon)
-                                    <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
-                                    <p class="text-sm text-gray-500 italic">Stay tuned</p>
-                                @elseif($product->contact_for_price)
-                                    <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
-                                    <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
-                                @elseif($product->quantity == 0 || $product->out_of_stock)
-                                    <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
-                                @endif
-
-                                @php
-                                    $disableAddToCart = $product->coming_soon || $product->contact_for_price || $product->quantity == 0 || $product->out_of_stock;
-                                @endphp
-
-                             @if(!$disableAddToCart)
-                                @php
-                                    $discountPercent = 0;
-                                    $user = Auth::user();
-
-                                    if(session('user_promo_code')) {
-                                        $promo = \App\Models\PromoCode::with('products')->find(session('user_promo_code'));
-
-                                        if($promo && $promo->products->contains($product->id)) {
-                                            $alreadyRedeemed = $user 
-                                                ? $promo->orders()->where('user_id', $user->id)->exists()
-                                                : false;
-
-                                            if(!$alreadyRedeemed) {
-                                                $discountPercent = $promo->discount_percent;
-                                            }
-                                        }
-                                    }
-                                @endphp
-
-                                @if($discountPercent > 0)
-                                    <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
-                                    <p class="text-green-600 text-lg font-bold">
-                                        Special Price: ${{ number_format($product->price * (1 - $discountPercent/100), 2) }}
-                                    </p>
-                                @elseif($product->sale_price && $product->sale_price < $product->price)
-                                    <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
-                                    <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
-                                @else
-                                    <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
-                                @endif
-                            @endif
-
-
-                                <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
-                                    @csrf
-                                    <input type="hidden" name="quantity" value="1">
-                                   <button type="submit"
-                                        class="mt-2 w-44 sm:w-44 w-auto mx-auto bg-gray-100 font-medium py-2 rounded transition add-to-cart
-                                            {{ $disableAddToCart ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-200' }}"
-                                        {{ $disableAddToCart ? 'disabled' : '' }}
-                                        data-product-id="{{ $product->id }}" data-quantity="1"
-                                        style="font-size:18px; color:grey;">
-                                        Add to Cart
-                                    </button>
-                                </form>
-                            </div>
+                    <div class="absolute top-2 right-2 z-10 flex items-center space-x-2">
+                        <div class="cursor-pointer wishlist-btn" data-product-id="{{ $product->id }}">
+                            <i class="wishlist-icon bx {{ in_array($product->id, $wishlistProductIds) ? 'bxs-heart text-red-500' : 'bx-heart text-gray-400' }} text-2xl"></i>
                         </div>
                     </div>
-                @endforeach
+
+                    @if($product->coming_soon)
+                        <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            Coming Soon
+                        </div>
+                    @elseif($product->sale_price && $product->sale_price < $product->price)
+                        <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            On Sale
+                        </div>
+                    @endif
+
+                    <a href="{{ route('product.details', $product->id) }}" class="bg-white w-full h-60 flex items-center justify-center overflow-hidden">
+                        @if($product->image)
+                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
+                        @else
+                            <span class="text-gray-400">No Image</span>
+                        @endif
+                    </a>
+
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
+                            {{ $product->name }}
+                        </h3>
+
+                        <div class="mt-auto text-center">
+                            @if($product->coming_soon)
+                            @elseif($product->contact_for_price)
+                                <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
+                                <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                            @elseif($product->quantity == 0 || $product->out_of_stock)
+                                <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
+                            @endif
+
+                            @php
+                                $disableAddToCart = $product->coming_soon || $product->contact_for_price || $product->quantity == 0 || $product->out_of_stock;
+
+                                $discountPercent = 0;
+                                $user = Auth::user();
+
+                                if(session('user_promo_code')) {
+                                    $promo = \App\Models\PromoCode::with('products')->find(session('user_promo_code'));
+
+                                    if($promo && $promo->products->contains($product->id)) {
+                                        $alreadyRedeemed = $user 
+                                            ? $promo->orders()->where('user_id', $user->id)->exists()
+                                            : false;
+
+                                        if(!$alreadyRedeemed) {
+                                            $discountPercent = $promo->discount_percent;
+                                        }
+                                    }
+                                }
+                            @endphp
+
+                            @if($discountPercent > 0)
+                                <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
+                                <p class="text-green-600 text-lg font-bold">
+                                    Special Price: ${{ number_format($product->price * (1 - $discountPercent/100), 2) }}
+                                </p>
+                            @elseif($product->sale_price && $product->sale_price < $product->price)
+                                <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
+                                <p class="text-red-600 text-lg font-bold underline">${{ number_format($product->sale_price, 2) }}</p>
+                            @else
+                                <p class="text-red-600 text-lg font-bold">${{ number_format($product->price, 2) }}</p>
+                            @endif
+
+                            <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
+                                @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit"
+                                    class="mt-2 w-44 sm:w-44 w-auto mx-auto bg-gray-100 font-medium py-2 rounded transition add-to-cart
+                                        {{ $disableAddToCart ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-200' }}"
+                                    {{ $disableAddToCart ? 'disabled' : '' }}
+                                    data-product-id="{{ $product->id }}" data-quantity="1"
+                                    style="font-size:18px; color:grey;">
+                                    {{ $disableAddToCart ? 'Add to Cart' : 'Add to Cart' }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
 
 
