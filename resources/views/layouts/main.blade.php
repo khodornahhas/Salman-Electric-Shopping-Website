@@ -330,31 +330,31 @@
             <li>
               <a href="/home" 
                 class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('home') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
-                HOME
+                Home
               </a>
             </li>
             <li>
               <a href="/shop" 
                 class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('shop') || request()->is('shop/*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
-                SHOP
+                Shop
               </a>
             </li>
             <li>
               <a href="/about" 
                 class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('about') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
-                ABOUT
+                About
               </a>
             </li>
             <li>
               <a href="/contact" 
                 class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('contact') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
-                CONTACT
+                Contact
               </a>
             </li>
             <li>
               <a href="/portfolio" 
                 class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('portfolio') || request()->is('portfolio/*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
-                PORTFOLIO
+                Portfolio
               </a>
             </li>
           </ul>

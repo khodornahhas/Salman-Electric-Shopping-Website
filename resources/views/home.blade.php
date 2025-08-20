@@ -6,201 +6,218 @@
 @endsection
 @section('content')
 <style>
-   .logos {
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-    white-space: nowrap;
-    }
-
-    .logos-slide {
-        display: inline-block;
-        white-space: nowrap;
-        will-change: transform;
-    }
-
-    .logos-slide a {
-        scroll-snap-align: start;
-        margin: 0 35px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 50px;
-        height: auto;
-    }
-
-    .logos-slide img {
-        max-height: 50px;
-        width: auto;
-        max-width: 120px;
-        object-fit: contain;
-        display: inline-block;
-        vertical-align: middle;
-        user-select: none; 
-        pointer-events: auto; 
-    }
-
-    @media (max-width: 767px) {
         .logos {
-            padding: 0 10px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            white-space: nowrap;
         }
-        
+
+        .logos-slide {
+            display: inline-block;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
         .logos-slide a {
-            margin: 0 10px;
+            scroll-snap-align: start;
+            margin: 0 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+            height: auto;
+        }
+
+        .logos-slide img {
+            max-height: 50px;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+            display: inline-block;
+            vertical-align: middle;
+            user-select: none; 
+            pointer-events: auto; 
+        }
+
+        @media (max-width: 767px) {
+            .logos {
+                padding: 0 10px;
+            }
+            
+            .logos-slide a {
+                margin: 0 10px;
+            }
+            
+            .logos-slide img {
+                max-height: 40px;
+                max-width: 100px;
+            }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .animate-float-slow {
+            animation: float 4s ease-in-out infinite;
+        }
+        .animate-float-reverse {
+            animation: float-reverse 3.5s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes float-reverse {
+            0% { transform: translateY(-10px); }
+            50% { transform: translateY(10px); }
+            100% { transform: translateY(-10px); }
+        }
+        .product-card {
+            transition: all 0.3s ease;
+        }
+
+        .show-more-btn {
+            transition: all 0.2s ease;
+        }
+        .show-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .swiper-slide {
+            width: auto !important;
+            height: auto !important;
+        }
+
+        .swiper-pagination-bullet {
+            width: 12px !important;
+            height: 12px !important;
+            background: #d1d5db !important;
+            opacity: 1 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #f59e0b !important;
+            transform: scale(1.2) !important;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease !important;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: scale(1.1);
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 20px !important;
+            font-weight: bold !important;
+            color: #f59e0b !important;
+        }
+        .slide-enter-active, .slide-leave-active {
+            transition: all 0.5s ease;
+        }
+        .slide-enter-from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        .slide-leave-to {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        .slider-container {
+            overflow: hidden;
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slider-slide {
+            flex: 0 0 25%;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            background: #d1d5db;
+            opacity: 1;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-dot.active {
+            background: #f59e0b;
+            transform: scale(1.2);
         }
         
-        .logos-slide img {
-            max-height: 40px;
-            max-width: 100px;
+        .banner-overlay {
+            background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);
         }
-    }
-
-    .animate-float {
-        animation: float 3s ease-in-out infinite;
-    }
-    .animate-float-slow {
-        animation: float 4s ease-in-out infinite;
-    }
-    .animate-float-reverse {
-        animation: float-reverse 3.5s ease-in-out infinite;
-    }
-    @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-15px); }
-        100% { transform: translateY(0px); }
-    }
-    @keyframes float-reverse {
-        0% { transform: translateY(-10px); }
-        50% { transform: translateY(10px); }
-        100% { transform: translateY(-10px); }
-    }
-    .product-card {
-        transition: all 0.3s ease;
-    }
-
-    .show-more-btn {
-        transition: all 0.2s ease;
-    }
-    .show-more-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .swiper-slide {
-        width: auto !important;
-        height: auto !important;
-    }
-
-    .swiper-pagination-bullet {
-        width: 12px !important;
-        height: 12px !important;
-        background: #d1d5db !important;
-        opacity: 1 !important;
-        transition: all 0.3s ease !important;
-    }
-
-    .swiper-pagination-bullet-active {
-        background: #f59e0b !important;
-        transform: scale(1.2) !important;
-    }
-
-    .swiper-button-next,
-    .swiper-button-prev {
-        background-color: rgba(255, 255, 255, 0.8);
-        width: 40px !important;
-        height: 40px !important;
-        border-radius: 50%;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease !important;
-    }
-
-    .swiper-button-next:hover,
-    .swiper-button-prev:hover {
-        background-color: rgba(255, 255, 255, 0.9);
-        transform: scale(1.1);
-    }
-
-    .swiper-button-next:after,
-    .swiper-button-prev:after {
-        font-size: 20px !important;
-        font-weight: bold !important;
-        color: #f59e0b !important;
-    }
-    .slide-enter-active, .slide-leave-active {
-        transition: all 0.5s ease;
-    }
-    .slide-enter-from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    .slide-leave-to {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    .slider-container {
-        overflow: hidden;
-    }
-
-    .slider-track {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-    }
-
-    .slider-slide {
-        flex: 0 0 25%;
-        transition: all 0.3s ease;
-    }
-
-    .slider-dot {
-        width: 12px;
-        height: 12px;
-        background: #d1d5db;
-        opacity: 1;
-        transition: all 0.3s ease;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    .slider-dot.active {
-        background: #f59e0b;
-        transform: scale(1.2);
-    }
+        
+        .banner-text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .discount-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: bold;
+            transform: rotate(5deg);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        
+        .electrical-icon {
+            font-size: 2rem;
+            color: #f59e0b;
+            margin-bottom: 1rem;
+        }
 </style>
-<!-- Image Slider DISPLAY -->
+</head>
+
+<!-- Image Slider Banner -->
 <div x-data="{
     activeSlide: 0,
     slides: [
         { 
             id: 1, 
-            image: '{{ asset('images/PO.png') }}', 
-            alt: 'Salman Electric Promotion',
-            headline: 'PREMIUM ELECTRICAL SOLUTIONS',
-            subtext: 'Trusted by homes & businesses since 1995',
+            image: '{{ asset('images/try5.jpeg') }}', 
+            alt: 'Electrical Discount',
+            headline: 'UP TO 50% OFF',
+            subtext: 'Premium electrical components for your home & business',
             cta: 'SHOP NOW',
-            link: '/shop'
-
+            link: '/shop',
+            icon: 'bx-bolt'
         },
         { 
-            id: 2, 
-            bgType: 'split',
-            bgLeft: '#2C3E50',
-            bgRight: '#83A0AF',
-            alt: 'EV Charger Special',
-            headline: 'EV CHARGER INSTALLATION',
-            subtext: 'Driven by innovation, powered by electricity.',
-            cta: 'LEARN MORE',
-            imageRight: '{{ asset('images/pack-charge.png') }}' 
-        },
-        { 
-            id: 4,
-            bgType: 'custom',
-            bgColor: 'rgba(253, 230, 138, 0.7)', /* Amber-200 with 70% opacity */
-            image: '{{ asset('images/essentials.png') }}',
-            alt: 'Electrical Essentials',
-            headline: 'ELECTRICAL ESSENTIALS',
-            subtext: 'Quality components for every need',
-            cta: 'EXPLORE',
-            pack1: '{{ asset('images/pack1.png') }}',
-            pack2: '{{ asset('images/pack2.png') }}'
+            id: 3, 
+            image: '{{ asset('images/try3.jpeg') }}',
+            alt: 'Premium Electrical Products',
+            headline: 'PREMIUM QUALITY',
+            subtext: 'Trusted by professionals since 1995',
+            cta: 'EXPLORE PRODUCTS',
+            link: '/products',
+            tagline: 'RELIABLE & DURABLE',
         }
     ],
     prev() {
@@ -208,107 +225,79 @@
     },
     next() {
         this.activeSlide = this.activeSlide === this.slides.length - 1 ? 0 : this.activeSlide + 1;
+    },
+    init() {
+        // Auto-rotate slides every 5 seconds
+        setInterval(() => {
+            this.next();
+        }, 9000);
     }
 }" class="relative overflow-hidden pb-8"> 
     
-    <div class="relative h-[30rem]">
+    <div class="relative h-[25rem] md:h-[25rem] lg:h-[35rem]">
         <template x-for="(slide, index) in slides" :key="slide.id">
             <div 
                 x-show="activeSlide === index"
-                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter="transition-opacity duration-1000 ease-in-out"
                 x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100"
-                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave="transition-opacity duration-1000 ease-in-out"
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
                 class="absolute inset-0 w-full h-full"
             >
-                <template x-if="slide.bgType === 'split'">
-                    <div class="absolute inset-0 w-full h-full flex">
-                        <div class="w-1/2 h-full" :style="`background-color: ${slide.bgLeft}`"></div>
-                        <div class="w-1/2 h-full" :style="`background-color: ${slide.bgRight}`"></div>
-                    </div>
-                </template>
-
-                <template x-if="!slide.bgType">
+                <div class="absolute inset-0 w-full h-full">
                     <img :src="slide.image" :alt="slide.alt" class="absolute inset-0 w-full h-full object-cover">
-                </template>
-
-                <template x-if="slide.bgType === 'custom'">
-                    <div class="absolute inset-0 w-full h-full" :style="`background-color: ${slide.bgColor}`">
-                        <img :src="slide.image" :alt="slide.alt" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply">
-                        <img :src="slide.pack1" alt="Electrical product 1" class="absolute left-12 bottom-12 h-80 object-contain animate-float-slow">
-                        <img :src="slide.pack2" alt="Electrical product 2" class="absolute right-12 top-12 h-80 object-contain animate-float-reverse">
-                    </div>
-                </template>
+                    <div class="absolute inset-0 banner-overlay"></div>
+                </div>
                 
-                <div x-show="!slide.bgType" class="absolute inset-0 bg-black/30"></div>
+                <template x-if="slide.discount">
+                    <div class="discount-badge animate-pulse" x-text="slide.discount"></div>
+                </template>
                 
                 <div class="relative z-10 h-full flex items-center px-8">
-                    <template x-if="slide.bgType === 'split'">
-                        <div class="container mx-auto flex items-center">
-                            <div class="w-1/2 pl-20 pr-12">
-                            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 uppercase tracking-wide" 
-                                x-text="slide.headline"></h2>
-                            <p class="text-xl mb-8 text-white" 
-                            x-text="slide.subtext"></p>
-                            <a :href="slide.link" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-lg">
-                                <span x-text="slide.cta"></span>
-                            </a>
-                        </div>
-                            
-                            <div class="w-1/2 flex justify-center">
-                                <img :src="slide.imageRight" :alt="slide.alt" class="max-h-80 object-contain animate-float">
+                    <div class="max-w-4xl mx-auto text-center px-4">
+                        <template x-if="slide.highlight">
+                            <div class="bg-amber-500 text-gray-900 text-sm font-bold px-4 py-2 rounded-full inline-block mb-6">
+                                <span x-text="slide.highlight"></span>
                             </div>
-                        </div>
-                    </template>
-                    
-                    <template x-if="!slide.bgType">
-                        <div class="max-w-2xl mx-auto text-center">
-                            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 uppercase tracking-wide" 
-                                x-text="slide.headline"></h2>
-                            <p class="text-xl mb-8 text-white/90" 
-                               x-text="slide.subtext"></p>
-                            <button class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-lg">
-                                <span x-text="slide.cta"></span>
-                            </button>
-                        </div>
-                    </template>
-                    
-                    <template x-if="slide.bgType === 'custom'">
-                        <div class="max-w-2xl mx-auto text-center">
-                            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 uppercase tracking-wide drop-shadow-lg" 
-                                x-text="slide.headline"></h2>
-                            <p class="text-xl mb-8 text-white drop-shadow-lg" 
-                            x-text="slide.subtext"></p>
-                            <button class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-lg">
-                                <span x-text="slide.cta"></span>
-                            </button>
-                        </div>
-                    </template>
+                        </template>
+                        
+                        <template x-if="slide.tagline">
+                            <div class="text-white text-lg mb-2 font-light" x-text="slide.tagline"></div>
+                        </template>
+                        
+                        <i :class="slide.icon + ' electrical-icon animate-float'" x-show="slide.icon"></i>
+                        
+                        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 uppercase tracking-wide banner-text-shadow" 
+                            x-text="slide.headline"></h2>
+                        <p class="text-xl md:text-2xl mb-8 text-white/90 banner-text-shadow max-w-2xl mx-auto" 
+                           x-text="slide.subtext"></p>
+                        <a :href="slide.link" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-lg inline-flex items-center mx-auto">
+                            <span x-text="slide.cta"></span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </template>    
     </div>
         
-    <button @click="prev()" 
-        class="absolute left-4 top-1/2 -translate-y-1/2 bg-transparent text-white p-3 rounded-full hover:bg-black/20 transition-all z-20">
-    <i class='bx bx-chevron-left text-2xl'></i>
-    </button>
-    <button @click="next()" 
-            class="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent text-white p-3 rounded-full hover:bg-black/20 transition-all z-20">
-        <i class='bx bx-chevron-right text-2xl'></i>
-    </button>
+    
     
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
         <template x-for="(slide, index) in slides" :key="slide.id">
-            <button @click="activeSlide = index" 
-                    class="w-8 h-1.5 rounded-full transition-all"
-                    :class="{ 'bg-amber-500 w-10': activeSlide === index, 'bg-white/50': activeSlide !== index }">
-            </button>
+           <button @click="activeSlide = index" 
+        class="w-8 h-1.5 rounded-full transition-all"
+        :class="{ 'bg-blue-600 w-10': activeSlide === index, 'bg-white/50': activeSlide !== index }">
+</button>
+
         </template>
     </div>
 </div>
+
+
+
+
 @php
     $categoryImages = [
         '3d Printing' => 'images/3dprinting.png',
