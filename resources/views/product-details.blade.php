@@ -63,44 +63,47 @@
                     </div>
                 @endif
 
-                <div class="relative">
-                    <img id="main-product-image" 
-                    src="{{ asset('storage/' . $product->image) }}" 
-                    alt="{{ $product->name }}" 
-                    class="w-full h-96 object-contain rounded-lg cursor-zoom-in"
-                    onclick="openModal()">
+               <div class="relative group">
+    <img id="main-product-image"
+        src="{{ asset('storage/' . $product->image) }}"
+        alt="{{ $product->name }}"
+        class="w-full h-96 object-contain rounded-lg cursor-zoom-in"
+        onclick="openModal()">
 
-                   @if($totalImages > 1)
-                        <button id="prev-image" 
-                                class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition opacity-0 group-hover:opacity-100">
-                        </button>
-                        <button id="next-image" 
-                                class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition opacity-0 group-hover:opacity-100">
-                        </button>
-                    @endif
-                </div>
+   @if($totalImages > 1)
+        <button id="prev-image"
+            class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition opacity-0 group-hover:opacity-100">
+            ‹
+        </button>
+        <button id="next-image"
+            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition opacity-0 group-hover:opacity-100">
+            ›
+        </button>
+    @endif
+</div>
 
-                @if($totalImages > 1)
-                    <div class="mt-4 flex gap-2 justify-center">
-                        <img src="{{ asset('storage/' . $product->image) }}" 
-                             alt="Main thumbnail"
-                             class="w-16 h-16 object-cover rounded border-2 cursor-pointer hover:border-blue-500 transition-all duration-200 thumbnail"
-                             onclick="changeImage(0)">
-                        
-                        @foreach($product->images as $index => $image)
-                            <img src="{{ asset('storage/' . $image->image) }}" 
-                                 alt="Thumbnail {{ $index + 2 }}"
-                                 class="w-16 h-16 object-cover rounded border-2 cursor-pointer hover:border-blue-500 transition-all duration-200 thumbnail"
-                                 onclick="changeImage({{ $index + 1 }})">
-                        @endforeach
-                    </div>
-                @endif
+@if($totalImages > 1)
+    <div class="mt-4 flex gap-2 justify-center">
+        <img src="{{ asset('storage/' . $product->image) }}" 
+             alt="Main thumbnail"
+             class="w-16 h-16 object-cover rounded border-2 cursor-pointer hover:border-blue-500 transition-all duration-200 thumbnail"
+             onclick="changeImage(0)">
+        
+        @foreach($product->images as $index => $image)
+            <img src="{{ asset('storage/' . $image->image) }}" 
+                 alt="Thumbnail {{ $index + 2 }}"
+                 class="w-16 h-16 object-cover rounded border-2 cursor-pointer hover:border-blue-500 transition-all duration-200 thumbnail"
+                 onclick="changeImage({{ $index + 1 }})">
+        @endforeach
+    </div>
+@endif
 
-                <div class="absolute top-4 right-4 flex gap-3">
-                    <button class="text-xl bg-white rounded-full p-2 shadow hover:text-green-600 transition" onclick="openModal()">
-                        <i class='bx bx-search-alt-2'></i>
-                    </button>
-                </div>
+<div class="absolute top-4 right-4 flex gap-3">
+    <button class="text-xl bg-white rounded-full p-2 shadow hover:text-green-600 transition" onclick="openModal()">
+        <i class='bx bx-search-alt-2'></i>
+    </button>
+</div>
+
             </div>
         </div>
 
@@ -169,7 +172,7 @@
                         @endif
                     </div>
                 @elseif($product->contact_for_price)
-                    <span class="text-blue-600 text-[22px] font-semibold">Contact for Price</span>
+                    <span class="text-red-600 text-[22px] font-semibold">To Be Priced</span>
                 @elseif($product->quantity == 0 || $product->out_of_stock)
                     <span class="text-red-600 text-[22px] font-semibold">Out of Stock</span>
                 @elseif($discountPercent > 0)
@@ -320,7 +323,7 @@
                             @if($related->coming_soon)
                                 @if($discountPercent > 0)
                                     <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
-                                    <p class="text-green-600 text-lg font-bold underline">
+                                    <p class="text-green-600 text-lg font-bold ">
                                         ${{ number_format($related->price * (1 - $discountPercent/100), 2) }}
                                     </p>
                                     <p class="text-green-700 text-sm font-bold uppercase">
@@ -328,7 +331,7 @@
                                     </p>
                                 @elseif($related->sale_price && $related->sale_price < $related->price)
                                     <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
-                                    <p class="text-red-600 text-lg font-bold underline">
+                                    <p class="text-red-600 text-lg font-bold ">
                                         ${{ number_format($related->sale_price, 2) }}
                                     </p>
                                     <p class="text-red-600 text-sm font-bold uppercase">On Sale</p>
@@ -348,6 +351,12 @@
                             @elseif($related->contact_for_price)
                                 <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
                                 <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                                <button
+                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50"
+                                    disabled
+                                >
+                                    Add to Cart
+                                </button>
 
                             @elseif($related->quantity == 0 || $related->out_of_stock)
                                 <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
@@ -360,7 +369,7 @@
 
                             @elseif($discountPercent > 0)
                                 <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
-                                <p class="text-green-600 text-lg font-bold underline">
+                                <p class="text-green-600 text-lg font-bold ">
                                     ${{ number_format($related->price * (1 - $discountPercent/100), 2) }}
                                 </p>
                                 <p class="text-green-700 text-sm font-bold uppercase">
@@ -374,7 +383,7 @@
 
                             @elseif($related->sale_price && $related->sale_price < $related->price)
                                 <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
-                                <p class="text-red-600 text-lg font-bold underline">${{ number_format($related->sale_price, 2) }}</p>
+                                <p class="text-red-600 text-lg font-bold ">${{ number_format($related->sale_price, 2) }}</p>
                                 <button
                                     class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
                                 >
@@ -409,52 +418,44 @@
 
 
 <script>
-    function openModal() {
-        document.getElementById('imageModal').classList.remove('hidden');
-    }
+    // --- QTY & WISHLIST LOGIC UNTOUCHED ---
+    document.addEventListener('DOMContentLoaded', function () {
+        const decreaseBtn = document.getElementById('decrease-qty');
+        const increaseBtn = document.getElementById('increase-qty');
+        const displayQty = document.getElementById('display-qty');
+        const hiddenQty = document.getElementById('hidden-qty');
 
-    function closeModal() {
-        document.getElementById('imageModal').classList.add('hidden');
-    }
+        let quantity = parseInt(hiddenQty.value) || 1;
 
-   document.addEventListener('DOMContentLoaded', function () {
-    const decreaseBtn = document.getElementById('decrease-qty');
-    const increaseBtn = document.getElementById('increase-qty');
-    const displayQty = document.getElementById('display-qty');
-    const hiddenQty = document.getElementById('hidden-qty');
+        decreaseBtn.addEventListener('click', () => {
+            if (quantity > 1) {
+                quantity--;
+                displayQty.textContent = quantity;
+                hiddenQty.value = quantity;
+            }
+        });
 
-    let quantity = parseInt(hiddenQty.value) || 1;
-
-    decreaseBtn.addEventListener('click', () => {
-        if (quantity > 1) {
-            quantity--;
+        increaseBtn.addEventListener('click', () => {
+            quantity++;
             displayQty.textContent = quantity;
             hiddenQty.value = quantity;
-        }
-    });
+        });
 
-    increaseBtn.addEventListener('click', () => {
-        quantity++;
-        displayQty.textContent = quantity;
-        hiddenQty.value = quantity;
-    });
+        const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    document.addEventListener('DOMContentLoaded', function () {
-    const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        document.querySelectorAll('.add-to-wishlist').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
 
-    document.querySelectorAll('.add-to-wishlist').forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
+                const productId = this.getAttribute('data-product-id');
+                const icon = this.querySelector('i');
 
-            const productId = this.getAttribute('data-product-id');
-            const icon = this.querySelector('i');
-
-            fetch('/wishlist', {
+                fetch('/wishlist', {
                     method: 'POST',
                     headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrf,
-                    'Accept': 'application/json'
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrf,
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({ product_id: productId })
                 })
@@ -479,16 +480,17 @@
             });
         });
     });
-    });
-   let currentImageIndex = 0;
+
+    // --- IMAGE LOGIC ---
+    let currentImageIndex = 0;
     const images = [
         "{{ asset('storage/' . $product->image) }}", 
         @foreach($product->images as $image)
             "{{ asset('storage/' . $image->image) }}", 
         @endforeach
-    ].filter(image => image !== "{{ asset('storage/') }}"); 
+    ].filter(image => image !== "{{ asset('storage/') }}");
 
-    const totalImages = images.length; 
+    const totalImages = images.length;
 
     function changeImage(index) {
         if (index >= 0 && index < totalImages) {
@@ -509,65 +511,63 @@
 
     function updateImageDisplay() {
         const mainImage = document.getElementById('main-product-image');
-        const currentImageSpan = document.getElementById('current-image');
         const thumbnails = document.querySelectorAll('.thumbnail');
-        
+
         mainImage.style.opacity = '0';
         setTimeout(() => {
             mainImage.src = images[currentImageIndex];
             mainImage.style.opacity = '1';
         }, 200);
-        
-        if (currentImageSpan) {
-            currentImageSpan.textContent = currentImageIndex + 1;
-        }
-        
+
         thumbnails.forEach((thumb, thumbIndex) => {
             thumb.style.borderColor = thumbIndex === currentImageIndex ? '#3b82f6' : 'transparent';
         });
     }
 
+    // --- NAVIGATION + SWIPE ---
     document.addEventListener('DOMContentLoaded', function() {
         if (totalImages > 1) {
             document.getElementById('next-image').addEventListener('click', nextImage);
             document.getElementById('prev-image').addEventListener('click', prevImage);
-            
+
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'ArrowRight') nextImage();
                 if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'Escape') closeModal();
             });
-            
+
             const imageContainer = document.getElementById('main-product-image').parentElement;
             let touchStartX = 0;
             let touchEndX = 0;
-            
+
             imageContainer.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
             });
-            
+
             imageContainer.addEventListener('touchend', e => {
                 touchEndX = e.changedTouches[0].screenX;
                 handleSwipe();
             });
-            
+
             function handleSwipe() {
                 const swipeThreshold = 50;
-                if (touchEndX < touchStartX - swipeThreshold) {
-                    nextImage(); 
-                } else if (touchEndX > touchStartX + swipeThreshold) {
-                    prevImage();
-                }
-            }  
+                if (touchEndX < touchStartX - swipeThreshold) nextImage();
+                if (touchEndX > touchStartX + swipeThreshold) prevImage();
+            }
+
             updateImageDisplay();
         }
     });
 
+    // --- OPTIMIZED MODAL ---
     function openModal() {
         const modal = document.createElement('div');
         modal.className = 'fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center';
+        modal.id = 'image-modal';
+
         modal.innerHTML = `
             <div class="relative max-w-4xl max-h-full">
-                <img src="${images[currentImageIndex]}" class="max-w-full max-h-screen object-contain">
+                <img src="${images[currentImageIndex]}" class="max-w-full max-h-screen object-contain pointer-events-none">
                 ${totalImages > 1 ? `
                     <button class="absolute left-4 top-1/2 text-white text-3xl" onclick="modalPrev()">‹</button>
                     <button class="absolute right-4 top-1/2 text-white text-3xl" onclick="modalNext()">›</button>
@@ -575,15 +575,20 @@
                         ${currentImageIndex + 1} / ${totalImages}
                     </div>
                 ` : ''}
-                <button class="absolute top-4 right-4 text-white text-3xl" onclick="closeModal()">×</button>
+                <button class="absolute top-4 right-4 text-black text-6xl" onclick="closeModal()">×</button>
             </div>
         `;
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
         document.body.appendChild(modal);
         document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
-        const modal = document.querySelector('.fixed.inset-0');
+        const modal = document.getElementById('image-modal');
         if (modal) {
             modal.remove();
             document.body.style.overflow = '';
@@ -592,14 +597,15 @@
 
     function modalNext() {
         nextImage();
-        const modalImg = document.querySelector('.fixed.inset-0 img');
+        const modalImg = document.querySelector('#image-modal img');
         if (modalImg) modalImg.src = images[currentImageIndex];
     }
 
     function modalPrev() {
         prevImage();
-        const modalImg = document.querySelector('.fixed.inset-0 img');
+        const modalImg = document.querySelector('#image-modal img');
         if (modalImg) modalImg.src = images[currentImageIndex];
     }
 </script>
+
 @endsection

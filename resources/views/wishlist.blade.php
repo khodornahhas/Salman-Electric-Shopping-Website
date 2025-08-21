@@ -82,7 +82,6 @@
                             @endphp
 
                             @if($product->coming_soon)
-
                                 @if($discountPercent > 0)
                                     <p class="text-gray-500 text-sm line-through">${{ number_format($product->price, 2) }}</p>
                                     <p class="text-green-600 text-lg font-bold ">
@@ -113,8 +112,17 @@
                                 </form>
 
                             @elseif($product->contact_for_price)
-                                <p class="text-blue-600 text-lg font-bold italic">Contact for Price</p>
+                                <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
                                 <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                                <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form flex justify-center">
+                                    @csrf
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button disabled
+                                        class="mt-2 px-4 py-2 bg-gray-100 font-medium rounded cursor-not-allowed opacity-50"
+                                        style="font-size:16px; color:grey;">
+                                        Add to Cart
+                                    </button>
+                                </form>
 
                             @elseif($product->quantity == 0 || $product->out_of_stock)
                                 <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
