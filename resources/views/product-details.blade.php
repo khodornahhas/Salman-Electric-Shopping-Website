@@ -137,7 +137,37 @@
                 @endphp
 
                 @if($product->coming_soon)
-                    <span class="text-yellow-600 text-[22px] font-semibold">Coming Soon</span>
+                    <div class="flex flex-col gap-2">
+                        <span class="text-yellow-600 text-[22px] font-semibold">Arriving Soon</span>
+
+                        @if($discountPercent > 0)
+                            <div class="flex flex-wrap items-center gap-3">
+                                <span class="line-through text-gray-400 text-xl">
+                                    ${{ number_format($product->price, 2) }}
+                                </span>
+                                <span class="text-green-600 text-3xl">
+                                    ${{ number_format($product->price * (1 - $discountPercent/100), 2) }}
+                                </span>
+                                <span class="text-green-700 text-sm font-bold uppercase">
+                                    Special Price ({{ $discountPercent }}% off)
+                                </span>
+                            </div>
+                        @elseif($product->sale_price && $product->sale_price < $product->price)
+                            <div class="flex flex-wrap items-center gap-3">
+                                <span class="text-red-500 text-3xl">
+                                    ${{ number_format($product->sale_price, 2) }}
+                                </span>
+                                <span class="line-through text-gray-400 text-xl">
+                                    ${{ number_format($product->price, 2) }}
+                                </span>
+                                <span class="text-red-600 text-sm font-bold uppercase">On Sale</span>
+                            </div>
+                        @else
+                            <span class="text-red-600 text-[35px]">
+                                ${{ number_format($product->price, 2) }}
+                            </span>
+                        @endif
+                    </div>
                 @elseif($product->contact_for_price)
                     <span class="text-blue-600 text-[22px] font-semibold">Contact for Price</span>
                 @elseif($product->quantity == 0 || $product->out_of_stock)
@@ -162,6 +192,7 @@
                     <span class="text-red-600 text-[35px]">${{ number_format($product->price, 2) }}</span>
                 @endif
             </div>
+
 
 
             <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
@@ -287,17 +318,37 @@
                             @endphp
 
                             @if($related->coming_soon)
-                            <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
-                            <p class="text-sm text-gray-500 italic">Stay tuned</p>
-                            <button
-                                class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50"
-                                disabled
-                            >
-                                Add to Cart
-                            </button>
+                                @if($discountPercent > 0)
+                                    <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
+                                    <p class="text-green-600 text-lg font-bold underline">
+                                        ${{ number_format($related->price * (1 - $discountPercent/100), 2) }}
+                                    </p>
+                                    <p class="text-green-700 text-sm font-bold uppercase">
+                                        Special Price ({{ $discountPercent }}% off)
+                                    </p>
+                                @elseif($related->sale_price && $related->sale_price < $related->price)
+                                    <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
+                                    <p class="text-red-600 text-lg font-bold underline">
+                                        ${{ number_format($related->sale_price, 2) }}
+                                    </p>
+                                    <p class="text-red-600 text-sm font-bold uppercase">On Sale</p>
+                                @else
+                                    <p class="text-red-600 text-lg font-bold">
+                                        ${{ number_format($related->price, 2) }}
+                                    </p>
+                                @endif
+
+                                <button
+                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50"
+                                    disabled
+                                >
+                                    Add to Cart
+                                </button>
+
                             @elseif($related->contact_for_price)
                                 <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
                                 <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+
                             @elseif($related->quantity == 0 || $related->out_of_stock)
                                 <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
                                 <button
@@ -306,6 +357,7 @@
                                 >
                                     Add to Cart
                                 </button>
+
                             @elseif($discountPercent > 0)
                                 <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
                                 <p class="text-green-600 text-lg font-bold underline">
@@ -319,6 +371,7 @@
                                 >
                                     Add to Cart
                                 </button>
+
                             @elseif($related->sale_price && $related->sale_price < $related->price)
                                 <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
                                 <p class="text-red-600 text-lg font-bold underline">${{ number_format($related->sale_price, 2) }}</p>
@@ -327,6 +380,7 @@
                                 >
                                     Add to Cart
                                 </button>
+
                             @else
                                 <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
                                 <button

@@ -482,7 +482,6 @@
 
                 <div class="mt-auto text-center">
                     @if($product->coming_soon)
-                        <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
 
                         @if($product->sale_price && $product->sale_price < $product->price)
                             <p class="text-gray-500 text-sm line-through">
