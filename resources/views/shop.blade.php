@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('head')
     <title>Salman Electric - Shop</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/salmanlogo.png') }}?v={{ time() }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}?v={{ time() }}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 @endsection
 @section('content')
@@ -367,141 +367,159 @@
             </div>
         </div>
 
-        <div class="flex-1">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
-                <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
-                    <div class="text-sm text-gray-500">{{ $products->count() }} items</div>
+   <div class="flex-1">
+    <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
+            <div class="text-sm text-gray-500">{{ $products->count() }} items</div>
 
-                    <div id="filter-form" class="relative w-full sm:w-64">
-
-                        @if(request('limit')) <input type="hidden" name="limit" value="{{ request('limit') }}"> @endif
-                        @if(request('sort')) <input type="hidden" name="sort" value="{{ request('sort') }}"> @endif
-                        <input 
-                            type="text" 
-                            name="search" 
-                            value="{{ request('search') }}" 
-                            placeholder="Search products..." 
-                            class="w-full pl-10 pr-4 py-2 rounded border border-gray-300 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <i class='bx bx-search absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500 text-lg'></i>
-                    </div>
-                </div>
-
-                <form method="GET" action="{{ route('shop') }}" class="flex flex-wrap items-center justify-end gap-4 w-full sm:w-auto">
-                @if(request('search'))
-                    <input type="hidden" name="search" value="{{ request('search') }}">
-                @endif
-
-                @if(request('category'))
-                    <input type="hidden" name="category" value="{{ request('category') }}">
-                @endif
-
-                @if(request('min_price'))
-                    <input type="hidden" name="min_price" value="{{ request('min_price') }}">
-                @endif
-                @if(request('max_price'))
-                    <input type="hidden" name="max_price" value="{{ request('max_price') }}">
-                @endif
-
-                @if(request()->has('brands') && is_array(request('brands')))
-                    @foreach(request('brands') as $brandId)
-                        <input type="hidden" name="brands[]" value="{{ $brandId }}">
-                    @endforeach
-                @endif
-                <div class="flex items-center justify-between flex-wrap gap-4 text-sm">
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-700 font-medium">Show:</span>
-                        @foreach([6, 12, 32, 'all'] as $limit)
-                            <form method="GET" action="{{ url()->current() }}">
-                                @foreach(request()->except('limit', 'page') as $key => $value)
-                                    @if(is_array($value))
-                                        @foreach($value as $v)
-                                            <input type="hidden" name="{{ $key }}[]" value="{{ $v }}">
-                                        @endforeach
-                                    @else
-                                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                                    @endif
-                                @endforeach
-                                <button 
-                                    type="submit" 
-                                    name="limit" 
-                                    value="{{ $limit }}" 
-                                    class="px-2 py-1 rounded border hover:bg-gray-200 transition text-gray-700 {{ request('limit') == $limit ? 'bg-gray-300 font-semibold' : '' }}">
-                                    {{ $limit === 'all' ? 'All' : $limit }}
-                                </button>
-                            </form>
-                        @endforeach
-                    </div>
-
-                    @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                        <div class="mt-1">
-                            {{ $products->onEachSide(1)->links('pagination::tailwind') }}
-                        </div>
-                    @endif
-                </div>    
-                <div>
-                    <select name="sort" id="sort-select" class="p-2 border rounded text-sm">
-                        <option value="">Default</option>
-                        <option value="low_high" {{ request('sort') == 'low_high' ? 'selected' : '' }}>Price: Low to High</option>
-                        <option value="high_low" {{ request('sort') == 'high_low' ? 'selected' : '' }}>Price: High to Low</option>
-                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
-                    </select>
-                </div>
-            </form>
+            <div id="filter-form" class="relative w-full sm:w-64">
+                @if(request('limit')) <input type="hidden" name="limit" value="{{ request('limit') }}"> @endif
+                @if(request('sort')) <input type="hidden" name="sort" value="{{ request('sort') }}"> @endif
+                <input 
+                    type="text" 
+                    name="search" 
+                    value="{{ request('search') }}" 
+                    placeholder="Search products..." 
+                    class="w-full pl-10 pr-4 py-2 rounded border border-gray-300 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <i class='bx bx-search absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500 text-lg'></i>
+            </div>
         </div>
 
-        <div class="grid product-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                @foreach($products as $product)
-                <div class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
+        <form method="GET" action="{{ route('shop') }}" class="flex flex-wrap items-center justify-end gap-4 w-full sm:w-auto">
+            @if(request('search'))
+                <input type="hidden" name="search" value="{{ request('search') }}">
+            @endif
+            @if(request('category'))
+                <input type="hidden" name="category" value="{{ request('category') }}">
+            @endif
+            @if(request('min_price'))
+                <input type="hidden" name="min_price" value="{{ request('min_price') }}">
+            @endif
+            @if(request('max_price'))
+                <input type="hidden" name="max_price" value="{{ request('max_price') }}">
+            @endif
+            @if(request()->has('brands') && is_array(request('brands')))
+                @foreach(request('brands') as $brandId)
+                    <input type="hidden" name="brands[]" value="{{ $brandId }}">
+                @endforeach
+            @endif
 
-                    <div class="absolute top-2 right-2 z-10 flex items-center space-x-2">
-                        <div class="cursor-pointer wishlist-btn" data-product-id="{{ $product->id }}">
-                            <i class="wishlist-icon bx {{ in_array($product->id, $wishlistProductIds) ? 'bxs-heart text-red-500' : 'bx-heart text-gray-400' }} text-2xl"></i>
-                        </div>
+            <div class="flex items-center justify-between flex-wrap gap-4 text-sm">
+                <div class="flex items-center gap-2">
+                    <span class="text-gray-700 font-medium">Show:</span>
+                    @foreach([6, 12, 32, 'all'] as $limit)
+                        <form method="GET" action="{{ url()->current() }}">
+                            @foreach(request()->except('limit', 'page') as $key => $value)
+                                @if(is_array($value))
+                                    @foreach($value as $v)
+                                        <input type="hidden" name="{{ $key }}[]" value="{{ $v }}">
+                                    @endforeach
+                                @else
+                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                @endif
+                            @endforeach
+                            <button 
+                                type="submit" 
+                                name="limit" 
+                                value="{{ $limit }}" 
+                                class="px-2 py-1 rounded border hover:bg-gray-200 transition text-gray-700 {{ request('limit') == $limit ? 'bg-gray-300 font-semibold' : '' }}">
+                                {{ $limit === 'all' ? 'All' : $limit }}
+                            </button>
+                        </form>
+                    @endforeach
+                </div>
+
+                @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                    <div class="mt-1">
+                        {{ $products->onEachSide(1)->links('pagination::tailwind') }}
                     </div>
+                @endif
+            </div>    
 
+            <div>
+                <select name="sort" id="sort-select" class="p-2 border rounded text-sm">
+                    <option value="">Default</option>
+                    <option value="low_high" {{ request('sort') == 'low_high' ? 'selected' : '' }}>Price: Low to High</option>
+                    <option value="high_low" {{ request('sort') == 'high_low' ? 'selected' : '' }}>Price: High to Low</option>
+                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+    <div class="grid product-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        @foreach($products as $product)
+        <div class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
+
+            <div class="absolute top-2 right-2 z-10 flex items-center space-x-2">
+                <div class="cursor-pointer wishlist-btn" data-product-id="{{ $product->id }}">
+                    <i class="wishlist-icon bx {{ in_array($product->id, $wishlistProductIds) ? 'bxs-heart text-red-500' : 'bx-heart text-gray-400' }} text-2xl"></i>
+                </div>
+            </div>
+
+            @if($product->coming_soon)
+                <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
+                    Coming Soon
+                </div>
+            @elseif($product->sale_price && $product->sale_price < $product->price)
+                <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                    On Sale
+                </div>
+            @endif
+
+            <a href="{{ route('product.details', $product->id) }}" class="bg-white w-full h-60 flex items-center justify-center overflow-hidden">
+                @if($product->image)
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
+                @else
+                    <span class="text-gray-400">No Image</span>
+                @endif
+            </a>
+
+            <div class="p-5 flex flex-col flex-grow">
+                <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
+                    {{ $product->name }}
+                </h3>
+
+                <div class="mt-auto text-center">
                     @if($product->coming_soon)
-                        <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
-                            Coming Soon
-                        </div>
-                    @elseif($product->sale_price && $product->sale_price < $product->price)
-                        <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                            On Sale
-                        </div>
-                    @endif
+                        <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
 
-                    <a href="{{ route('product.details', $product->id) }}" class="bg-white w-full h-60 flex items-center justify-center overflow-hidden">
-                        @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="object-contain w-full h-full">
+                        @if($product->sale_price && $product->sale_price < $product->price)
+                            <p class="text-gray-500 text-sm line-through">
+                                ${{ number_format($product->price, 2) }}
+                            </p>
+                            <p class="text-red-600 text-lg font-bold">
+                                ${{ number_format($product->sale_price, 2) }}
+                            </p>
                         @else
-                            <span class="text-gray-400">No Image</span>
+                            <p class="text-red-600 text-lg font-bold">
+                                ${{ number_format($product->price, 2) }}
+                            </p>
                         @endif
-                    </a>
 
-                    <div class="p-5 flex flex-col flex-grow">
-                        <h3 class="font-semibold text-gray-800 h-12 overflow-hidden text-center" style="font-family: 'Open Sans', sans-serif; font-size:15px;">
-                            {{ $product->name }}
-                        </h3>
+                    @elseif($product->contact_for_price)
+                        <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
+                        <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
 
-                       <div class="mt-auto text-center">
-                            @if($product->coming_soon)
-                                <p class="text-yellow-600 text-lg font-bold italic">Coming Soon</p>
-                            @elseif($product->contact_for_price)
-                                <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
-                                <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
-                            @elseif($product->quantity == 0 || $product->out_of_stock)
-                                <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
-                            @elseif($product->sale_price && $product->sale_price < $product->price)
-                                <p class="text-gray-500 text-sm line-through">
-                                    ${{ number_format($product->price, 2) }}
-                                </p>
-                                <p class="text-red-600 text-lg font-bold underline">
-                                    ${{ number_format($product->sale_price, 2) }}
-                                </p>
-                            @else
-                                <p class="text-red-600 text-lg font-bold">
-                                    ${{ number_format($product->price, 2) }}
-                                </p>
-                            @endif
+                    @elseif($product->quantity == 0 || $product->out_of_stock)
+                        <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
+
+                    @elseif($product->sale_price && $product->sale_price < $product->price)
+                        <p class="text-gray-500 text-sm line-through">
+                            ${{ number_format($product->price, 2) }}
+                        </p>
+                        <p class="text-red-600 text-lg font-bold">
+                            ${{ number_format($product->sale_price, 2) }}
+                        </p>
+
+                    @else
+                        <p class="text-red-600 text-lg font-bold">
+                            ${{ number_format($product->price, 2) }}
+                        </p>
+                    @endif
+   
+
+
 
                             <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
                             @csrf
