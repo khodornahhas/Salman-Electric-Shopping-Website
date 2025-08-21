@@ -201,17 +201,17 @@
     slides: [
         { 
             id: 1, 
-            image: '{{ asset('images/try5.jpeg') }}', 
+            image: '{{ asset('images/banner.png') }}', 
             alt: 'Electrical Discount',
-            headline: 'UP TO 50% OFF',
-            subtext: 'Premium electrical components for your home & business',
+            headline: 'Your Electrical Partner',
+            subtext: 'Powering Your Home & Business with Reliable Energy',
             cta: 'SHOP NOW',
             link: '/shop',
             icon: 'bx-bolt'
         },
         { 
             id: 3, 
-            image: '{{ asset('images/try3.jpeg') }}',
+            image: '{{ asset('images/try5.jpeg') }}',
             alt: 'Premium Electrical Products',
             headline: 'PREMIUM QUALITY',
             subtext: 'Trusted by professionals since 1995',
