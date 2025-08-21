@@ -281,16 +281,13 @@
             </div>
         </template>    
     </div>
-        
-    
     
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
         <template x-for="(slide, index) in slides" :key="slide.id">
            <button @click="activeSlide = index" 
-        class="w-8 h-1.5 rounded-full transition-all"
-        :class="{ 'bg-blue-600 w-10': activeSlide === index, 'bg-white/50': activeSlide !== index }">
-</button>
-
+                class="w-8 h-1.5 rounded-full transition-all"
+                :class="{ 'bg-blue-600 w-10': activeSlide === index, 'bg-white/50': activeSlide !== index }">
+                </button>
         </template>
     </div>
 </div>
@@ -511,18 +508,20 @@
                 </template>
             </div>
         </div>
-        <div class="flex justify-center mt-12 space-x-2" x-show="slides.length > visibleSlides">
-                <template x-for="(_, index) in totalSlideGroups" :key="index">
-                    <button @click="goToSlideGroup(index)" 
-                            class="w-3 h-3 rounded-full transition-all"
-                            :class="{
-                                'bg-[#007BFF]': currentSlideGroup === index,  <!-- electric blue active -->
-                                'bg-gray-300': currentSlideGroup !== index
-                            }"
-                            :aria-label="'Go to slide ' + (index + 1)">
-                    </button>
-                </template>
-            </div>
+
+        <div class="flex justify-center mt-12 space-x-2 hidden sm:flex" x-show="slides.length > visibleSlides">
+            <template x-for="(_, index) in totalSlideGroups" :key="index">
+                <button @click="goToSlideGroup(index)" 
+                        class="w-3 h-3 rounded-full transition-all"
+                        :class="{
+                            'bg-[#007BFF]': currentSlideGroup === index,  <!-- electric blue active -->
+                            'bg-gray-300': currentSlideGroup !== index
+                        }"
+                        :aria-label="'Go to slide ' + (index + 1)">
+                </button>
+            </template>
+        </div>
+
         <div class="text-center mt-8">
             <a href="#" 
             class="inline-block bg-[#007BFF] hover:bg-[#0056b3] text-white font-medium py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-md">
@@ -700,12 +699,12 @@
                 </div>
             </div>
 
-            <div class="flex justify-center mt-12 space-x-2" x-show="slides.length > visibleSlides">
+           <div class="flex justify-center mt-12 space-x-2 hidden sm:flex" x-show="slides.length > visibleSlides">
                 <template x-for="(_, index) in totalSlideGroups" :key="index">
                     <button @click="goToSlideGroup(index)" 
                             class="w-3 h-3 rounded-full transition-all"
                             :class="{
-                                'bg-[#007BFF]': currentSlideGroup === index,  <!-- electric blue -->
+                                'bg-[#007BFF]': currentSlideGroup === index,  <!-- electric blue active -->
                                 'bg-gray-300': currentSlideGroup !== index
                             }"
                             :aria-label="'Go to slide ' + (index + 1)">
@@ -880,8 +879,7 @@
                 </div>
             </div>
 
-            <!-- Pagination Dots -->
-            <div class="flex justify-center mt-12 space-x-2" x-show="slides.length > visibleSlides">
+            <div class="flex justify-center mt-12 space-x-2 hidden sm:flex" x-show="slides.length > visibleSlides">
                 <template x-for="(_, index) in totalSlideGroups" :key="index">
                     <button @click="goToSlideGroup(index)" 
                             class="w-3 h-3 rounded-full transition-all"

@@ -35,13 +35,39 @@
     pointer-events: all;
     }
     
-    #filter-sidebar {
-        transition: max-height 0.3s ease, padding 0.3s ease;
-        overflow: hidden;
-    }
     @media (max-width: 767px) {
         #filter-sidebar {
             max-height: 0;
+            padding: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        #filter-sidebar.show {
+            max-height: 1000px;
+            padding: 1.5rem;
+            overflow: visible;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+    }
+
+    @media (min-width: 768px) {
+        #filter-sidebar {
+            max-height: none !important;
+            height: 1100px;              
+            overflow-y: auto;          
+            padding: 1.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            background: white;
+            transition: none; 
+        }
+    }
+    @media (max-width: 767px) {
+        #filter-sidebar {
+            max-height: 100;
             padding: 0;
         }
         #filter-sidebar.show {
@@ -53,18 +79,47 @@
             background: white;
         }
 
-        #filter-toggle-btn {
-            display: block;
-            margin-bottom: 1rem;
-            background-color: #1e40af; 
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            font-weight: bold;
-            font-family: 'Open Sans', sans-serif;
-            cursor: pointer;
-            user-select: none;
-        }
+       #filter-toggle-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem; 
+        width: 100%;
+        background-color: rgba(255, 255, 255, 1)
+        color: #595757ff; 
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-weight: bold;
+        cursor: pointer;
+        border: 1px solid #d1d5db;
+    }
+
+    #filter-toggle-btn .hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 20px;
+        height: 16px;
+    }
+
+    #filter-toggle-btn .hamburger span {
+        display: block;
+        height: 2px;
+        width: 100%;
+        background-color: #000;
+        border-radius: 1px;
+        transition: all 0.3s ease;
+    }
+
+    #filter-toggle-btn.active .hamburger span:nth-child(1) {
+        transform: rotate(45deg) translate(4px, 4px);
+    }
+    #filter-toggle-btn.active .hamburger span:nth-child(2) {
+        opacity: 0;
+    }
+    #filter-toggle-btn.active .hamburger span:nth-child(3) {
+        transform: rotate(-45deg) translate(4px, -4px);
+    }
+
     }
     @media (min-width: 768px) {
         #filter-toggle-btn {
@@ -209,7 +264,6 @@
             font-size: 0.875rem;
         }
     }
-
 </style>
 
 <div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
@@ -223,8 +277,14 @@
 
 <div class="container mx-auto px-4 py-8">
     <div class="flex flex-col md:flex-row">
-        <button id="filter-toggle-btn" type="button">Filters</button>
-
+        <button id="filter-toggle-btn" type="button">
+            <span class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+            Filters
+        </button>
         <div id="filter-sidebar" class="w-full md:w-64 lg:w-72 xl:w-80 pr-0 md:pr-6 mb-6 md:mb-0"style="margin-right:15px;">
         <div class="bg-white p-6 rounded-none shadow-none">
                 <form id="filter-form" action="{{ route('shop') }}" method="GET" style="font-family: 'Open Sans', sans-serif;">
@@ -496,26 +556,26 @@
                             </p>
                         @endif
 
-                    @elseif($product->contact_for_price)
-                        <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
-                        <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                        @elseif($product->contact_for_price)
+                            <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
+                            <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
 
-                    @elseif($product->quantity == 0 || $product->out_of_stock)
-                        <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
+                        @elseif($product->quantity == 0 || $product->out_of_stock)
+                            <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
 
-                    @elseif($product->sale_price && $product->sale_price < $product->price)
-                        <p class="text-gray-500 text-sm line-through">
-                            ${{ number_format($product->price, 2) }}
-                        </p>
-                        <p class="text-red-600 text-lg font-bold">
-                            ${{ number_format($product->sale_price, 2) }}
-                        </p>
+                        @elseif($product->sale_price && $product->sale_price < $product->price)
+                            <p class="text-gray-500 text-sm line-through">
+                                ${{ number_format($product->price, 2) }}
+                            </p>
+                            <p class="text-red-600 text-lg font-bold">
+                                ${{ number_format($product->sale_price, 2) }}
+                            </p>
 
-                    @else
-                        <p class="text-red-600 text-lg font-bold">
-                            ${{ number_format($product->price, 2) }}
-                        </p>
-                    @endif
+                        @else
+                            <p class="text-red-600 text-lg font-bold">
+                                ${{ number_format($product->price, 2) }}
+                            </p>
+                        @endif
    
 
 
@@ -768,17 +828,17 @@
     });
 
     document.getElementById('sort-select').addEventListener('change', function () {
-    const url = buildSeoUrl();
-    window.location.href = url;
-});
-  document.addEventListener('DOMContentLoaded', () => {
-    const toggleBtn = document.getElementById('filter-toggle-btn');
-    const filterSidebar = document.getElementById('filter-sidebar');
-
-    toggleBtn.addEventListener('click', () => {
-      filterSidebar.classList.toggle('show');
+        const url = buildSeoUrl();
+        window.location.href = url;
     });
-  });
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtn = document.getElementById('filter-toggle-btn');
+        const filterSidebar = document.getElementById('filter-sidebar');
+
+        toggleBtn.addEventListener('click', () => {
+        filterSidebar.classList.toggle('show');
+        });
+    });
 
 </script>
 
