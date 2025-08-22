@@ -279,11 +279,13 @@
             @foreach($relatedProducts as $related)
                 <div class="relative bg-white rounded-xl overflow-hidden shadow-sm transition border border-gray-100 flex flex-col h-[420px]">
 
+                    {{-- Wishlist --}}
                     <div class="absolute top-2 right-2 z-10 cursor-pointer add-to-wishlist"
                         data-product-id="{{ $related->id }}">
                         <i class='bx {{ in_array($related->id, $wishlistProductIds) ? "bxs-heart text-red-500" : "bx-heart text-gray-400" }} text-2xl hover:text-red-500 transition'></i>
                     </div>
 
+                    {{-- Badges --}}
                     @if($related->coming_soon)
                         <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
                             Coming Soon
@@ -294,18 +296,20 @@
                         </div>
                     @endif
 
+                    {{-- Product Image --}}
                     <a href="{{ route('product.details', $related->id) }}" class="w-full h-56 bg-white flex items-center justify-center overflow-hidden">
                         <img src="/storage/{{ $related->image }}"
                             alt="{{ $related->name }}"
                             class="w-full h-full object-contain transform transition-transform duration-300 hover:scale-105 cursor-pointer" />
                     </a>
 
+                    {{-- Content --}}
                     <div class="p-5 flex flex-col flex-grow">
                         <h3 class="font-semibold text-gray-800 text-center leading-tight font-[Open Sans, sans-serif] text-[15px] min-h-[48px]">
                             {{ $related->name }}
                         </h3>
 
-                       <div class="mt-auto text-center mb-0">
+                        <div class="mt-auto text-center mb-0">
                             @php
                                 $discountPercent = 0;
                                 $user = Auth::user();
@@ -320,7 +324,9 @@
                                 }
                             @endphp
 
+                            {{-- Price + Add to Cart --}}
                             @if($related->coming_soon)
+                                {{-- Price --}}
                                 @if($discountPercent > 0)
                                     <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
                                     <p class="text-green-600 text-lg font-bold ">
@@ -341,62 +347,53 @@
                                     </p>
                                 @endif
 
-                                <button
-                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50"
-                                    disabled
-                                >
+                                {{-- Disabled Add to Cart --}}
+                                <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50" disabled>
                                     Add to Cart
                                 </button>
 
                             @elseif($related->contact_for_price)
                                 <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
                                 <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
-                                <button
-                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50"
-                                    disabled
-                                >
+                                <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50" disabled>
                                     Add to Cart
                                 </button>
 
                             @elseif($related->quantity == 0 || $related->out_of_stock)
                                 <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
-                                <button
-                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50"
-                                    disabled
-                                >
-                                    Add to Cart
-                                </button>
-
-                            @elseif($discountPercent > 0)
-                                <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
-                                <p class="text-green-600 text-lg font-bold ">
-                                    ${{ number_format($related->price * (1 - $discountPercent/100), 2) }}
-                                </p>
-                                <p class="text-green-700 text-sm font-bold uppercase">
-                                    Special Price ({{ $discountPercent }}% off)
-                                </p>
-                                <button
-                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-                                >
-                                    Add to Cart
-                                </button>
-
-                            @elseif($related->sale_price && $related->sale_price < $related->price)
-                                <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
-                                <p class="text-red-600 text-lg font-bold ">${{ number_format($related->sale_price, 2) }}</p>
-                                <button
-                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-                                >
+                                <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50" disabled>
                                     Add to Cart
                                 </button>
 
                             @else
-                                <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
-                                <button
-                                    class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded hover:bg-gray-200 transition add-to-cart"
-                                >
-                                    Add to Cart
-                                </button>
+                                {{-- Discount or Sale --}}
+                                @if($discountPercent > 0)
+                                    <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
+                                    <p class="text-green-600 text-lg font-bold ">
+                                        ${{ number_format($related->price * (1 - $discountPercent/100), 2) }}
+                                    </p>
+                                    <p class="text-green-700 text-sm font-bold uppercase">
+                                        Special Price ({{ $discountPercent }}% off)
+                                    </p>
+                                @elseif($related->sale_price && $related->sale_price < $related->price)
+                                    <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
+                                    <p class="text-red-600 text-lg font-bold ">${{ number_format($related->sale_price, 2) }}</p>
+                                    <p class="text-red-600 text-sm font-bold uppercase">On Sale</p>
+                                @else
+                                    <p class="text-red-600 text-lg font-bold">${{ number_format($related->price, 2) }}</p>
+                                @endif
+
+                                {{-- ✅ Working Add to Cart form --}}
+                                <form method="POST" action="{{ route('cart.add', $related->id) }}" class="cart-form mt-2">
+                                    @csrf
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit"
+                                        class="w-44 bg-gray-100 font-medium py-2 rounded transition add-to-cart hover:bg-gray-200"
+                                        data-product-id="{{ $related->id }}" data-quantity="1"
+                                        style="font-size:18px; color:grey;">
+                                        Add to Cart
+                                    </button>
+                                </form>
                             @endif
                         </div>
                     </div>
