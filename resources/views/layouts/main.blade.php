@@ -19,9 +19,10 @@
 </head>
 
 <style>
+
   body {
     font-family: 'Urbanist', sans-serif !important;
-    padding-top: 40px;  
+    padding-top: 0px;  
     margin: 0;          
     padding-left: 0;
     padding-right: 0;
@@ -297,8 +298,8 @@
 </style>
 
 <body>
-  <div class="sticky-header hidden md:block">
-    <div class="bg-gray-100 py-2 text-sm">
+  <header class="sticky top-0 z-50 bg-white  tracking-wide font-[Urbanist]">
+     <div class="hidden md:block bg-gray-100 py-2 text-sm">
       <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
           <div class="text-gray-700">
@@ -314,9 +315,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <header class="sticky top-0 z-50 bg-white shadow-md tracking-wide font-[Urbanist]">
     <div class="flex items-center justify-between w-full px-4 sm:px-5 lg:px-6 min-h-[70px]">
       <div class="flex items-center gap-3 lg:gap-8 xl:gap-10">
 

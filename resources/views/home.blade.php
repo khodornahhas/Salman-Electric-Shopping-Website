@@ -3,91 +3,38 @@
     <title>Salman Electric - Home</title>
     <link rel="icon" type="image/png" href="{{ asset('images/salmanlogo.png') }}?v={{ time() }}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
 @endsection
 @section('content')
-<style>
-        .logos {
-            overflow: hidden;
-            position: relative;
+ <style>
+        .swiper {
             width: 100%;
-            white-space: nowrap;
+            padding: 20px 0;
         }
 
-        .logos-slide {
-            display: inline-block;
-            white-space: nowrap;
-            will-change: transform;
-        }
-
-        .logos-slide a {
-            scroll-snap-align: start;
-            margin: 0 35px;
-            display: inline-flex;
-            align-items: center;
+        .swiper-slide {
+            display: flex;
             justify-content: center;
-            min-height: 50px;
+            align-items: center;
+            transition: transform 0.3s ease;
             height: auto;
         }
+        .swiper-slide:hover {
+            transform: scale(1.05);
+        }
 
-        .logos-slide img {
-            max-height: 50px;
+        .brand-image {
+            max-height: 60px;
             width: auto;
-            max-width: 120px;
             object-fit: contain;
-            display: inline-block;
-            vertical-align: middle;
-            user-select: none; 
-            pointer-events: auto; 
-        }
-
-        @media (max-width: 767px) {
-            .logos {
-                padding: 0 10px;
-            }
-            
-            .logos-slide a {
-                margin: 0 10px;
-            }
-            
-            .logos-slide img {
-                max-height: 40px;
-                max-width: 100px;
-            }
-        }
-
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        .animate-float-slow {
-            animation: float 4s ease-in-out infinite;
-        }
-        .animate-float-reverse {
-            animation: float-reverse 3.5s ease-in-out infinite;
-        }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-        @keyframes float-reverse {
-            0% { transform: translateY(-10px); }
-            50% { transform: translateY(10px); }
-            100% { transform: translateY(-10px); }
-        }
-        .product-card {
+            filter: grayscale(100%);
+            opacity: 0.7;
             transition: all 0.3s ease;
         }
-
-        .show-more-btn {
-            transition: all 0.2s ease;
-        }
-        .show-more-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .swiper-slide {
-            width: auto !important;
-            height: auto !important;
+        .brand-image:hover {
+            filter: grayscale(0%);
+            opacity: 1;
         }
 
         .swiper-pagination-bullet {
@@ -97,7 +44,6 @@
             opacity: 1 !important;
             transition: all 0.3s ease !important;
         }
-
         .swiper-pagination-bullet-active {
             background: #f59e0b !important;
             transform: scale(1.2) !important;
@@ -112,20 +58,117 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease !important;
         }
-
         .swiper-button-next:hover,
         .swiper-button-prev:hover {
             background-color: rgba(255, 255, 255, 0.9);
             transform: scale(1.1);
         }
-
         .swiper-button-next:after,
         .swiper-button-prev:after {
             font-size: 20px !important;
             font-weight: bold !important;
             color: #f59e0b !important;
         }
-        .slide-enter-active, .slide-leave-active {
+
+        .brand-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            padding: 0 15px;
+        }
+        
+        @media (max-width: 1024px) {
+            .brand-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .brand-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+        
+        .brand-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .logos {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            white-space: nowrap;
+        }
+        .logos-slide {
+            display: inline-block;
+            white-space: nowrap;
+            will-change: transform;
+        }
+        .logos-slide a {
+            scroll-snap-align: start;
+            margin: 0 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+            height: auto;
+        }
+        .logos-slide img {
+            max-height: 50px;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+            display: inline-block;
+            vertical-align: middle;
+            user-select: none;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 767px) {
+            .logos {
+                padding: 0 10px;
+            }
+            .logos-slide a {
+                margin: 0 10px;
+            }
+            .logos-slide img {
+                max-height: 40px;
+                max-width: 100px;
+            }
+        }
+
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-float-slow { animation: float 4s ease-in-out infinite; }
+        .animate-float-reverse { animation: float-reverse 3.5s ease-in-out infinite; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes float-reverse {
+            0% { transform: translateY(-10px); }
+            50% { transform: translateY(10px); }
+            100% { transform: translateY(-10px); }
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+        }
+        .show-more-btn {
+            transition: all 0.2s ease;
+        }
+        .show-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide-enter-active, 
+        .slide-leave-active {
             transition: all 0.5s ease;
         }
         .slide-enter-from {
@@ -136,20 +179,18 @@
             transform: translateX(-100%);
             opacity: 0;
         }
+
         .slider-container {
             overflow: hidden;
         }
-
         .slider-track {
             display: flex;
             transition: transform 0.5s ease-in-out;
         }
-
         .slider-slide {
             flex: 0 0 25%;
             transition: all 0.3s ease;
         }
-
         .slider-dot {
             width: 12px;
             height: 12px;
@@ -159,20 +200,17 @@
             border-radius: 50%;
             cursor: pointer;
         }
-
         .slider-dot.active {
             background: #f59e0b;
             transform: scale(1.2);
         }
-        
+
         .banner-overlay {
             background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);
         }
-        
         .banner-text-shadow {
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
-        
         .discount-badge {
             position: absolute;
             top: 20px;
@@ -186,13 +224,12 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             z-index: 10;
         }
-        
         .electrical-icon {
             font-size: 2rem;
             color: #f59e0b;
             margin-bottom: 1rem;
         }
-</style>
+    </style>
 </head>
 
 <!-- Image Slider Banner -->
@@ -903,91 +940,117 @@
 </section>
 
 
-<section class="bg-blue-900 py-10 mt-6">
-    <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">Featured Brands</h2>
-        <div class="logos bg-white rounded-xl shadow-lg py-6 px-4 relative overflow-hidden">
-            <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-blue-900 to-transparent z-10 pointer-events-none"></div>
-            <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-blue-900 to-transparent z-10 pointer-events-none"></div>
-            
-            <div class="logos-slide" id="brandSlide">
-                @foreach ($brands as $brand)
-                    <a href="{{ route('shop.filters', [
-                        'categorySlug' => 'all',
-                        'brandSlugs' => $brand->slug ?? Str::slug($brand->name),
-                        'minPrice' => 0,
-                        'maxPrice' => 2500
-                    ]) }}" 
-                    class="mx-6 sm:mx-8 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                        <img src="{{ asset('images/' . $brand->image) }}" 
-                             alt="{{ $brand->name }}"
-                             class="max-h-12 sm:max-h-14 w-auto object-contain"
-                             loading="lazy">
-                    </a>
-                @endforeach
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Featured Brands</h2>
+        
+        <div class="swiper brandSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="brand-grid">
+                        <div class="brand-item">
+                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="https://via.placeholder.com/150x80/3B82F6/FFFFFF?text=Panasonic" 
+                                     alt="Brand 1"
+                                     class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
+                                     loading="lazy">
+                            </a>
+                        </div>
+                        <div class="brand-item">
+                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="https://via.placeholder.com/150x80/EF4444/FFFFFF?text=Pelicitysolar" 
+                                     alt="Brand 2"
+                                     class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
+                                     loading="lazy">
+                            </a>
+                        </div>
+                        <div class="brand-item">
+                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="https://via.placeholder.com/150x80/10B981/FFFFFF?text=OSRAM" 
+                                     alt="Brand 3"
+                                     class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
+                                     loading="lazy">
+                            </a>
+                        </div>
+                        <div class="brand-item">
+                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="https://via.placeholder.com/150x80/F59E0B/FFFFFF?text=Brand+4" 
+                                     alt="Brand 4"
+                                     class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
+                                     loading="lazy">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="brand-grid">
+                        <div class="brand-item">
+                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="https://via.placeholder.com/150x80/8B5CF6/FFFFFF?text=Brand+5" 
+                                     alt="Brand 5"
+                                     class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
+                                     loading="lazy">
+                            </a>
+                        </div>
+                        <div class="brand-item">
+                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="https://via.placeholder.com/150x80/EC4899/FFFFFF?text=Brand+6" 
+                                     alt="Brand 6"
+                                     class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
+                                     loading="lazy">
+                            </a>
+                        </div>
+                        <div class="brand-item">
+                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="https://via.placeholder.com/150x80/6366F1/FFFFFF?text=Brand+7" 
+                                     alt="Brand 7"
+                                     class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
+                                     loading="lazy">
+                            </a>
+                        </div>
+                        <div class="brand-item">
+                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="https://via.placeholder.com/150x80/14B8A6/FFFFFF?text=Brand+8" 
+                                     alt="Brand 8"
+                                     class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
+                                     loading="lazy">
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="swiper-pagination"></div>
         </div>
     </div>
-</section>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const sliderContainer = document.querySelector('.logos');
-        const sliderTrack = document.getElementById('brandSlide');
-        const brandItems = Array.from(sliderTrack.children);
-        const itemCount = brandItems.length;
-        
-        brandItems.forEach(item => {
-            sliderTrack.appendChild(item.cloneNode(true));
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const swiper = new Swiper('.brandSwiper', {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                loop: false,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                    },
+                    768: {
+                        slidesPerView: 1,
+                    },
+                    1024: {
+                        slidesPerView: 1,
+                    }
+                }
+            });
         });
-        
-        let currentIndex = 0;
-        let stepInterval;
-        const stepDuration = 4000; 
-        const itemWidth = brandItems[0].offsetWidth + 70; 
-        
-        function stepToNextBrand() {
-            currentIndex = (currentIndex + 1) % itemCount;
-            const newPosition = -currentIndex * itemWidth;
-            
-            sliderTrack.style.transition = 'transform 0.5s ease-in-out';
-            sliderTrack.style.transform = `translateX(${newPosition}px)`;
-            
-            if (currentIndex === 0) {
-                setTimeout(() => {
-                    sliderTrack.style.transition = 'none';
-                    sliderTrack.style.transform = 'translateX(0)';
-                }, 800);
-            }
-        }
-        
-        function startAnimation() {
-            stepInterval = setInterval(stepToNextBrand, stepDuration);
-        }
-        
-        sliderContainer.addEventListener('mouseenter', () => {
-            clearInterval(stepInterval);
-        });
-        
-        sliderContainer.addEventListener('mouseleave', () => {
-            startAnimation();
-        });
-        
-        function handleVisibility() {
-            if (document.hidden) {
-                clearInterval(stepInterval);
-            } else {
-                startAnimation();
-            }
-        }
-        
-        document.addEventListener('visibilitychange', handleVisibility);
-        startAnimation();
-        
-        return () => {
-            clearInterval(stepInterval);
-            document.removeEventListener('visibilitychange', handleVisibility);
-        };
-    });
-</script>
+    </script>
 @endsection
