@@ -12,6 +12,7 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\PromoCodeController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
@@ -150,5 +151,7 @@ Route::get('/order/success/{order}', [CartController::class, 'showSuccess']);
 
 Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search.ajax');
 Route::get('/search-all', [App\Http\Controllers\SearchController::class, 'searchAll'])->name('search.all');
+
+Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 
 require __DIR__.'/auth.php';

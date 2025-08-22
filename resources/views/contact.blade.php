@@ -102,7 +102,7 @@
 
         <div class="lg:w-1/2 w-full bg-white p-6 md:p-8 rounded-2xl shadow-sm">
             <h2 class="text-2xl text-gray-900 mb-6">Send Us a Message</h2>
-            <form action="#" method="POST" class="space-y-5">
+            <form action="{{ route('contact.send') }}" method="POST" class="space-y-5">
                 @csrf
                 <input type="text" name="name" required placeholder="Your Name *" class="w-full border border-gray-300 rounded-full px-6 py-3 focus:ring-2 focus:ring-blue-400 hover:border-blue-300">
                 <input type="email" name="email" required placeholder="Your Email *" class="w-full border border-gray-300 rounded-full px-6 py-3 focus:ring-2 focus:ring-blue-400 hover:border-blue-300">

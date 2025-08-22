@@ -549,6 +549,18 @@
   </header>
 
       <main>
+        <script src="//unpkg.com/alpinejs" defer></script>
+          @if(session('success'))
+              <div 
+                  x-data="{ show: true }" 
+                  x-init="setTimeout(() => show = false, 4000)" 
+                  x-show="show" 
+                  x-transition 
+                  class="fixed top-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg z-50"
+              >
+                  {{ session('success') }}
+              </div>
+          @endif
           @if(session('promo_success'))
               <div id="flashMessage" class="fixed top-4 right-4 max-w-md w-full z-50 transition-all duration-300 transform">
                   <div class="bg-white rounded-lg shadow-lg border border-green-200 overflow-hidden">
