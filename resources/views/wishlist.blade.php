@@ -112,8 +112,8 @@
                                 </form>
 
                             @elseif($product->contact_for_price)
-                                <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
-                                <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                                <p class="text-red-600 text-lg font-bold ">Contact for Price</p>
+                                <p class="text-sm text-gray-500 ">Please reach out for pricing</p>
                                 <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form flex justify-center">
                                     @csrf
                                     <input type="hidden" name="quantity" value="1">

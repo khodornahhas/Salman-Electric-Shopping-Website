@@ -557,8 +557,8 @@
                         @endif
 
                         @elseif($product->contact_for_price)
-                            <p class="text-red-600 text-lg font-bold italic">Contact for Price</p>
-                            <p class="text-sm text-gray-500 italic">Please reach out for pricing</p>
+                            <p class="text-red-600 text-lg font-bold ">Contact for Price</p>
+                            <p class="text-sm text-gray-500 ">Please reach out for pricing</p>
 
                         @elseif($product->quantity == 0 || $product->out_of_stock)
                             <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
