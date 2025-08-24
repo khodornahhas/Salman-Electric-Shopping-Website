@@ -35,20 +35,50 @@
     pointer-events: all;
     }
     
-    @media (max-width: 767px) {
+     @media (max-width: 767px) {
         #filter-sidebar {
             max-height: 0;
             padding: 0;
             overflow: hidden;
             transition: max-height 0.3s ease, padding 0.3s ease;
         }
+        
         #filter-sidebar.show {
-            max-height: 1000px;
+            max-height: none;   
             padding: 1.5rem;
-            overflow: visible;
+            overflow-y: visible;
             background: white;
             border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
+                        0 4px 6px -2px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            }
+
+        
+        #filter-form {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        #filter-form .mt-6 {
+            margin-top: 1.5rem; 
+            position: static;   
+            background: none;
+            border-top: none;
+            padding: 0;
+        }
+
+        #filter-form .mt-6 button {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        #filter-sidebar .bg-white {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
     }
 
@@ -66,19 +96,24 @@
         }
     }
     @media (max-width: 767px) {
-        #filter-sidebar {
-            max-height: 100;
+         #filter-sidebar {
+            max-height: 0;
             padding: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
         }
+        
         #filter-sidebar.show {
-            max-height: 1000px;
-            padding: 1.5rem;
-            border: 1px solid #ffffffff; 
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-            background: white;
-        }
+            max-height: none; 
+            overflow: visible; 
+            }
 
+        #filter-form {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+        
        #filter-toggle-btn {
         display: flex;
         align-items: center;
@@ -488,7 +523,7 @@
                         </form>
                     @endforeach
                 </div>
-
+    
                 @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
                     <div class="mt-1">
                         {{ $products->onEachSide(1)->links('pagination::tailwind') }}
@@ -577,9 +612,6 @@
                             </p>
                         @endif
    
-
-
-
                             <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
                             @csrf
                             <input type="hidden" name="quantity" value="1">

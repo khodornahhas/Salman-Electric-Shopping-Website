@@ -19,7 +19,6 @@
 </head>
 
 <style>
-
   body {
     font-family: 'Urbanist', sans-serif !important;
     padding-top: 0px;  
@@ -257,7 +256,8 @@
       max-width: 300px;
     }
   }
-   #heart-count, #cart-count {
+  
+  #heart-count, #cart-count {
     opacity: 1 !important;
     transition: none !important;
   }
@@ -294,6 +294,102 @@
   #search-results {
       -ms-overflow-style: none;
       scrollbar-width: none;
+  }
+
+  @media (min-width: 1024px) and (max-width: 1410px) {
+    .flex.items-center.justify-between.w-full.px-4 {
+      flex-wrap: nowrap;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .desktop-search {
+      width: 280px !important;
+      min-width: 280px;
+      margin: 0 0.5rem;
+    }
+    
+    .shrink-0 {
+      margin-right: 0.5rem;
+    }
+    
+    #collapseMenu ul {
+      gap: 0.75rem;
+    }
+    
+    #collapseMenu ul li a {
+      font-size: 16px;
+    }
+    
+    .mobile-icons {
+      gap: 0.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-width: 1280px) {
+    .desktop-search {
+      width: 240px !important;
+      min-width: 240px;
+    }
+    
+    #collapseMenu ul {
+      gap: 0.5rem;
+    }
+    
+    #collapseMenu ul li a {
+      font-size: 15px;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-width: 1149px) {
+    .flex.items-center.justify-between.w-full.px-4 {
+      flex-wrap: nowrap;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+    
+    .desktop-search {
+      width: 200px !important;
+      min-width: 200px;
+      margin: 0 0.25rem;
+    }
+    
+    .shrink-0 img {
+      width: 120px;
+    }
+    
+    #collapseMenu ul {
+      gap: 0.4rem;
+    }
+    
+    #collapseMenu ul li a {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .mobile-icons {
+      gap: 0.4rem;
+    }
+    
+    #collapseMenu ul li {
+      white-space: nowrap;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-width: 1070px) {
+    #collapseMenu ul li a {
+      font-size: 13px;
+    }
+    
+    .mobile-icons .bx {
+      font-size: 1.1rem;
+    }
+    
+    #heart-count, #cart-count {
+      height: 14px;
+      width: 14px;
+      font-size: 9px;
+    }
   }
 </style>
 

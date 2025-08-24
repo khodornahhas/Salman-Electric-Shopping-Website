@@ -277,10 +277,16 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
             @foreach($relatedProducts as $related)
-                <div class="relative bg-white rounded-xl overflow-hidden shadow-sm transition border border-gray-100 flex flex-col h-[420px]   <div class="absolute top-2 right-2 z-10 cursor-pointer add-to-wishlist"
+                <div class="relative bg-white rounded-xl overflow-hidden shadow-sm transition border border-gray-100 flex flex-col h-[420px]">
+
+                    {{-- Wishlist button --}}
+                    <div class="absolute top-2 right-2 z-10 cursor-pointer add-to-wishlist"
                         data-product-id="{{ $related->id }}">
                         <i class='bx {{ in_array($related->id, $wishlistProductIds) ? "bxs-heart text-red-500" : "bx-heart text-gray-400" }} text-2xl hover:text-red-500 transition'></i>
-                    </di @if($related->coming_soon)
+                    </div>
+
+                    {{-- Product badges --}}
+                    @if($related->coming_soon)
                         <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
                             Coming Soon
                         </div>
@@ -288,11 +294,18 @@
                         <div class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                             On Sale
                         </div>
-                    @end        <a href="{{ route('product.details', $related->id) }}" class="w-full h-56 bg-white flex items-center justify-center overflow-hidden">
+                    @endif
+
+                    {{-- Product image --}}
+                    <a href="{{ route('product.details', $related->id) }}"
+                       class="w-full h-56 bg-white flex items-center justify-center overflow-hidden">
                         <img src="/storage/{{ $related->image }}"
-                            alt="{{ $related->name }}"
-                            class="w-full h-full object-contain transform transition-transform duration-300 hover:scale-105 cursor-pointer" />
-                    </  <div class="p-5 flex flex-col flex-grow">
+                             alt="{{ $related->name }}"
+                             class="w-full h-full object-contain transform transition-transform duration-300 hover:scale-105 cursor-pointer" />
+                    </a>
+
+                    {{-- Product info --}}
+                    <div class="p-5 flex flex-col flex-grow">
                         <h3 class="font-semibold text-gray-800 text-center leading-tight font-[Open Sans, sans-serif] text-[15px] min-h-[48px]">
                             {{ $related->name }}
                         </h3>
@@ -304,13 +317,16 @@
                                 if($user && session('user_promo_code')) {
                                     $promo = \App\Models\PromoCode::with('products')->find(session('user_promo_code'));
                                     if($promo 
-                                    && $promo->products->contains($related->id) 
-                                    && !$promo->users()->where('user_id', $user->id)->exists()) 
-                                    {
+                                        && $promo->products->contains($related->id) 
+                                        && !$promo->users()->where('user_id', $user->id)->exists()) {
                                         $discountPercent = $promo->discount_percent;
                                     }
                                 }
-                            @endphp                      @if($related->coming_soon)            @if($discountPercent > 0)
+                            @endphp
+
+                            {{-- Coming soon --}}
+                            @if($related->coming_soon)
+                                @if($discountPercent > 0)
                                     <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
                                     <p class="text-green-600 text-lg font-bold ">
                                         ${{ number_format($related->price * (1 - $discountPercent/100), 2) }}
@@ -329,10 +345,12 @@
                                         ${{ number_format($related->price, 2) }}
                                     </p>
                                 @endif
-                           <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50" disabled>
+
+                                <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50" disabled>
                                     Add to Cart
                                 </button>
 
+                            {{-- Contact for price --}}
                             @elseif($related->contact_for_price)
                                 <p class="text-red-600 text-lg font-bold ">Contact for Price</p>
                                 <p class="text-sm text-gray-500 ">Please reach out for pricing</p>
@@ -340,13 +358,16 @@
                                     Add to Cart
                                 </button>
 
+                            {{-- Out of stock --}}
                             @elseif($related->quantity == 0 || $related->out_of_stock)
                                 <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
                                 <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50" disabled>
                                     Add to Cart
                                 </button>
 
-                            @else                       @if($discountPercent > 0)
+                            {{-- Normal price --}}
+                            @else
+                                @if($discountPercent > 0)
                                     <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
                                     <p class="text-green-600 text-lg font-bold ">
                                         ${{ number_format($related->price * (1 - $discountPercent/100), 2) }}
@@ -379,6 +400,7 @@
         </div>
     </div>
 @endif
+
 
 
 <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
