@@ -66,7 +66,7 @@ class ProductController extends Controller
         return view('product-details', compact('product', 'relatedProducts', 'wishlistProductIds', 'totalImages'));
     }
 
-  public function getBrands(Request $request)
+    public function getBrands(Request $request)
     {
         $allowedBrands = [
             'Panasonic',

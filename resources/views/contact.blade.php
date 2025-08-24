@@ -52,7 +52,7 @@
                 <div>
                     <h3 class="text-lg font-bold text-gray-900">Call Us</h3>
                     <p><a href="tel:+96176765561" class="text-gray-600 hover:text-blue-600">+961 76 765 561</a></p>
-                    <p><a href="tel:+96181966742" class="text-gray-600 hover:text-blue-600">+961 81 966 742</a></p>
+                    <p><a href="tel:+96181966742" class="text-gray-600 hover:text-blue-600">+961 03 813 154</a></p>
                 </div>
             </div>
 

@@ -659,7 +659,7 @@
       <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Contact Us</h3>
       <ul class="space-y-2 text-sm">
         <li><a href="tel:+96176765561" class="hover:text-blue-600 transition-colors">+961 76 765 561</a></li>
-        <li><a href="tel:+96181966742" class="hover:text-blue-600 transition-colors">+961 81 966 742</a></li>
+        <li><a href="tel:+96181966742" class="hover:text-blue-600 transition-colors">+961 03 813 154</a></li>
         <li><a href="mailto:walidsalman@gmail.com" class="hover:text-blue-600 transition-colors">walidsalman@gmail.com</a></li>
       </ul>
     </div>
