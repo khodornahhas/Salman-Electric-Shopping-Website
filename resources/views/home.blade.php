@@ -14,29 +14,42 @@
         }
 
         .swiper-slide {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s ease;
-            height: auto;
-        }
-        .swiper-slide:hover {
-            transform: scale(1.05);
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
 
-        .brand-image {
-            max-height: 60px;
-            width: auto;
-            object-fit: contain;
-            filter: grayscale(100%);
-            opacity: 0.7;
-            transition: all 0.3s ease;
-        }
+/* remove hover scaling */
+.swiper-slide:hover {
+    transform: none;
+}
+
+
+       .brand-image {
+    max-height: 38px;
+    width: auto;
+    object-fit: contain;
+    filter: none;        /* remove grayscale */
+    opacity: 1;          /* keep full opacity */
+    transition: none;    /* no hover transition */
+}
         .brand-image:hover {
-            filter: grayscale(0%);
-            opacity: 1;
-        }
+    filter: none;
+    opacity: 1;
+}
 
+/* remove hover scale/brightness from the link wrapper */
+.brand-item a {
+    display: block;
+    padding: 0.5rem;
+    transition: none;
+}
+
+.brand-item a:hover {
+    transform: none;
+    filter: none;
+}
         .swiper-pagination-bullet {
             width: 12px !important;
             height: 12px !important;
@@ -229,7 +242,7 @@
             color: #f59e0b;
             margin-bottom: 1rem;
         }
-    </style>
+</style>
 </head>
 
 <!-- Image Slider Banner -->
@@ -941,39 +954,39 @@
 
 
        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Featured Brands</h2>
+        <h2 class="text-4xl text-center mb-8 text-gray-800">Featured Brands</h2>
         
         <div class="swiper brandSwiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     <div class="brand-grid">
                         <div class="brand-item">
-                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                                <img src="https://via.placeholder.com/150x80/3B82F6/FFFFFF?text=Panasonic" 
+                            <a href="http://127.0.0.1:8000/shop/all/brands/foshan-ouyad/min-price/0/max-price/2500" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="images/foshan.png" 
                                      alt="Brand 1"
                                      class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
                                      loading="lazy">
                             </a>
                         </div>
                         <div class="brand-item">
-                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                                <img src="https://via.placeholder.com/150x80/EF4444/FFFFFF?text=Pelicitysolar" 
+                            <a href="http://127.0.0.1:8000/shop/all/brands/panasonic/min-price/0/max-price/2500" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="images/Panasonic.png" 
                                      alt="Brand 2"
                                      class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
                                      loading="lazy">
                             </a>
                         </div>
                         <div class="brand-item">
-                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                                <img src="https://via.placeholder.com/150x80/10B981/FFFFFF?text=OSRAM" 
+                            <a href="http://127.0.0.1:8000/shop/all/brands/osram/min-price/0/max-price/2500" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="images/osram.png" 
                                      alt="Brand 3"
                                      class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
                                      loading="lazy">
                             </a>
                         </div>
                         <div class="brand-item">
-                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                                <img src="https://via.placeholder.com/150x80/F59E0B/FFFFFF?text=Brand+4" 
+                            <a href="http://127.0.0.1:8000/shop/all/brands/felicity/min-price/0/max-price/2500" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="images/felicity.png" 
                                      alt="Brand 4"
                                      class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
                                      loading="lazy">
@@ -985,16 +998,16 @@
                 <div class="swiper-slide">
                     <div class="brand-grid">
                         <div class="brand-item">
-                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                                <img src="https://via.placeholder.com/150x80/8B5CF6/FFFFFF?text=Brand+5" 
+                            <a href="http://127.0.0.1:8000/shop/all/brands/hyundai/min-price/0/max-price/2500" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="images/hyundai2.png" 
                                      alt="Brand 5"
                                      class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
                                      loading="lazy">
                             </a>
                         </div>
                         <div class="brand-item">
-                            <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                                <img src="https://via.placeholder.com/150x80/EC4899/FFFFFF?text=Brand+6" 
+                            <a href="http://127.0.0.1:8000/shop/all/brands/schneider/min-price/0/max-price/2500" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
+                                <img src="images/schneider.png" 
                                      alt="Brand 6"
                                      class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
                                      loading="lazy">
@@ -1002,7 +1015,7 @@
                         </div>
                         <div class="brand-item">
                             <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                                <img src="https://via.placeholder.com/150x80/6366F1/FFFFFF?text=Brand+7" 
+                                <img src="#" 
                                      alt="Brand 7"
                                      class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
                                      loading="lazy">
@@ -1010,7 +1023,7 @@
                         </div>
                         <div class="brand-item">
                             <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                                <img src="https://via.placeholder.com/150x80/14B8A6/FFFFFF?text=Brand+8" 
+                                <img src="#" 
                                      alt="Brand 8"
                                      class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
                                      loading="lazy">
@@ -1019,7 +1032,6 @@
                     </div>
                 </div>
             </div>
-            <div class="swiper-pagination"></div>
         </div>
     </div>
 
@@ -1027,30 +1039,35 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const swiper = new Swiper('.brandSwiper', {
+    const swiper = new Swiper('.brandSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true, // enable looping
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        autoplay: {
+            delay: 6000, // 6000 ms = 6 seconds
+            disableOnInteraction: false, // keep autoplay after user interacts
+        },
+        breakpoints: {
+            640: {
                 slidesPerView: 1,
-                spaceBetween: 20,
-                loop: false,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                breakpoints: {
-                    640: {
-                        slidesPerView: 1,
-                    },
-                    768: {
-                        slidesPerView: 1,
-                    },
-                    1024: {
-                        slidesPerView: 1,
-                    }
-                }
-            });
-        });
+            },
+            768: {
+                slidesPerView: 1,
+            },
+            1024: {
+                slidesPerView: 1,
+            }
+        }
+    });
+});
+
     </script>
 @endsection
