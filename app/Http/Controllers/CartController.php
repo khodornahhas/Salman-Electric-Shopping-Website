@@ -287,7 +287,8 @@ class CartController extends Controller
     }
 
 
-    public function placeOrder(Request $request){
+    public function placeOrder(Request $request)
+    {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'nullable|string|max:255',
@@ -301,7 +302,14 @@ class CartController extends Controller
         ]);
 
         $cart = Auth::check()
-            ? CartItem::with('product')->where('user_id', Auth::id())->get()
+            ? CartItem::with('product')->where('user_id', Auth::id())->get()->map(function ($item) {
+                return [
+                    'product_id' => $item->product->id,
+                    'price'      => $item->product->price,
+                    'quantity'   => $item->quantity,
+                    'product'    => $item->product,
+                ];
+            })
             : collect(session()->get('cart', []));
 
         if ($cart->isEmpty()) {
@@ -309,15 +317,15 @@ class CartController extends Controller
         }
 
         $promoId = session('user_promo_code');
-        $promo = $promoId ? \App\Models\PromoCode::with('products')->find($promoId) : null;
-        $user = Auth::user();
+        $promo   = $promoId ? \App\Models\PromoCode::with('products')->find($promoId) : null;
+        $user    = Auth::user();
 
         $subtotal = 0;
         foreach ($cart as $item) {
-            $price = Auth::check() ? $item->product->price : ($item['price'] ?? 0);
-            $qty = $item->quantity;
+            $price = $item['price'];
+            $qty   = $item['quantity'];
 
-            if ($promo && $promo->products->pluck('id')->contains($item->product->id ?? $item['product_id'])) {
+            if ($promo && $promo->products->pluck('id')->contains($item['product_id'])) {
                 $discountedUnit = $price * (1 - ($promo->discount_percent / 100));
                 $subtotal += $discountedUnit * $qty;
             } else {
@@ -326,27 +334,27 @@ class CartController extends Controller
         }
 
         $shipping = 0;
-        $total = $subtotal + $shipping;
+        $total    = $subtotal + $shipping;
 
         $order = Order::create([
-            'user_id' => Auth::check() ? Auth::id() : null,
-            'first_name' => $validated['first_name'],
+            'user_id'   => Auth::check() ? Auth::id() : null,
+            'first_name'=> $validated['first_name'],
             'last_name' => $validated['last_name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'street' => $validated['street'],
+            'email'     => $validated['email'],
+            'phone'     => $validated['phone'],
+            'street'    => $validated['street'],
             'apartment' => $validated['apartment'],
-            'city' => $validated['city'],
-            'notes' => $validated['notes'],
-            'shipping' => $shipping,
-            'total' => $total,
-            'status' => 'pending',
+            'city'      => $validated['city'],
+            'notes'     => $validated['notes'],
+            'shipping'  => $shipping,
+            'total'     => $total,
+            'status'    => 'pending',
         ]);
 
         foreach ($cart as $item) {
-            $productId = Auth::check() ? $item->product->id : $item['product_id'];
-            $price = Auth::check() ? $item->product->price : ($item['price'] ?? 0);
-            $qty = $item->quantity;
+            $productId = $item['product_id'];
+            $price     = $item['price'];
+            $qty       = $item['quantity'];
 
             $appliedPromo = null;
             if ($promo && $promo->products->pluck('id')->contains($productId)) {
@@ -355,19 +363,19 @@ class CartController extends Controller
             }
 
             OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $productId,
-                'quantity' => $qty,
-                'price' => $price,
-                'promo_code_id' => $appliedPromo?->id,
-                'original_price' => Auth::check() ? $item->product->price : ($item['price'] ?? 0),
+                'order_id'       => $order->id,
+                'product_id'     => $productId,
+                'quantity'       => $qty,
+                'price'          => $price,
+                'promo_code_id'  => $appliedPromo?->id,
+                'original_price' => $item['price'],
             ]);
         }
 
         if ($promo && $user) {
             RedeemedPromoCode::create([
-                'user_id' => $user->id,
-                'promocode_id' => $promo->id,
+                'user_id'     => $user->id,
+                'promocode_id'=> $promo->id,
             ]);
             session()->forget('user_promo_code');
         }
@@ -408,8 +416,9 @@ class CartController extends Controller
                 'trace' => $e->getTraceAsString()
             ]);
         }
-         return redirect("/order/success/{$order->id}");
+        return redirect("/order/success/{$order->id}");
     }
+
 
     public function showSuccess(Order $order){
         return view('cart.success', ['order' => $order]);
