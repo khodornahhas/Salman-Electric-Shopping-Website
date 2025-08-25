@@ -35,6 +35,17 @@
     pointer-events: all;
     }
     
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .product-grid > div {
+        transition: opacity 0.3s ease;
+    }
+
      @media (max-width: 767px) {
         #filter-sidebar {
             max-height: 0;
@@ -299,6 +310,60 @@
             font-size: 0.875rem;
         }
     }
+
+    @media (min-width: 1024px) and (max-width: 1279px) {
+        .flex-col.md\:flex-row.md\:justify-between.md\:items-center.gap-4.mb-6 {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 1rem !important;
+        }
+        
+        .flex-col.md\:flex-row.md\:justify-between.md\:items-center.gap-4.mb-6 > div:first-child {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .flex-col.md\:flex-row.md\:justify-between.md\:items-center.gap-4.mb-6 form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .flex-col.md\:flex-row.md\:justify-between.md\:items-center.gap-4.mb-6 form > .flex.items-center.justify-between.flex-wrap.gap-4.text-sm {
+            order: 2;
+            justify-content: flex-start !important;
+            margin-top: 0.5rem;
+        }
+        
+        .flex-col.md\:flex-row.md\:justify-between.md\:items-center.gap-4.mb-6 form > div:last-child {
+            order: 1;
+            align-self: flex-end;
+        }
+        
+        .flex.items-center.justify-between.flex-wrap.gap-4.text-sm {
+            flex-wrap: nowrap !important;
+            gap: 0.5rem !important;
+        }
+        
+        .flex.items-center.justify-between.flex-wrap.gap-4.text-sm > .flex.items-center.gap-2 {
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+        
+        #filter-form.relative {
+            width: 100% !important;
+            max-width: none !important;
+            margin-bottom: 1rem;
+        }
+        
+        #sort-select {
+            width: 180px;
+        }
+    }
+
 </style>
 
 <div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
@@ -463,7 +528,7 @@
         </div>
 
    <div class="flex-1">
-    <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
         <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
             <div class="text-sm text-gray-500">{{ $products->count() }} items</div>
 
@@ -499,20 +564,12 @@
                 @endforeach
             @endif
 
-            <div class="flex items-center justify-between flex-wrap gap-4 text-sm">
+
+             <div class="flex items-center justify-between flex-wrap gap-4 text-sm">
                 <div class="flex items-center gap-2">
                     <span class="text-gray-700 font-medium">Show:</span>
-                    @foreach([6, 12, 32, 'all'] as $limit)
-                        <form method="GET" action="{{ url()->current() }}">
-                            @foreach(request()->except('limit', 'page') as $key => $value)
-                                @if(is_array($value))
-                                    @foreach($value as $v)
-                                        <input type="hidden" name="{{ $key }}[]" value="{{ $v }}">
-                                    @endforeach
-                                @else
-                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                                @endif
-                            @endforeach
+                    <div class="flex items-center gap-1">
+                        @foreach([6, 12, 32, 'all'] as $limit)
                             <button 
                                 type="submit" 
                                 name="limit" 
@@ -520,27 +577,27 @@
                                 class="px-2 py-1 rounded border hover:bg-gray-200 transition text-gray-700 {{ request('limit') == $limit ? 'bg-gray-300 font-semibold' : '' }}">
                                 {{ $limit === 'all' ? 'All' : $limit }}
                             </button>
-                        </form>
-                    @endforeach
-                </div>
-    
-                @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                    <div class="mt-1">
-                        {{ $products->onEachSide(1)->links('pagination::tailwind') }}
+                        @endforeach
                     </div>
-                @endif
-            </div>    
-
-            <div>
-                <select name="sort" id="sort-select" class="p-2 border rounded text-sm">
-                    <option value="">Default</option>
-                    <option value="low_high" {{ request('sort') == 'low_high' ? 'selected' : '' }}>Price: Low to High</option>
-                    <option value="high_low" {{ request('sort') == 'high_low' ? 'selected' : '' }}>Price: High to Low</option>
-                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
-                </select>
             </div>
-        </form>
-    </div>
+    
+            @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                <div class="mt-1 hidden md:block">
+                    {{ $products->onEachSide(1)->links('pagination::tailwind') }}
+                </div>
+            @endif
+        </div>    
+
+        <div>
+            <select name="sort" id="sort-select" class="p-2 border rounded text-sm">
+                <option value="">Default</option>
+                <option value="low_high" {{ request('sort') == 'low_high' ? 'selected' : '' }}>Price: Low to High</option>
+                <option value="high_low" {{ request('sort') == 'high_low' ? 'selected' : '' }}>Price: High to Low</option>
+                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest</option>
+            </select>
+        </div>
+    </form>
+</div>
 
     <div class="grid product-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @foreach($products as $product)
@@ -632,11 +689,66 @@
                 </div>
             @endforeach
         </div>
+           @if ($products->hasMorePages())
+            <div class="w-full flex justify-center mt-6 md:hidden">
+                <button id="load-more" 
+                    data-next-page="{{ $products->currentPage() + 1 }}" 
+                    class="bg-blue-600 text-white font-semibold px-6 py-2 rounded hover:bg-blue-700 transition">
+                    Show more
+                </button>
+            </div>
+        @endif
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/wishlist.js') }}"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    let loadMoreBtn = document.getElementById("load-more");
+    let productGrid = document.querySelector(".product-grid");
+
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener("click", function() {
+            let nextPage = loadMoreBtn.getAttribute("data-next-page");
+            let originalHtml = loadMoreBtn.outerHTML; 
+            
+            loadMoreBtn.innerHTML = 'Loading...';
+            loadMoreBtn.disabled = true;
+
+            fetch(`{{ url('/shop') }}?page=${nextPage}&{!! http_build_query(request()->except('page')) !!}`)
+                .then(res => res.text())
+                .then(data => {
+                    let parser = new DOMParser();
+                    let htmlDoc = parser.parseFromString(data, "text/html");
+                    let newProducts = htmlDoc.querySelectorAll(".product-grid > div");
+                    
+                    newProducts.forEach((product, index) => {
+                        setTimeout(() => {
+                            productGrid.appendChild(product.cloneNode(true));
+                        }, index * 50); 
+                    });
+                    
+                    let newNextPage = parseInt(nextPage) + 1;
+                    let hasMorePages = htmlDoc.querySelector(`[data-next-page="${newNextPage}"]`);
+                    
+                    setTimeout(() => {
+                        if (hasMorePages) {
+                            loadMoreBtn.innerHTML = 'Show more';
+                            loadMoreBtn.disabled = false;
+                            loadMoreBtn.setAttribute("data-next-page", newNextPage);
+                        } else {
+                            loadMoreBtn.remove();
+                        }
+                    }, newProducts.length * 50 + 100); 
+                })
+                .catch(err => {
+                    console.error("Error loading products:", err);
+                    loadMoreBtn.outerHTML = originalHtml;
+                    document.getElementById("load-more").addEventListener("click", arguments.callee);
+                });
+        });
+    }
+});
     // ------------------ PRICE RANGE SLIDER ------------------
     const maxPriceLimit = {{ $maxPriceLimit }};
     const minRange = document.getElementById('min-range');
