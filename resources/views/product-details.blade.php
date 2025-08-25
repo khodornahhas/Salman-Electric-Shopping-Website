@@ -279,13 +279,11 @@
             @foreach($relatedProducts as $related)
                 <div class="relative bg-white rounded-xl overflow-hidden shadow-sm transition border border-gray-100 flex flex-col h-[420px]">
 
-                    {{-- Wishlist button --}}
                     <div class="absolute top-2 right-2 z-10 cursor-pointer add-to-wishlist"
                         data-product-id="{{ $related->id }}">
                         <i class='bx {{ in_array($related->id, $wishlistProductIds) ? "bxs-heart text-red-500" : "bx-heart text-gray-400" }} text-2xl hover:text-red-500 transition'></i>
                     </div>
 
-                    {{-- Product badges --}}
                     @if($related->coming_soon)
                         <div class="absolute top-2 left-2 z-10 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
                             Coming Soon
@@ -296,7 +294,6 @@
                         </div>
                     @endif
 
-                    {{-- Product image --}}
                     <a href="{{ route('product.details', $related->id) }}"
                        class="w-full h-56 bg-white flex items-center justify-center overflow-hidden">
                         <img src="/storage/{{ $related->image }}"
@@ -304,7 +301,6 @@
                              class="w-full h-full object-contain transform transition-transform duration-300 hover:scale-105 cursor-pointer" />
                     </a>
 
-                    {{-- Product info --}}
                     <div class="p-5 flex flex-col flex-grow">
                         <h3 class="font-semibold text-gray-800 text-center leading-tight font-[Open Sans, sans-serif] text-[15px] min-h-[48px]">
                             {{ $related->name }}
@@ -324,7 +320,6 @@
                                 }
                             @endphp
 
-                            {{-- Coming soon --}}
                             @if($related->coming_soon)
                                 @if($discountPercent > 0)
                                     <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
@@ -350,7 +345,6 @@
                                     Add to Cart
                                 </button>
 
-                            {{-- Contact for price --}}
                             @elseif($related->contact_for_price)
                                 <p class="text-red-600 text-lg font-bold ">Contact for Price</p>
                                 <p class="text-sm text-gray-500 ">Please reach out for pricing</p>
@@ -358,14 +352,12 @@
                                     Add to Cart
                                 </button>
 
-                            {{-- Out of stock --}}
                             @elseif($related->quantity == 0 || $related->out_of_stock)
                                 <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
                                 <button class="mt-2 w-44 bg-gray-100 font-medium py-2 rounded cursor-not-allowed opacity-50" disabled>
                                     Add to Cart
                                 </button>
 
-                            {{-- Normal price --}}
                             @else
                                 @if($discountPercent > 0)
                                     <p class="text-gray-500 text-sm line-through">${{ number_format($related->price, 2) }}</p>
