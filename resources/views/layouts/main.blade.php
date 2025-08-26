@@ -415,10 +415,15 @@
       <div class="flex items-center gap-3 lg:gap-8 xl:gap-10">
 
         <a href="/home" class="shrink-0">
-          <img src="{{ asset('images/S8.PNG') }}" alt="logo" class="hidden sm:block w-36 lg:w-40 h-auto lg:ml-[20px] xl:ml-[130px]">
-          <img src="{{ asset('images/S8.PNG') }}" alt="logo" class="block sm:hidden w-20 h-auto">
+          <img src="{{ asset('images/Salmantest.PNG') }}" 
+              alt="logo" 
+              class="hidden sm:block w-36 md:w-40 lg:w-48 xl:w-56 h-auto lg:ml-[20px] xl:ml-[130px]">
+          
+          <img src="{{ asset('images/S8.PNG') }}" 
+              alt="logo" 
+              class="block sm:hidden w-20 h-auto">
         </a>
-
+  
         <div id="collapseMenu" class="hidden lg:block">
           <ul class="flex gap-x-4 lg:gap-x-6 xl:gap-x-8">
             <li>
@@ -457,175 +462,160 @@
 
       <div class="flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
 
-       <div class="desktop-search relative hidden sm:flex items-center w-[320px] md:w-[380px] lg:w-[450px] mx-auto rounded-full bg-white shadow-sm border border-gray-200 focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-400 transition-all duration-200">
-          <input 
-            type="text" 
-            name="q" 
-            placeholder="Search..." 
-            class="w-full py-3 pl-5 pr-10 text-gray-700 rounded-full focus:outline-none bg-transparent text-base"
-            autocomplete="off"
-          >
-          <button 
-            type="submit" 
-            class="absolute right-0 px-4 text-gray-400 hover:text-amber-500 transition-colors duration-200"
-          >
-            <i class='bx bx-search text-xl'></i>
-          </button>
+       <div class="desktop-search relative hidden sm:flex items-center w-[240px] md:w-[300px] lg:w-[350px] mx-auto rounded-full bg-white shadow-sm border border-gray-200 
+            focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500
+            hover:border-blue-500 hover:ring-1 hover:ring-blue-500
+            transition-all duration-200">
+        <input 
+          type="text" 
+          name="q" 
+          placeholder="Search..." 
+          class="w-full py-3 pl-5 pr-10 text-gray-700 rounded-full focus:outline-none bg-transparent text-base"
+          autocomplete="off"
+        >
+        <button 
+          type="submit" 
+          class="absolute right-0 px-4 text-gray-400 hover:text-blue-500 transition-colors duration-200"
+        >
+          <i class='bx bx-search text-xl'></i>
+        </button>
 
-          <div id="search-results" 
-              class="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-xl hidden z-50">
-          </div>
+        <div id="search-results" 
+            class="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-xl hidden z-50">
+        </div>
       </div>
 
 
         <div class="mobile-icons flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
-          <a href="{{ route('wishlist.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
-              <i class='bx bx-heart text-lg sm:text-xl lg:text-2xl'></i>
-              <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
-                  {{ auth()->check() ? auth()->user()->wishlists()->count() : 0 }}
-              </span>
-          </a>
+    <!-- Wishlist Icon -->
+    <a href="{{ route('wishlist.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
+        <i class='bx bx-heart text-lg sm:text-xl lg:text-2xl'></i>
+        <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
+            {{ auth()->check() ? auth()->user()->wishlists()->count() : 0 }}
+        </span>
+    </a>
 
-          <a href="{{ route('cart.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
-              <i class='bx bx-cart text-lg sm:text-xl lg:text-2xl'></i>
-              <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
-                  {{ App\Http\Controllers\CartController::getCartCount() }}
-              </span>
-          </a>
+    <!-- Cart Icon -->
+    <a href="{{ route('cart.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
+        <i class='bx bx-cart text-lg sm:text-xl lg:text-2xl'></i>
+        <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
+            {{ App\Http\Controllers\CartController::getCartCount() }}
+        </span>
+    </a>
 
-          @guest
-            <a href="/account" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500">
-              <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
-            </a>
-          @endguest
+    <!-- User Icon -->
+    @guest
+        <a href="/account" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
+            <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
+        </a>
+    @endguest
+</div>
 
-         @auth
+        @auth
           <div class="relative" x-data="{ open: false, redeemOpen: false }" 
-            x-init="
-                // Hide elements until Alpine is initialized
-                $el.style.visibility = 'hidden';
-                $nextTick(() => {
-                    $el.style.visibility = '';
-                    // Close any accidentally opened dropdowns
-                    open = false;
-                    redeemOpen = false;
-                })"
-                @mouseenter="open = true" 
-                @mouseleave="open = false"
-                style="visibility: hidden;">
-                <button @click="open = !open" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-amber-500 focus:outline-none">
+              x-init="
+                  $el.style.visibility = 'hidden';
+                  $nextTick(() => {
+                      $el.style.visibility = '';
+                      open = false;
+                      redeemOpen = false;
+                  })"
+              @mouseenter="open = true" 
+              @mouseleave="open = false"
+              style="visibility: hidden;">
+              
+              <button @click="open = !open" 
+                      class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 focus:outline-none transition-colors duration-200">
                   <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
-                </button>
+              </button>
 
-                <div x-show="open" x-transition class="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-lg shadow-lg z-50">
-                    <a href="{{ url('/profile') }}" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        <i class='bx bx-user-circle text-lg'></i> Account
-                    </a>
-                    <a href="{{ url('/profile/orders') }}" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        <i class='bx bx-package text-lg'></i> Orders
-                    </a>
+              <div x-show="open" x-transition class="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-lg shadow-lg z-50">
+                  <a href="{{ url('/profile') }}" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-500 transition-colors duration-200">
+                      <i class='bx bx-user-circle text-lg'></i> Account
+                  </a>
+                  <a href="{{ url('/profile/orders') }}" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-500 transition-colors duration-200">
+                      <i class='bx bx-package text-lg'></i> Orders
+                  </a>
 
-                    <button @click="redeemOpen = true" class="w-full text-left flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        <i class='bx bx-gift text-lg'></i> Redeem Code
-                    </button>
+                  <button @click="redeemOpen = true" class="w-full text-left flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-500 transition-colors duration-200">
+                      <i class='bx bx-gift text-lg'></i> Redeem Code
+                  </button>
 
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="w-full text-left flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-                            <i class='bx bx-log-out text-lg'></i> Logout
-                        </button>
-                    </form>
-                </div>
+                  <form method="POST" action="{{ route('logout') }}">
+                      @csrf
+                      <button type="submit" class="w-full text-left flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-500 transition-colors duration-200">
+                          <i class='bx bx-log-out text-lg'></i> Logout
+                      </button>
+                  </form>
+              </div>
 
-              <div x-show="redeemOpen"  x-transition class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                <div class="bg-white rounded-lg p-6 w-full max-w-md">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">Redeem Promo Code</h2>
-                        <button @click="redeemOpen = false; $dispatch('close-modal')" class="text-gray-600 hover:text-gray-800">&times;</button>
-                    </div>
-                    <form 
-                        method="POST" 
-                        action="{{ route('user.promocodes.apply') }}"
-                        x-data="{
-                            loading: false,
-                            error: null,
-                            success: null,
-                            async submitForm(e) {
-                                e.preventDefault();
-                                this.loading = true;
-                                this.error = null;
-                                this.success = null;
-                                
-                                try {
-                                    const response = await fetch(e.target.action, {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'Accept': 'application/json',
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                        },
-                                        body: JSON.stringify({
-                                            code: e.target.code.value
-                                        })
-                                    });
-                                    
-                                    const data = await response.json();
-                                    
-                                    if (!response.ok) {
-                                        throw data;
-                                    }
-                                    
-                                    this.success = data.message;
-                                    setTimeout(() => {
-                                        this.$dispatch('promo-applied', { 
-                                            message: data.message,
-                                            promoCode: data.promo_code
-                                        });
-                                        this.$dispatch('close-modal');
-                                        window.location.reload();
-                                    }, 1500);
-                                    
-                                } catch (error) {
-                                    this.error = error.message || 'An error occurred';
-                                } finally {
-                                    this.loading = false;
-                                }
-                            }
-                        }"
-                        @submit="submitForm"
-                    >
-                        <div x-show="error" class="mb-4 p-3 bg-red-100 text-red-700 rounded">
-                            <p x-text="error"></p>
-                        </div>
-                        
-                        <div x-show="success" class="mb-4 p-3 bg-green-100 text-green-700 rounded">
-                            <p x-text="success"></p>
-                        </div>
-                        
-                        <input 
-                            type="text" 
-                            name="code" 
-                            placeholder="Enter your code" 
-                            class="w-full border px-3 py-2 rounded mb-4"
-                            required
-                        >
-                        <button 
-                            type="submit" 
-                            class="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700 flex items-center justify-center gap-2"
-                            :disabled="loading"
-                        >
-                            <span x-show="!loading">Apply</span>
-                            <span x-show="loading">Processing...</span>
-                            <svg x-show="loading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-            </div>
+              <div x-show="redeemOpen" x-transition class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                  <div class="bg-white rounded-lg p-6 w-full max-w-md">
+                      <div class="flex justify-between items-center mb-4">
+                          <h2 class="text-lg font-semibold">Redeem Promo Code</h2>
+                          <button @click="redeemOpen = false; $dispatch('close-modal')" class="text-gray-600 hover:text-gray-800">&times;</button>
+                      </div>
+
+                      <form method="POST" action="{{ route('user.promocodes.apply') }}"
+                            x-data="{
+                              loading: false,
+                              error: null,
+                              success: null,
+                              async submitForm(e) {
+                                  e.preventDefault();
+                                  this.loading = true;
+                                  this.error = null;
+                                  this.success = null;
+                                  try {
+                                      const response = await fetch(e.target.action, {
+                                          method: 'POST',
+                                          headers: {
+                                              'Content-Type': 'application/json',
+                                              'Accept': 'application/json',
+                                              'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                          },
+                                          body: JSON.stringify({ code: e.target.code.value })
+                                      });
+                                      const data = await response.json();
+                                      if (!response.ok) throw data;
+                                      this.success = data.message;
+                                      setTimeout(() => {
+                                          this.$dispatch('promo-applied', { 
+                                              message: data.message,
+                                              promoCode: data.promo_code
+                                          });
+                                          this.$dispatch('close-modal');
+                                          window.location.reload();
+                                      }, 1500);
+                                  } catch (error) {
+                                      this.error = error.message || 'An error occurred';
+                                  } finally {
+                                      this.loading = false;
+                                  }
+                              }
+                            }"
+                            @submit="submitForm">
+                          <div x-show="error" class="mb-4 p-3 bg-red-100 text-red-700 rounded">
+                              <p x-text="error"></p>
+                          </div>
+                          <div x-show="success" class="mb-4 p-3 bg-green-100 text-green-700 rounded">
+                              <p x-text="success"></p>
+                          </div>
+                          <input type="text" name="code" placeholder="Enter your code" class="w-full border px-3 py-2 rounded mb-4" required>
+                          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700 flex items-center justify-center gap-2" :disabled="loading">
+                              <span x-show="!loading">Apply</span>
+                              <span x-show="loading">Processing...</span>
+                              <svg x-show="loading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                          </button>
+                      </form>
+                  </div>
+              </div>
           </div>
-          @endauth
+        @endauth
+
 
           <button id="toggleOpen" class="lg:hidden p-1 sm:p-1.5">
             <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="#000" viewBox="0 0 20 20">

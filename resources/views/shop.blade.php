@@ -699,6 +699,9 @@
                 </div>
             @endforeach
         </div>
+        <div id="loading-spinner" class="w-full flex justify-center mt-6 hidden">
+            <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
+        </div>
            @if ($products->hasMorePages())
             <div class="w-full flex justify-center mt-6 md:hidden">
                 <button id="load-more" 
@@ -714,34 +717,38 @@
 <script src="{{ asset('js/wishlist.js') }}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-    let loadMoreBtn = document.getElementById("load-more");
-    let productGrid = document.querySelector(".product-grid");
+        let loadMoreBtn = document.getElementById("load-more");
+        let productGrid = document.querySelector(".product-grid");
 
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener("click", function() {
-            let nextPage = loadMoreBtn.getAttribute("data-next-page");
-            let originalHtml = loadMoreBtn.outerHTML; 
-            
-            loadMoreBtn.innerHTML = 'Loading...';
-            loadMoreBtn.disabled = true;
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener("click", function() {
+                let nextPage = loadMoreBtn.getAttribute("data-next-page");
+                let originalHtml = loadMoreBtn.outerHTML; 
+                
+                document.getElementById("loading-spinner").classList.remove("hidden");
 
-            fetch(`{{ url('/shop') }}?page=${nextPage}&{!! http_build_query(request()->except('page')) !!}`)
-                .then(res => res.text())
-                .then(data => {
-                    let parser = new DOMParser();
-                    let htmlDoc = parser.parseFromString(data, "text/html");
-                    let newProducts = htmlDoc.querySelectorAll(".product-grid > div");
-                    
-                    newProducts.forEach((product, index) => {
+                loadMoreBtn.innerHTML = 'Loading...';
+                loadMoreBtn.disabled = true;
+
+                fetch(`{{ url('/shop') }}?page=${nextPage}&{!! http_build_query(request()->except('page')) !!}`)
+                    .then(res => res.text())
+                    .then(data => {
+                        let parser = new DOMParser();
+                        let htmlDoc = parser.parseFromString(data, "text/html");
+                        let newProducts = htmlDoc.querySelectorAll(".product-grid > div");
+                        
+                        newProducts.forEach((product, index) => {
+                            setTimeout(() => {
+                                productGrid.appendChild(product.cloneNode(true));
+                            }, index * 50); 
+                        });
+                        
+                        let newNextPage = parseInt(nextPage) + 1;
+                        let hasMorePages = htmlDoc.querySelector(`[data-next-page="${newNextPage}"]`);
+                        
                         setTimeout(() => {
-                            productGrid.appendChild(product.cloneNode(true));
-                        }, index * 50); 
-                    });
-                    
-                    let newNextPage = parseInt(nextPage) + 1;
-                    let hasMorePages = htmlDoc.querySelector(`[data-next-page="${newNextPage}"]`);
-                    
-                    setTimeout(() => {
+                        document.getElementById("loading-spinner").classList.add("hidden");
+
                         if (hasMorePages) {
                             loadMoreBtn.innerHTML = 'Show more';
                             loadMoreBtn.disabled = false;
@@ -749,16 +756,17 @@
                         } else {
                             loadMoreBtn.remove();
                         }
-                    }, newProducts.length * 50 + 100); 
-                })
-                .catch(err => {
-                    console.error("Error loading products:", err);
-                    loadMoreBtn.outerHTML = originalHtml;
-                    document.getElementById("load-more").addEventListener("click", arguments.callee);
-                });
-        });
-    }
-});
+                    }, newProducts.length * 50 + 100);
+                    
+                                    })
+                                    .catch(err => {
+                                        console.error("Error loading products:", err);
+                                        loadMoreBtn.outerHTML = originalHtml;
+                                        document.getElementById("load-more").addEventListener("click", arguments.callee);
+                                    });
+                            });
+                        }
+                    });
     // ------------------ PRICE RANGE SLIDER ------------------
     const maxPriceLimit = {{ $maxPriceLimit }};
     const minRange = document.getElementById('min-range');
