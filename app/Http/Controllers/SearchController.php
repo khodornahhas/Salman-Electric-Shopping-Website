@@ -19,7 +19,7 @@ class SearchController extends Controller
 
         try {
             $products = Product::where('name', 'like', "%{$query}%")
-                ->take(5)
+                ->take(4)
                 ->get(['id', 'name', 'image']);
 
             $totalProductsCount = Product::where('name', 'like', "%{$query}%")->count();

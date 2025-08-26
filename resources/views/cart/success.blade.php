@@ -1,4 +1,13 @@
 @extends('layouts.main')
+@section('head')
+    <title>Salman Electric - Confirmation</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+@endsection
 @section('content')
 <div class="flex justify-center items-center min-h-screen bg-gray-50 p-4">
   <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg text-center">

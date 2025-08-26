@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-     <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script defer src="{{ asset('js/wishlist.js') }}"></script>
 
     @yield('head') 
@@ -118,7 +118,7 @@
   }
 
   #mobileMenu .close-btn:hover {
-      color: #ff6b6b;
+      color: #023d03ff;
   }
 
   .mobile-menu-header {
@@ -180,7 +180,7 @@
   }
 
   #mobileMenu nav a:hover { 
-      color: #c72c2c; 
+      color: #abababff; 
   }
 
   #mobileMenu .social-icons {
@@ -193,7 +193,7 @@
   }
 
   #mobile-search-results {
-      max-height: 60vh;
+      max-height: 80vh;
       overflow-y: auto;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       border-radius: 8px;
@@ -422,32 +422,32 @@
         <div id="collapseMenu" class="hidden lg:block">
           <ul class="flex gap-x-4 lg:gap-x-6 xl:gap-x-8">
             <li>
-              <a href="/home" 
-                class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('home') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+              <a href="{{ route('home') }}" 
+                class="block text-[16px] lg:text-[18px] font-bold {{ request()->routeIs('home') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
                 Home
               </a>
             </li>
             <li>
-              <a href="/shop" 
-                class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('shop') || request()->is('shop/*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+              <a href="{{ route('shop') }}" 
+                class="block text-[16px] lg:text-[18px] font-bold {{ request()->routeIs('shop') || request()->routeIs('shop.*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
                 Shop
               </a>
             </li>
             <li>
-              <a href="/about" 
-                class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('about') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+              <a href="{{ route('about') }}" 
+                class="block text-[16px] lg:text-[18px] font-bold {{ request()->routeIs('about') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
                 About
               </a>
             </li>
             <li>
-              <a href="/contact" 
-                class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('contact') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+              <a href="{{ route('contact') }}" 
+                class="block text-[16px] lg:text-[18px] font-bold {{ request()->routeIs('contact') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
                 Contact
               </a>
             </li>
             <li>
-              <a href="/portfolio" 
-                class="block text-[16px] lg:text-[18px] font-bold {{ request()->is('portfolio') || request()->is('portfolio/*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+              <a href="{{ route('portfolio') }}" 
+                class="block text-[16px] lg:text-[18px] font-bold {{ request()->routeIs('portfolio') || request()->routeIs('portfolio.*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
                 Portfolio
               </a>
             </li>

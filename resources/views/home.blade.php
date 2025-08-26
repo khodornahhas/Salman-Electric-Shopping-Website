@@ -1,55 +1,55 @@
 @extends('layouts.main')
 @section('head')
     <title>Salman Electric - Home</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/salmanlogo.png') }}?v={{ time() }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
 @endsection
 @section('content')
  <style>
-        .swiper {
+        .swiper 
+        {
             width: 100%;
             padding: 20px 0;
         }
 
         .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-}
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        }
 
-/* remove hover scaling */
-.swiper-slide:hover {
-    transform: none;
-}
+        .swiper-slide:hover {
+            transform: none;
+        }
 
+            .brand-image {
+            max-height: 38px;
+            width: auto;
+            object-fit: contain;
+            filter: none;        
+            opacity: 1;         
+            transition: none;    
+        }
+                .brand-image:hover {
+            filter: none;
+            opacity: 1;
+        }
 
-       .brand-image {
-    max-height: 38px;
-    width: auto;
-    object-fit: contain;
-    filter: none;        /* remove grayscale */
-    opacity: 1;          /* keep full opacity */
-    transition: none;    /* no hover transition */
-}
-        .brand-image:hover {
-    filter: none;
-    opacity: 1;
-}
+        .brand-item a {
+            display: block;
+            padding: 0.5rem;
+            transition: none;
+        }
 
-/* remove hover scale/brightness from the link wrapper */
-.brand-item a {
-    display: block;
-    padding: 0.5rem;
-    transition: none;
-}
-
-.brand-item a:hover {
-    transform: none;
-    filter: none;
-}
+        .brand-item a:hover {
+            transform: none;
+            filter: none;
+        }
         .swiper-pagination-bullet {
             width: 12px !important;
             height: 12px !important;

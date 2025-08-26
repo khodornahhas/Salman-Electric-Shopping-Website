@@ -1,9 +1,15 @@
 @extends('layouts.main')
 @section('head')
     <title>Salman Electric - Wishlist</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/salmanlogo.png') }}?v={{ time() }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 @endsection
+
 @section('content')
 <div class="bg-blue-600 text-white font-bold py-4 px-4 md:pl-32 text-left mb-6 text-[20px]" style="margin-top: 40px; font-family: 'Open Sans', sans-serif;">
     <div class="flex items-center space-x-4">
