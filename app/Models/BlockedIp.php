@@ -1,19 +1,13 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Models;
 
-use Closure;
-use Illuminate\Http\Request;
-use App\Models\BlockedIp;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class BlockBadIps
+class BlockedIp extends Model
 {
-    public function handle(Request $request, Closure $next)
-    {
-        if (BlockedIp::where('ip_address', $request->ip())->exists()) {
-            abort(403, 'Access denied.');
-        }
+    use HasFactory;
 
-        return $next($request);
-    }
+    protected $fillable = ['ip_address'];
 }

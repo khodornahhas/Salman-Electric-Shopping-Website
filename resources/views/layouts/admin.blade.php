@@ -1037,6 +1037,11 @@
           </a>
         </li>
         <li class="sidebar-list-item">
+            <a href="{{ route('admin.blocked-ips') }}">
+               <span class="material-icons-outlined">block</span> Blocked IPs
+            </a>
+        </li>
+        <li class="sidebar-list-item">
           <a href="{{ route('admin.orders') }}">
             <span class="material-icons-outlined">add_shopping_cart</span> Pending Orders
           </a>

@@ -1054,15 +1054,20 @@
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="{{ route('admin.promocodes.index') }}">
-                <span class="material-icons-outlined">inventory_2</span>View Promo Codes
-            </a>
-        </li>
+              <a href="{{ route('admin.promocodes.index') }}">
+                  <span class="material-icons-outlined">inventory_2</span>View Promo Codes
+              </a>
+          </li>
           <li class="sidebar-list-item">
             <a href="{{ route('admin.users') }}">
               <span class="material-icons-outlined">account_circle</span> Users
             </a>
           </li>
+         <li class="sidebar-list-item">
+            <a href="{{ route('admin.blocked-ips') }}">
+                <span class="material-icons-outlined">block</span> Blocked IPs
+            </a>
+        </li>
           <li class="sidebar-list-item">
             <a href="{{ route('admin.orders') }}">
               <span class="material-icons-outlined">add_shopping_cart</span> Pending Orders

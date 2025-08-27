@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\BlockedIp;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -438,5 +439,18 @@ class AdminController extends Controller
         $brand->save();
 
         return redirect()->route('admin.brands')->with('success', 'Brand updated successfully.');
+    }
+    
+    public function blockedIps()
+    {
+        $blockedIps = BlockedIp::latest()->get();
+        return view('admin.blocked_ips', compact('blockedIps'));
+    }
+
+    public function unblockIp($id)
+    {
+        $ip = BlockedIp::findOrFail($id);
+        $ip->delete();
+        return redirect()->back()->with('success', 'IP unblocked successfully.');
     }
 }

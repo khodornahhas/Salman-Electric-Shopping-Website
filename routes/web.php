@@ -132,6 +132,10 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->name('admi
         Route::post('/brands', [AdminController::class, 'storeBrand'])->name('brands.store');
         Route::delete('/brands/{id}', [AdminController::class, 'deleteBrand'])->name('brands.delete');
         Route::put('/brands/{id}', [AdminController::class, 'updateBrand'])->name('brands.update');
+
+        // Admin Blocked IPs
+        Route::get('/blocked-ips', [AdminController::class, 'blockedIps'])->name('blocked-ips');
+        Route::post('/blocked-ips/unblock/{id}', [AdminController::class, 'unblockIp'])->name('blocked-ips.unblock');
     });
 
 Route::get('/contact', function () {
@@ -149,10 +153,6 @@ Route::get('/portfolio', function () {
 Route::get('/privacy', function () {
     return view('privacy');
 })->name('privacy');
-
-Route::get('/exchange', function () {
-    return view('exchange');
-})->name('exchange');
 
 Route::get('/order/success/{order}', [CartController::class, 'showSuccess']);
 
