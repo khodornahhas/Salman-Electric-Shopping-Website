@@ -30,7 +30,7 @@
                     <tr class="hover:bg-gray-50">
                         <td class="py-3 px-6 border-b">{{ $ip->id }}</td>
                         <td class="py-3 px-6 border-b">{{ $ip->ip_address }}</td>
-                        <td class="py-3 px-6 border-b">{{ $ip->created_at->format('Y-m-d H:i:s') }}</td>
+                        <td class="py-3 px-6 border-b">{{ $ip->created_at->format('d-m-Y') }}</td>
                         <td class="py-3 px-6 border-b text-center">
                             <form action="{{ route('admin.blocked-ips.unblock', $ip->id) }}" method="POST" class="inline">
                                 @csrf

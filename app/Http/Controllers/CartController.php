@@ -289,7 +289,7 @@ class CartController extends Controller
     }
 
 
-    public function placeOrder(Request $request)
+   public function placeOrder(Request $request)
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -338,13 +338,14 @@ class CartController extends Controller
         $shipping = 0;
         $total    = $subtotal + $shipping;
         $ip = $request->ip();
+
         $orderCount = \App\Models\Order::where('ip_address', $ip)
             ->where('created_at', '>=', \Carbon\Carbon::now()->subMinutes(10))
             ->count();
 
-        if ($orderCount > 3) { 
+        if ($orderCount >= 3) {
             \App\Models\BlockedIp::firstOrCreate(['ip_address' => $ip]);
-            abort(403, 'Too many orders from your IP. Access denied.');
+            abort(403, 'Access denied.');
         }
 
         $order = Order::create([
@@ -360,8 +361,9 @@ class CartController extends Controller
             'shipping'   => $shipping,
             'total'      => $total,
             'status'     => 'pending',
-            'ip_address' => $ip, 
+            'ip_address' => $ip,
         ]);
+
 
         foreach ($cart as $item) {
             $productId = $item['product_id'];
@@ -428,6 +430,7 @@ class CartController extends Controller
                 'trace' => $e->getTraceAsString()
             ]);
         }
+
         return redirect("/order/success/{$order->id}");
     }
 
