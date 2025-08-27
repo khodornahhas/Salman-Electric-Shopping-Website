@@ -146,6 +146,14 @@ Route::get('/portfolio', function () {
     return view('portfolio');
 })->name('portfolio');
 
+Route::get('/privacy', function () {
+    return view('privacy');
+})->name('privacy');
+
+Route::get('/exchange', function () {
+    return view('exchange');
+})->name('exchange');
+
 Route::get('/order/success/{order}', [CartController::class, 'showSuccess']);
 
 

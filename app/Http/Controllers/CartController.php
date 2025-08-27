@@ -11,6 +11,8 @@ use App\Models\OrderItem;
 use App\Models\RedeemedPromoCode;
 use App\Mail\OrderNotificationMail;
 use App\Mail\OrderConfirmationMail;
+use App\Models\BlockedIp;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
@@ -291,14 +293,14 @@ class CartController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'last_name' => 'nullable|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'street' => 'nullable|string|max:255',
-            'apartment' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:255',
-            'notes' => 'nullable|string',
-            'shipping' => 'required|in:0.00',
+            'last_name'  => 'nullable|string|max:255',
+            'email'      => 'required|email|max:255',
+            'phone'      => 'required|string|max:20',
+            'street'     => 'nullable|string|max:255',
+            'apartment'  => 'nullable|string|max:255',
+            'city'       => 'nullable|string|max:255',
+            'notes'      => 'nullable|string',
+            'shipping'   => 'required|in:0.00',
         ]);
 
         $cart = Auth::check()
@@ -335,20 +337,30 @@ class CartController extends Controller
 
         $shipping = 0;
         $total    = $subtotal + $shipping;
+        $ip = $request->ip();
+        $orderCount = \App\Models\Order::where('ip_address', $ip)
+            ->where('created_at', '>=', \Carbon\Carbon::now()->subMinutes(10))
+            ->count();
+
+        if ($orderCount > 3) { 
+            \App\Models\BlockedIp::firstOrCreate(['ip_address' => $ip]);
+            abort(403, 'Too many orders from your IP. Access denied.');
+        }
 
         $order = Order::create([
-            'user_id'   => Auth::check() ? Auth::id() : null,
-            'first_name'=> $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'email'     => $validated['email'],
-            'phone'     => $validated['phone'],
-            'street'    => $validated['street'],
-            'apartment' => $validated['apartment'],
-            'city'      => $validated['city'],
-            'notes'     => $validated['notes'],
-            'shipping'  => $shipping,
-            'total'     => $total,
-            'status'    => 'pending',
+            'user_id'    => Auth::check() ? Auth::id() : null,
+            'first_name' => $validated['first_name'],
+            'last_name'  => $validated['last_name'],
+            'email'      => $validated['email'],
+            'phone'      => $validated['phone'],
+            'street'     => $validated['street'],
+            'apartment'  => $validated['apartment'],
+            'city'       => $validated['city'],
+            'notes'      => $validated['notes'],
+            'shipping'   => $shipping,
+            'total'      => $total,
+            'status'     => 'pending',
+            'ip_address' => $ip, 
         ]);
 
         foreach ($cart as $item) {
@@ -418,7 +430,6 @@ class CartController extends Controller
         }
         return redirect("/order/success/{$order->id}");
     }
-
 
     public function showSuccess(Order $order){
         return view('cart.success', ['order' => $order]);
