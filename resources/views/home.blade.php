@@ -1015,7 +1015,7 @@
                         </div>
                         <div class="brand-item">
                             <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                                <img src="#" 
+                                <img src="images/kingroon.png" 
                                      alt="Brand 7"
                                      class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
                                      loading="lazy">
@@ -1023,7 +1023,7 @@
                         </div>
                         <div class="brand-item">
                             <a href="#" class="block p-2 transition-all duration-300 hover:scale-105 hover:brightness-110">
-                                <img src="#" 
+                                <img src="images/printex.png" 
                                      alt="Brand 8"
                                      class="max-h-12 sm:max-h-14 w-auto object-contain brand-image"
                                      loading="lazy">
@@ -1042,7 +1042,7 @@
     const swiper = new Swiper('.brandSwiper', {
         slidesPerView: 1,
         spaceBetween: 20,
-        loop: true, // enable looping
+        loop: true, 
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
@@ -1052,8 +1052,8 @@
             prevEl: '.swiper-button-prev',
         },
         autoplay: {
-            delay: 6000, // 6000 ms = 6 seconds
-            disableOnInteraction: false, // keep autoplay after user interacts
+            delay: 6000, 
+            disableOnInteraction: false,
         },
         breakpoints: {
             640: {
