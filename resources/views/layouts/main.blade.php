@@ -222,6 +222,42 @@
   }
 
   @media (max-width: 767px) {
+    .shrink-0 img {
+      width: 150px !important; 
+      margin: 0 auto;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .shrink-0 img {
+      width: 180px !important;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-width: 1148px) {
+    .shrink-0 img {
+      width: 180px !important; 
+    }
+  }
+
+  @media (min-width: 1149px) and (max-width: 1279px) {
+    .shrink-0 img {
+      width: 200px !important;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .shrink-0 img {
+      width: 220px !important;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .shrink-0 img {
+      width: 250px !important;
+    }
+  }
+  @media (max-width: 767px) {
     .desktop-search {
       display: none;
     }
@@ -354,8 +390,10 @@
       margin: 0 0.25rem;
     }
     
-    .shrink-0 img {
-      width: 120px;
+   .shrink-0 img {
+      height: auto;
+      max-width: 100%;
+      transition: all 0.3s ease;
     }
     
     #collapseMenu ul {
@@ -395,33 +433,33 @@
 
 <body>
   <header class="sticky top-0 z-50 bg-white  tracking-wide font-[Urbanist]">
-     <div class="hidden md:block bg-gray-100 py-2 text-sm">
-      <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-          <div class="text-gray-700">
-            <div class="bg-blue-50 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
-              <i class='bx bx-package text-blue-500'></i>
-              <span class="text-blue-600">Free Delivery</span> on Orders Over <span class="text-blue-800">$30</span>
+
+     <div class="hidden md:block py-2 text-sm ">
+        <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center justify-between">
+            <div class="text-gray-700 font-medium">
+                <h1 class="font-bold">The dollar exchange rate is set daily based on market value</h1>              
             </div>
-          </div>
-          <div class="flex items-center space-x-4">
-            <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors"><i class='bx bxl-facebook'></i></a>
-            <a href="#" class="text-gray-600 hover:text-pink-500 transition-colors"><i class='bx bxl-instagram'></i></a>
+            <div class="flex items-center space-x-6">
+              <a href="#" title="Facebook" class="text-gray-600 hover:text-blue-500 transition-colors text-lg"><i class='bx bxl-facebook'></i></a>
+              <a href="#" title="Instagram" class="text-gray-600 hover:text-pink-500 transition-colors text-lg"><i class='bx bxl-instagram'></i></a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+
     <div class="flex items-center justify-between w-full px-4 sm:px-5 lg:px-6 min-h-[70px]">
       <div class="flex items-center gap-3 lg:gap-8 xl:gap-10">
 
         <a href="/home" class="shrink-0">
           <img src="{{ asset('images/Salmantest.PNG') }}" 
               alt="logo" 
-              class="hidden sm:block w-36 md:w-40 lg:w-48 xl:w-56 h-auto lg:ml-[20px] xl:ml-[130px]">
-          
-          <img src="{{ asset('images/S8.PNG') }}" 
+              class="hidden sm:block">
+
+          <img src="{{ asset('images/Salmantest.PNG') }}" 
               alt="logo" 
-              class="block sm:hidden w-20 h-auto">
+              class="block sm:hidden">
         </a>
   
         <div id="collapseMenu" class="hidden lg:block">
@@ -486,30 +524,27 @@
       </div>
 
 
-        <div class="mobile-icons flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
-    <!-- Wishlist Icon -->
-    <a href="{{ route('wishlist.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
-        <i class='bx bx-heart text-lg sm:text-xl lg:text-2xl'></i>
-        <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
-            {{ auth()->check() ? auth()->user()->wishlists()->count() : 0 }}
-        </span>
-    </a>
+          <div class="mobile-icons flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
+              <a href="{{ route('wishlist.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
+                  <i class='bx bx-heart text-lg sm:text-xl lg:text-2xl'></i>
+                  <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
+                      {{ auth()->check() ? auth()->user()->wishlists()->count() : 0 }}
+                  </span>
+              </a>
 
-    <!-- Cart Icon -->
-    <a href="{{ route('cart.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
-        <i class='bx bx-cart text-lg sm:text-xl lg:text-2xl'></i>
-        <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
-            {{ App\Http\Controllers\CartController::getCartCount() }}
-        </span>
-    </a>
+              <a href="{{ route('cart.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
+                  <i class='bx bx-cart text-lg sm:text-xl lg:text-2xl'></i>
+                  <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
+                      {{ App\Http\Controllers\CartController::getCartCount() }}
+                  </span>
+              </a>
 
-    <!-- User Icon -->
-    @guest
-        <a href="/account" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
-            <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
-        </a>
-    @endguest
-</div>
+              @guest
+                  <a href="/account" class="p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
+                      <i class='bx bx-user text-lg sm:text-xl lg:text-2xl'></i>
+                  </a>
+              @endguest
+          </div>
 
         @auth
           <div class="relative" x-data="{ open: false, redeemOpen: false }" 
@@ -629,8 +664,6 @@
     <div id="mobileMenu" 
      class="fixed top-0 right-0 h-full w-64 bg-[#3254EC] shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex flex-col p-6">
     </div>
-
-
     <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 opacity-0 invisible transition-opacity duration-300"></div>
   </header>
 
@@ -712,41 +745,38 @@
       </div>
 </body>
 
-<footer class="bg-white text-gray-800">
+<footer class="bg-gray-50 text-gray-800">
   <div class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-5 gap-8 max-w-screen-xl text-center md:text-left">
 
     <div class="flex flex-col items-center md:items-start">
       <a href="/" class="flex items-center mb-4">
         <img src="{{ asset('images/SalmanLogo2.png') }}" alt="Salman Electric Logo" class="h-12 object-contain">
       </a>
-      <p class="text-sm text-gray-600">Your Trusted Solar & Electric Solutions</p>
+        <p class="text-base text-gray-800 ">For inquiries, contact us anytime.</p>
     </div>
     
     <div class="flex flex-col items-center md:items-start md:ml-[25px]">
       <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Keep In Touch</h3>
-      <ul class="space-y-2 text-sm">
+      <ul class="space-y-2 text-base">
         <li><a href="#" class="hover:text-blue-600 transition-colors">About Us</a></li>
         <li><a href="#" class="hover:text-blue-600 transition-colors">Contact Us</a></li>
       </ul>
     </div>
 
-
-
-
     <div class="flex flex-col items-center md:items-start">
       <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Useful Links</h3>
-      <ul class="space-y-2 text-sm">
+      <ul class="space-y-2 text-base">
         <li><a href="#" class="hover:text-blue-600 transition-colors">Privacy Policy</a></li>
         <li><a href="#" class="hover:text-blue-600 transition-colors">Return & Exchange Policy</a></li>
       </ul>
     </div>
+
     
     <div class="flex flex-col items-center md:items-start">
       <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Contact Us</h3>
-      <ul class="space-y-2 text-sm">
+      <ul class="space-y-2 text-base">
         <li><a href="tel:+96176765561" class="hover:text-blue-600 transition-colors">+961 76 765 561</a></li>
         <li><a href="tel:+96181966742" class="hover:text-blue-600 transition-colors">+961 03 813 154</a></li>
-        <li><a href="mailto:walidsalman@gmail.com" class="hover:text-blue-600 transition-colors">walidsalman@gmail.com</a></li>
       </ul>
     </div>
 
