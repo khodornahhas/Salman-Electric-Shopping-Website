@@ -20,17 +20,17 @@
         </div>
 
         <div>
-            <label class="block font-semibold mb-1">Unit Price (Optional)</label>
+            <label class="block font-semibold mb-1">Cost Price (Optional)</label>
             <input type="number" name="unit_price" step="0.01" class="w-full border rounded px-3 py-2" value="{{ old('unit_price') }}">
         </div>
 
         <div>
-            <label class="block font-semibold mb-1">Price</label>
+            <label class="block font-semibold mb-1">Selling Price</label>
             <input type="number" name="price" step="0.01" class="w-full border rounded px-3 py-2" required>
         </div>
 
         <div>
-            <label class="block font-semibold mb-1">Sale Price</label>
+            <label class="block font-semibold mb-1">Discount Price (%)</label>
             <input type="number" name="sale_price" step="0.01" class="w-full border rounded px-3 py-2">
         </div>
 

@@ -149,21 +149,20 @@ class AdminController extends Controller
             'name' => 'required|string',
             'description' => 'nullable|string',
             'information' => 'nullable|string',
-            'contact_for_price' => 'sometimes|boolean',
-            'price' => 'nullable|numeric',
+            'price' => 'nullable|numeric',           
             'sale_price' => 'nullable|numeric',
             'quantity' => 'nullable|integer',
             'out_of_stock' => 'sometimes|boolean',
-            'image' => 'nullable|image',
+            'image' => 'required|image|mimes:jpg,jpeg,png',
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'brand_id' => 'nullable|exists:brands,id',
+            'brand_id' => 'required|exists:brands,id',       
             'category_id' => 'required|exists:categories,id',
             'is_available' => 'sometimes|boolean',
             'is_on_sale' => 'sometimes|boolean',
             'is_featured' => 'sometimes|boolean',
             'is_latest' => 'sometimes|boolean',
             'unit_price' => 'nullable|numeric',
-            'coming_soon' => 'sometimes|boolean', 
+            'coming_soon' => 'sometimes|boolean',
         ]);
 
         $contactForPrice = $request->has('contact_for_price');
@@ -237,14 +236,14 @@ class AdminController extends Controller
             'name' => 'required|string',
             'description' => 'nullable|string',
             'information' => 'nullable|string',
-            'price' => ($isContact && !$comingSoon) ? 'nullable' : 'nullable|numeric',
+            'price' => 'nullable|numeric',
             'sale_price' => 'nullable|numeric',
             'quantity' => 'nullable|integer',
             'out_of_stock' => 'sometimes|boolean',
-            'image' => 'nullable|image',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png',
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'brand_id' => 'nullable|exists:brands,id',
-            'category_id' => 'required|exists:categories,id', 
+            'brand_id' => 'required|exists:brands,id',
+            'category_id' => 'required|exists:categories,id',
             'is_on_sale' => 'nullable|boolean',
             'is_featured' => 'nullable|boolean',
             'is_latest' => 'nullable|boolean',
@@ -252,6 +251,7 @@ class AdminController extends Controller
             'unit_price' => 'nullable|numeric',
             'coming_soon' => 'nullable|boolean',
         ]);
+
 
         if ($isContact && !$comingSoon) {
             $validated['price'] = null;

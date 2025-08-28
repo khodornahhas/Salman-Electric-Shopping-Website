@@ -1046,11 +1046,6 @@
             <span class="material-icons-outlined">add_shopping_cart</span> Pending Orders
           </a>
         </li>
-        <li class="sidebar-list-item">
-          <a href="{{ route('admin.stats') }}">
-            <span class="material-icons-outlined">poll</span> Messages
-          </a>
-        </li>
       </ul>
     </aside>
     <main>

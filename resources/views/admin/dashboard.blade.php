@@ -992,13 +992,13 @@
     width: 200%;
     height: 200%;
     }
+    
 </style>
 
     </head>
     <body>
     <div class="grid-container">
 
-      <!-- Header -->
       <header class="header">
         <div class="menu-icon" onclick="openSidebar()">
           <span class="material-icons-outlined">menu</span>
@@ -1019,11 +1019,8 @@
             <span class="material-icons-outlined cursor-pointer">notifications</span>
           </a>
         </div>
-
       </header>
-      <!-- End Header -->
 
-      <!-- Sidebar -->
       <aside id="sidebar">
         <div class="sidebar-title">
           <div class="sidebar-brand">
@@ -1032,58 +1029,59 @@
           <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
         </div>
 
-        <ul class="sidebar-list">
+       <ul class="sidebar-list">
           <li class="sidebar-list-item">
-            <a href="{{ route('admin.dashboard') }}">
-              <span class="material-icons-outlined">dashboard</span> Dashboard
-            </a>
-          </li>
-          <li class="sidebar-list-item">
-            <a href="{{ route('admin.products') }}">
-              <span class="material-icons-outlined">inventory_2</span> Products
-            </a>
-          </li>
-          <li class="sidebar-list-item">
-            <a href="{{ route('admin.categories') }}">
-              <span class="material-icons-outlined">category</span> Categories
-            </a>
-          </li>
-          <li class="sidebar-list-item">
-            <a href="{{ route('admin.brands') }}">
-              <span class="material-icons-outlined">store</span> Brands
-            </a>
-          </li>
-          <li class="sidebar-list-item">
-              <a href="{{ route('admin.promocodes.index') }}">
-                  <span class="material-icons-outlined">inventory_2</span>View Promo Codes
+              <a href="{{ route('admin.dashboard') }}">
+                  <span class="material-icons-outlined">dashboard</span>
+                  Dashboard
               </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="{{ route('admin.users') }}">
-              <span class="material-icons-outlined">account_circle</span> Users
-            </a>
-          </li>
-         <li class="sidebar-list-item">
-            <a href="{{ route('admin.blocked-ips') }}">
-                <span class="material-icons-outlined">block</span> Blocked IPs
-            </a>
-        </li>
-          <li class="sidebar-list-item">
-            <a href="{{ route('admin.orders') }}">
-              <span class="material-icons-outlined">add_shopping_cart</span> Pending Orders
-            </a>
+              <a href="{{ route('admin.products') }}">
+                  <span class="material-icons-outlined">inventory_2</span>
+                  Products
+              </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="{{ route('admin.stats') }}">
-              <span class="material-icons-outlined">poll</span> Messages
-            </a>
+              <a href="{{ route('admin.categories') }}">
+                  <span class="material-icons-outlined">category</span>
+                  Categories
+              </a>
+          </li>
+          <li class="sidebar-list-item">
+              <a href="{{ route('admin.brands') }}">
+                  <span class="material-icons-outlined">store</span>
+                  Brands
+              </a>
+          </li>
+          <li class="sidebar-list-item">
+              <a href="{{ route('admin.promocodes.index') }}">
+                  <span class="material-icons-outlined">inventory_2</span>
+                  View Promo Codes
+              </a>
+          </li>
+          <li class="sidebar-list-item">
+              <a href="{{ route('admin.users') }}">
+                  <span class="material-icons-outlined">account_circle</span>
+                  Users
+              </a>
+          </li>
+          <li class="sidebar-list-item">
+              <a href="{{ route('admin.blocked-ips') }}">
+                  <span class="material-icons-outlined">block</span>
+                  Blocked IPs
+              </a>
+          </li>
+          <li class="sidebar-list-item">
+              <a href="{{ route('admin.orders') }}">
+                  <span class="material-icons-outlined">add_shopping_cart</span>
+                  Pending Orders
+              </a>
           </li>
         </ul>
+
       </aside>
 
-      <!-- End Sidebar -->
-
-      <!-- Main -->
       <main class="main-container">
               <div class="main-title">
                 <p class="font-weight-bold">DASHBOARD</p>
@@ -1124,7 +1122,6 @@
           </div>
       </div>
       </main>
-      <!-- End Main -->
     </div>
 
 

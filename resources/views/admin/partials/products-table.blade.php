@@ -51,8 +51,8 @@
 
         <td class="px-6 py-4 text-right">
             <div class="inline-flex items-center gap-2">
-                <a href="{{ route('admin.products.edit', $product->id) }}"
-                   class="inline-flex items-center text-sm bg-blue-50 text-blue-700 px-3 py-2 rounded-lg hover:bg-blue-100 transition border border-blue-100 min-w-[90px] justify-center">
+               <a href="{{ route('admin.products.edit', [$product->id] + request()->query()) }}"
+   class="inline-flex items-center text-sm bg-blue-50 text-blue-700 px-3 py-2 rounded-lg hover:bg-blue-100 transition border border-blue-100 min-w-[90px] justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5h2m-1 0v14m-7-7h14" />
                     </svg>
