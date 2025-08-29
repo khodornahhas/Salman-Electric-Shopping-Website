@@ -407,29 +407,30 @@ class CartController extends Controller
         ]);
 
         try {
-            Mail::send('emails.order_confirmation', ['order' => $order], function ($message) use ($order) {
-                $message->to($order->email)
-                    ->subject('Your Order Confirmation #' . $order->id);
-                Log::info('Customer email sent', ['order' => $order->id, 'email' => $order->email]);
-            });
+        Mail::send('emails.order_confirmation', ['order' => $order], function ($message) use ($order) {
+            $message->from(config('mail.from.address'), config('mail.from.name')) // added
+                ->to($order->email)
+                ->subject('Your Order Confirmation #' . $order->id);
+            Log::info('Customer email sent', ['order' => $order->id, 'email' => $order->email]);
+        });
 
-            $ownerEmail = config('mail.owner_email');
-            if ($ownerEmail && filter_var($ownerEmail, FILTER_VALIDATE_EMAIL)) {
-                Mail::send('emails.new_order_notification', ['order' => $order], function ($message) use ($order, $ownerEmail) {
-                    $message->from(config('mail.from.address'), config('mail.from.name'))
-                        ->to($ownerEmail)
-                        ->subject('🚨 New Order #' . $order->id);
-                    Log::info('Owner notification sent', ['order' => $order->id]);
-                });
-            } else {
-                Log::error('Invalid owner email', ['email' => $ownerEmail]);
-            }
-        } catch (\Exception $e) {
-            Log::error('Mail Error: ' . $e->getMessage(), [
-                'order' => $order->id,
-                'trace' => $e->getTraceAsString()
-            ]);
+        $ownerEmail = config('mail.owner_email');
+        if ($ownerEmail && filter_var($ownerEmail, FILTER_VALIDATE_EMAIL)) {
+            Mail::send('emails.new_order_notification', ['order' => $order], function ($message) use ($order, $ownerEmail) {
+                $message->from(config('mail.from.address'), config('mail.from.name'))
+                    ->to($ownerEmail)
+                    ->subject('🚨 New Order #' . $order->id);
+                Log::info('Owner notification sent', ['order' => $order->id]);
+            });
+        } else {
+            Log::error('Invalid owner email', ['email' => $ownerEmail]);
         }
+    } catch (\Exception $e) {
+        Log::error('Mail Error: ' . $e->getMessage(), [
+            'order' => $order->id,
+            'trace' => $e->getTraceAsString()
+        ]);
+    }
 
         return redirect("/order/success/{$order->id}");
     }

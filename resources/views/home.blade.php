@@ -94,6 +94,18 @@
         .mobile-slider {
             display: block;
         }
+        
+        .swiper-button-next,
+        .swiper-button-prev {
+            width: 32px !important;
+            height: 32px !important;
+            display: none; 
+        }
+        
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 16px !important;
+        }
     }
 
     .brand-grid {
@@ -118,6 +130,10 @@
         
         .brand-item {
             padding: 10px;
+        }
+        
+        .brand-item img {
+            max-height: 30px;
         }
     }
 
@@ -278,6 +294,78 @@
         color: #f59e0b;
         margin-bottom: 1rem;
     }
+
+    @media (max-width: 640px) {
+        .relative.h-\\[25\\.rem\\] {
+            height: 20rem !important;
+        }
+        
+        .banner-text-shadow {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        
+        .electrical-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        h2.text-4xl {
+            font-size: 1.75rem !important;
+            line-height: 2.25rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        p.text-xl {
+            font-size: 1rem !important;
+            margin-bottom: 1.5rem !important;
+            line-height: 1.5rem !important;
+        }
+        
+        a.bg-blue-600 {
+            padding: 0.75rem 1.5rem !important;
+            font-size: 0.875rem !important;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .discount-badge {
+            top: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+        }
+        
+        .absolute.bottom-8 {
+            bottom: 1rem !important;
+        }
+        
+        button.w-8 {
+            width: 1.5rem !important;
+            height: 0.25rem !important;
+        }
+        
+        button.w-10 {
+            width: 2rem !important;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .relative.h-\\[25\\.rem\\] {
+            height: 18rem !important;
+        }
+        
+        h2.text-4xl {
+            font-size: 1.5rem !important;
+            line-height: 2rem !important;
+        }
+        
+        .max-w-4xl.mx-auto {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+    }
 </style>
 
 <!-- Image Slider Banner -->
@@ -285,38 +373,15 @@
     activeSlide: 0,
     slides: [
         { 
-            id: 1, 
-            image: '{{ asset('images/banner.png') }}', 
-            alt: 'Electrical Discount',
-            headline: 'Your Electrical Partner',
-            subtext: 'Powering Your Home & Business with Reliable Energy',
-            cta: 'SHOP NOW',
-            link: '/shop',
-            icon: 'bx-bolt'
-        },
-        { 
             id: 3, 
             image: '{{ asset('images/try5.jpeg') }}',
             alt: 'Premium Electrical Products',
-            headline: 'PREMIUM QUALITY',
-            subtext: 'Trusted by professionals since 1995',
-            cta: 'EXPLORE PRODUCTS',
-            link: '/products',
-            tagline: 'RELIABLE & DURABLE',
+            headline: 'Your Electrical Partner',
+            subtext: 'Explore our wide collection of products!',
+            cta: 'Shop Now',
+            link: '/shop',
         }
     ],
-    prev() {
-        this.activeSlide = this.activeSlide === 0 ? this.slides.length - 1 : this.activeSlide - 1;
-    },
-    next() {
-        this.activeSlide = this.activeSlide === this.slides.length - 1 ? 0 : this.activeSlide + 1;
-    },
-    init() {
-        // Auto-rotate slides every 5 seconds
-        setInterval(() => {
-            this.next();
-        }, 9000);
-    }
 }" class="relative overflow-hidden pb-8"> 
     
     <div class="relative h-[25rem] md:h-[25rem] lg:h-[35rem]">
@@ -340,25 +405,25 @@
                     <div class="discount-badge animate-pulse" x-text="slide.discount"></div>
                 </template>
                 
-                <div class="relative z-10 h-full flex items-center px-8">
+                <div class="relative z-10 h-full flex items-center px-4 sm:px-8">
                     <div class="max-w-4xl mx-auto text-center px-4">
                         <template x-if="slide.highlight">
-                            <div class="bg-amber-500 text-gray-900 text-sm font-bold px-4 py-2 rounded-full inline-block mb-6">
+                            <div class="bg-amber-500 text-gray-900 text-sm font-bold px-4 py-2 rounded-full inline-block mb-4 sm:mb-6">
                                 <span x-text="slide.highlight"></span>
                             </div>
                         </template>
                         
                         <template x-if="slide.tagline">
-                            <div class="text-white text-lg mb-2 font-light" x-text="slide.tagline"></div>
+                            <div class="text-white text-base sm:text-lg mb-2 font-light" x-text="slide.tagline"></div>
                         </template>
                         
                         <i :class="slide.icon + ' electrical-icon animate-float'" x-show="slide.icon"></i>
                         
-                        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 uppercase tracking-wide banner-text-shadow" 
+                        <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 uppercase tracking-wide banner-text-shadow" 
                             x-text="slide.headline"></h2>
-                        <p class="text-xl md:text-2xl mb-8 text-white/90 banner-text-shadow max-w-2xl mx-auto" 
+                        <p class="text-base sm:text-xl md:text-2xl mb-6 sm:mb-8 text-white/90 banner-text-shadow max-w-2xl mx-auto" 
                            x-text="slide.subtext"></p>
-                        <a :href="slide.link" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-lg inline-flex items-center mx-auto">
+                        <a :href="slide.link" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-6 sm:px-8 rounded-full text-base sm:text-lg transition-all transform hover:scale-105 shadow-lg inline-flex items-center mx-auto min-h-[44px]">
                             <span x-text="slide.cta"></span>
                         </a>
                     </div>
@@ -366,19 +431,7 @@
             </div>
         </template>    
     </div>
-    
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
-        <template x-for="(slide, index) in slides" :key="slide.id">
-           <button @click="activeSlide = index" 
-                class="w-8 h-1.5 rounded-full transition-all"
-                :class="{ 'bg-blue-600 w-10': activeSlide === index, 'bg-white/50': activeSlide !== index }">
-                </button>
-        </template>
-    </div>
 </div>
-
-
-
 
 @php
     $categoryImages = [
@@ -391,8 +444,7 @@
 
 <div class="bg-white py-8">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-2xl md:text-3xl  text-gray-800 mb-6 text-center">Explore Our Categories</h2>
-        
+        <h2 class="text-4xl mb-10 text-center text-gray-800" style="font-family: 'Open Sans', sans-serif;">Our Categories</h2>
         <div class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             @foreach ($categories as $category)
                 <a href="{{ route('shop.filters', [

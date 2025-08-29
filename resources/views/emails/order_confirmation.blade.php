@@ -38,7 +38,6 @@
     @endif
 
     <p>We will contact you shortly to confirm your order status.</p>
-
     <p>Thank you for shopping with us!</p>
 </body>
 </html>

@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('content')
+
     @if ($errors->any())
         <div 
             x-data="{ show: true }" 
@@ -48,7 +49,7 @@
                 <p class="text-sm mb-4">- or login using your email address.</p>
                 <form method="POST" action="{{ route('login') }}" class="space-y-4">
                     @csrf
-                    <input type="email" name="email" placeholder="user@mail.com*" required 
+                    <input type="email" name="email" placeholder="User@mail.com*" required 
                         class="w-full px-4 py-2 border rounded" />
 
                     <div class="relative">
@@ -95,7 +96,7 @@
                         class="w-full px-4 py-2 border rounded" />
                     <input type="text" name="last_name" placeholder="Last Name*" 
                         class="w-full px-4 py-2 border rounded" />
-                    <input type="email" name="email" placeholder="user@mail.com*" required 
+                    <input type="email" name="email" placeholder="User@mail.com*" required 
                         class="w-full px-4 py-2 border rounded" />
                     <input type="text" name="phone" placeholder="Enter phone number*" 
                         class="w-full px-4 py-2 border rounded" />
