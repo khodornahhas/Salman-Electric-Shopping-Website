@@ -69,15 +69,11 @@
             padding: 1.5rem;
             overflow-y: visible;
             background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
-                        0 4px 6px -2px rgba(0,0,0,0.05);
             margin-bottom: 1rem;
             display: flex;
             flex-direction: column;
-            }
+        }
 
-        
         #filter-form {
             display: flex;
             flex-direction: column;
@@ -106,12 +102,9 @@
     @media (min-width: 768px) {
         #filter-sidebar {
             max-height: none !important;
-            height: 1100px;              
+            height: auto;              
             overflow-y: auto;          
             padding: 1.5rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
             background: white;
             transition: none; 
         }
@@ -127,7 +120,7 @@
         #filter-sidebar.show {
             max-height: none; 
             overflow: visible; 
-            }
+        }
 
         #filter-form {
             display: flex;
@@ -146,7 +139,6 @@
         border-radius: 0.375rem;
         font-weight: bold;
         cursor: pointer;
-        border: 1px solid #d1d5db;
     }
 
     #filter-toggle-btn .hamburger {
@@ -184,9 +176,6 @@
         #filter-sidebar {
             max-height: none !important;
             padding: 1.5rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
             background: white;
             overflow: visible;
         }
@@ -217,7 +206,6 @@
         #filter-sidebar .bg-white {
             padding: 0;
             background: transparent;
-            box-shadow: none;
             border: none;
         }
         
@@ -375,6 +363,7 @@
     }
 
 </style>
+
 
 <div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
     <div class="max-w-7xl mx-auto">
@@ -610,6 +599,7 @@
 </div>
 
     <div class="grid product-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    @if($products->count() > 0)
         @foreach($products as $product)
         <div class="relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex flex-col group w-full">
 
@@ -644,7 +634,6 @@
 
                 <div class="mt-auto text-center">
                     @if($product->coming_soon)
-
                         @if($product->sale_price && $product->sale_price < $product->price)
                             <p class="text-gray-500 text-sm line-through">
                                 ${{ number_format($product->price, 2) }}
@@ -658,59 +647,51 @@
                             </p>
                         @endif
 
-                        @elseif($product->contact_for_price)
-                            <p class="text-red-600 text-lg font-bold ">Contact for Price</p>
-                            <p class="text-sm text-gray-500 ">Please reach out for pricing</p>
+                    @elseif($product->contact_for_price)
+                        <p class="text-red-600 text-lg font-bold ">Contact for Price</p>
+                        <p class="text-sm text-gray-500 ">Please reach out for pricing</p>
 
-                        @elseif($product->quantity == 0 || $product->out_of_stock)
-                            <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
+                    @elseif($product->quantity == 0 || $product->out_of_stock)
+                        <p class="text-red-600 text-lg font-bold italic mb-2">Out of Stock</p>
 
-                        @elseif($product->sale_price && $product->sale_price < $product->price)
-                            <p class="text-gray-500 text-sm line-through">
-                                ${{ number_format($product->price, 2) }}
-                            </p>
-                            <p class="text-red-600 text-lg font-bold">
-                                ${{ number_format($product->sale_price, 2) }}
-                            </p>
+                    @elseif($product->sale_price && $product->sale_price < $product->price)
+                        <p class="text-gray-500 text-sm line-through">
+                            ${{ number_format($product->price, 2) }}
+                        </p>
+                        <p class="text-red-600 text-lg font-bold">
+                            ${{ number_format($product->sale_price, 2) }}
+                        </p>
 
-                        @else
-                            <p class="text-red-600 text-lg font-bold">
-                                ${{ number_format($product->price, 2) }}
-                            </p>
-                        @endif
-   
-                            <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
-                            @csrf
-                            <input type="hidden" name="quantity" value="1">
-                            @php
-                                $disableAddToCart = $product->out_of_stock || $product->coming_soon || $product->contact_for_price;
-                            @endphp
-                            <button type="submit"
-                                class="mt-2 w-44 sm:w-44 w-auto mx-auto bg-gray-100 font-medium py-2 rounded transition add-to-cart
-                                    {{ $disableAddToCart ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-200' }}"
-                                {{ $disableAddToCart ? 'disabled' : '' }}
-                                data-product-id="{{ $product->id }}" data-quantity="1"
-                                style="font-size:18px; color:grey;">
-                                Add to Cart
-                            </button>
-                        </form>
-                        </div>
-                    </div>
+                    @else
+                        <p class="text-red-600 text-lg font-bold">
+                            ${{ number_format($product->price, 2) }}
+                        </p>
+                    @endif
+
+                    <form method="POST" action="{{ route('cart.add', $product->id) }}" class="cart-form">
+                        @csrf
+                        <input type="hidden" name="quantity" value="1">
+                        @php
+                            $disableAddToCart = $product->out_of_stock || $product->coming_soon || $product->contact_for_price;
+                        @endphp
+                        <button type="submit"
+                            class="mt-2 w-44 sm:w-44 w-auto mx-auto bg-gray-100 font-medium py-2 rounded transition add-to-cart
+                                {{ $disableAddToCart ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-200' }}"
+                            {{ $disableAddToCart ? 'disabled' : '' }}
+                            data-product-id="{{ $product->id }}" data-quantity="1"
+                            style="font-size:18px; color:grey;">
+                            Add to Cart
+                        </button>
+                    </form>
                 </div>
-            @endforeach
-        </div>
-        <div id="loading-spinner" class="w-full flex justify-center mt-6 hidden">
-            <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
-        </div>
-           @if ($products->hasMorePages())
-            <div class="w-full flex justify-center mt-6 md:hidden">
-                <button id="load-more" 
-                    data-next-page="{{ $products->currentPage() + 1 }}" 
-                    class="bg-blue-600 text-white font-semibold px-6 py-2 rounded hover:bg-blue-700 transition">
-                    Show more
-                </button>
             </div>
-        @endif
+        </div>
+        @endforeach
+    @else
+        <div class="col-span-full text-center py-20">
+            <p class="text-2xl font-semibold text-gray-500">No Products Found</p>
+        </div>
+    @endif
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
