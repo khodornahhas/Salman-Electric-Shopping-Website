@@ -223,14 +223,16 @@
 
                 <div class="flex flex-col sm:flex-row gap-3">
                     @if($product->coming_soon)
-                        <button type="button" class="w-full sm:w-auto px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition text-[18px]">
-                            Ask via WhatsApp
-                        </button>
+                        <a href="https://wa.me/96176765561" target="_blank" rel="noopener noreferrer">
+                            <button type="button" class="w-full sm:w-auto px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition text-[18px]">
+                                Contact via WhatsApp
+                            </button>
+                        </a>
                     @elseif($product->contact_for_price)
                         <button disabled
                             class="w-full sm:w-auto px-6 py-3 bg-gray-300 text-gray-500 rounded cursor-not-allowed text-[18px]"
                             title="Contact for Price products cannot be added to cart">
-                            Contact for Price
+                            Add to cart
                         </button>
                     @elseif($product->quantity == 0 || $product->out_of_stock)
                         <button disabled
@@ -247,13 +249,15 @@
                     @endif
 
                         @if(!$product->coming_soon && !($product->quantity == 0 || $product->out_of_stock))
-                        <button type="button" class="w-full sm:w-auto px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition text-[18px]">
-                            @if($product->contact_for_price)
-                                Contact via WhatsApp
-                            @else
-                                Buy via WhatsApp
-                            @endif
-                        </button>
+                        <a href="https://wa.me/96176765561" target="_blank" rel="noopener noreferrer">
+                            <button type="button" class="w-full sm:w-auto px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition text-[18px]">
+                                @if($product->contact_for_price)
+                                    Contact via WhatsApp
+                                @else
+                                    Buy via WhatsApp
+                                @endif
+                            </button>
+                        </a>
                     @endif
                 </div>
             </form>

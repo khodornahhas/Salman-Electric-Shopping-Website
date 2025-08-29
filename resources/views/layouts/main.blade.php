@@ -429,6 +429,9 @@
       font-size: 9px;
     }
   }
+  html {
+    scroll-behavior: smooth;
+  }
 </style>
 
 <body>
@@ -442,7 +445,7 @@
             </div>
             <div class="flex items-center space-x-6">
               <a href="#" title="Facebook" class="text-gray-600 hover:text-blue-500 transition-colors text-lg"><i class='bx bxl-facebook'></i></a>
-              <a href="#" title="Instagram" class="text-gray-600 hover:text-pink-500 transition-colors text-lg"><i class='bx bxl-instagram'></i></a>
+              <a href="https://www.instagram.com/salman_electriclb/" title="Instagram" class="text-gray-600 hover:text-pink-500 transition-colors text-lg"><i class='bx bxl-instagram'></i></a>
             </div>
           </div>
         </div>
@@ -739,39 +742,37 @@
       </main>
 
       <div class="fixed bottom-6 right-6 z-50">
-        <a href="https://wa.me/yourphonenumber" target="_blank">
+        <a href="https://wa.me/96176765561" target="_blank" rel="noopener noreferrer">
             <img src="{{ asset('images/whatsapp.png') }}" alt="WhatsApp" class="w-10 h-10">
         </a>
-      </div>
+    </div>
 </body>
 
-<footer class="bg-gray-50 text-gray-800">
+<footer class="bg-gray-50 text-gray-800 scroll-smooth">
   <div class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-5 gap-8 max-w-screen-xl text-center md:text-left">
 
     <div class="flex flex-col items-center md:items-start">
-      <a href="/" class="flex items-center mb-4">
+      <a href="{{ route('home') }}" target="_blank" rel="noopener noreferrer" class="flex items-center mb-4">
         <img src="{{ asset('images/SalmanLogo2.png') }}" alt="Salman Electric Logo" class="h-12 object-contain">
       </a>
-        <p class="text-base text-gray-800 ">For inquiries, contact us anytime.</p>
+      <p class="text-base text-gray-800">For inquiries, contact us anytime.</p>
     </div>
     
     <div class="flex flex-col items-center md:items-start md:ml-[25px]">
       <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Keep In Touch</h3>
       <ul class="space-y-2 text-base">
-        <li><a href="#" class="hover:text-blue-600 transition-colors">About Us</a></li>
-        <li><a href="#" class="hover:text-blue-600 transition-colors">Contact Us</a></li>
+        <li><a href="{{ route('about') }}" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 transition-colors">About Us</a></li>
+        <li><a href="{{ route('contact') }}" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 transition-colors">Contact Us</a></li>
       </ul>
     </div>
 
     <div class="flex flex-col items-center md:items-start">
       <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Useful Links</h3>
       <ul class="space-y-2 text-base">
-        <li><a href="#" class="hover:text-blue-600 transition-colors">Privacy Policy</a></li>
-        <li><a href="#" class="hover:text-blue-600 transition-colors">Return & Exchange Policy</a></li>
+        <li><a href="{{ route('privacy') }}" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 transition-colors">Privacy Policy</a></li>
       </ul>
     </div>
 
-    
     <div class="flex flex-col items-center md:items-start">
       <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Contact Us</h3>
       <ul class="space-y-2 text-base">
@@ -783,30 +784,29 @@
     <div class="flex flex-col items-center md:items-start">
       <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Follow Us</h3>
       <div class="flex space-x-4">
-        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="text-gray-600 hover:text-blue-600 text-xl transition">
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="text-gray-600 hover:text-blue-600 text-xl transition">
           <i class='bx bxl-facebook'></i>
         </a>
-        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="text-gray-600 hover:text-pink-500 text-xl transition">
+        <a href="https://www.instagram.com/salman_electriclb/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-gray-600 hover:text-pink-500 text-xl transition">
           <i class='bx bxl-instagram'></i>
         </a>
-        <a href="https://maps.google.com/?q=Your+Business+Address" target="_blank" aria-label="Google Maps" class="text-gray-600 hover:text-red-600 text-xl transition">
+        <a href="https://maps.app.goo.gl/tUCkCJURPeWXHrcN8" target="_blank" rel="noopener noreferrer" aria-label="Google Maps" class="text-gray-600 hover:text-red-600 text-xl transition">
           <i class='bx bx-map'></i>
         </a>
       </div>
     </div>
+
   </div>
 
   <div class="border-t border-gray-300 py-6 text-center text-sm text-gray-600 relative">
     <p>© {{ date('Y') }} Salman Electric. All rights reserved.</p>
-    <a href="#" class="absolute right-1/2 top-[-20px] transform translate-x-1/2 bg-gray-200 p-2 rounded hover:bg-gray-300 transition">
+    <a href="#top" class="absolute right-1/2 top-[-20px] transform translate-x-1/2 bg-gray-200 p-2 rounded hover:bg-gray-300 transition">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
       </svg>
     </a>
   </div>
 </footer>
-
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/wishlist.js') }}"></script>
