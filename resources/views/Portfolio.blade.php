@@ -9,8 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 @endsection
 @section('content')
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +18,9 @@
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         .gradient-bg {
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
         }
@@ -94,7 +95,7 @@
         </div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-4 md:px-16 py-16 space-y-24">
+    <section id="projects" class="max-w-7xl mx-auto px-4 md:px-16 py-16 space-y-24">
         <div class="text-center py-0">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Projects
             </h2>
@@ -103,60 +104,60 @@
             </p>
         </div>
 
-    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16" data-aos="fade-up">
-        <div class="w-full md:w-1/2">
-            <img src="images/project.png" alt="Commercial Lighting Project"
-                 class="rounded-xl shadow-2xl w-full h-auto object-cover transition-all duration-500 hover:shadow-lg">
+        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16" data-aos="fade-up">
+            <div class="w-full md:w-1/2">
+                <img src="images/project.png" alt="Commercial Lighting Project"
+                    class="rounded-xl shadow-2xl w-full h-auto object-cover transition-all duration-500 hover:shadow-lg">
+            </div>
+            <div class="w-full md:w-1/2 text-center md:text-left">
+                <h3 class="font-bold mb-4 text-blue-600 text-2xl">Fully Powered Watering System</h3>
+                <p class="text-gray-600 mb-4 text-lg leading-relaxed">
+                    Automated energy-powered watering setup solution powered by solar energy.
+                </p>
+                <span class="text-sm font-medium text-gray-500">Completed: 2025</span>
+            </div>
         </div>
-        <div class="w-full md:w-1/2 text-center md:text-left">
-            <h3 class="font-bold mb-4 text-blue-600 text-2xl">Fully Powered Watering System</h3>
-            <p class="text-gray-600 mb-4 text-lg leading-relaxed">
-                Automated energy-powered watering setup solution powered by solar energy.
-            </p>
-            <span class="text-sm font-medium text-gray-500">Completed: 2025</span>
-        </div>
-    </div>
 
-    <div class="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-16" data-aos="fade-up" data-aos-delay="200">
-        <div class="w-full md:w-1/2 text-center md:text-left">
-            <h3 class="font-bold mb-4 text-blue-600 text-2xl">Household Solar System Baalbek</h3>
-            <p class="text-gray-600 mb-4 text-lg leading-relaxed">
-                Complete residential solar panel installation providing 24/7 energy in Baalbek.
-            </p>
-            <span class="text-sm font-medium text-gray-500">Completed: 2024</span>
+        <div class="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-16" data-aos="fade-up" data-aos-delay="200">
+            <div class="w-full md:w-1/2 text-center md:text-left">
+                <h3 class="font-bold mb-4 text-blue-600 text-2xl">Household Solar System Baalbek</h3>
+                <p class="text-gray-600 mb-4 text-lg leading-relaxed">
+                    Complete residential solar panel installation providing 24/7 energy in Baalbek.
+                </p>
+                <span class="text-sm font-medium text-gray-500">Completed: 2024</span>
+            </div>
+            <div class="w-full md:w-1/2">
+                <img src="images/project2.png" alt="Smart Home Installation"
+                    class="rounded-xl shadow-2xl w-full h-auto object-cover transition-all duration-500 hover:shadow-lg">
+            </div>
         </div>
-        <div class="w-full md:w-1/2">
-            <img src="images/project2.png" alt="Smart Home Installation"
-                 class="rounded-xl shadow-2xl w-full h-auto object-cover transition-all duration-500 hover:shadow-lg">
-        </div>
-    </div>
 
-    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16" data-aos="fade-up" data-aos-delay="300">
-        <div class="w-full md:w-1/2">
-            <img src="images/project4.jpg" alt="Industrial Electrical Work"
-                 class="rounded-xl shadow-2xl w-full h-auto object-cover transition-all duration-500 hover:shadow-lg">
+        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16" data-aos="fade-up" data-aos-delay="300">
+            <div class="w-full md:w-1/2">
+                <img src="images/project4.jpg" alt="Industrial Electrical Work"
+                    class="rounded-xl shadow-2xl w-full h-auto object-cover transition-all duration-500 hover:shadow-lg">
+            </div>
+            <div class="w-full md:w-1/2 text-center md:text-left">
+                <h3 class="font-bold mb-4 text-blue-600 text-2xl">Household Solar System Beirut</h3>
+                <p class="text-gray-600 mb-4 text-lg leading-relaxed">
+                    Complete home solar setup ensuring 24/7 electricity in Beirut.
+                </p>
+                <span class="text-sm font-medium text-gray-500">Completed: 2024</span>
+            </div>
         </div>
-        <div class="w-full md:w-1/2 text-center md:text-left">
-            <h3 class="font-bold mb-4 text-blue-600 text-2xl">Household Solar System Beirut</h3>
-            <p class="text-gray-600 mb-4 text-lg leading-relaxed">
-                Complete home solar setup ensuring 24/7 electricity in Beirut.
-            </p>
-            <span class="text-sm font-medium text-gray-500">Completed: 2024</span>
-        </div>
-    </div>
 
-    <div class="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-16" data-aos="fade-up" data-aos-delay="400">
-        <div class="w-full md:w-1/2 text-center md:text-left">
-            <h3 class="font-bold mb-4 text-blue-600 text-2xl">Industrial Solar Systems</h3>
-            <p class="text-gray-600 mb-4 text-lg leading-relaxed">
-                Large scale solar panels installation.
-            </p>
-            <span class="text-sm font-medium text-gray-500">Completed: 2023</span>
+        <div class="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-16" data-aos="fade-up" data-aos-delay="400">
+            <div class="w-full md:w-1/2 text-center md:text-left">
+                <h3 class="font-bold mb-4 text-blue-600 text-2xl">Industrial Solar Systems</h3>
+                <p class="text-gray-600 mb-4 text-lg leading-relaxed">
+                    Large scale solar panels installation.
+                </p>
+                <span class="text-sm font-medium text-gray-500">Completed: 2023</span>
+            </div>
+            <div class="w-full md:w-1/2">
+                <img src="images/project3.png" alt="Commercial Solar Installation"class="rounded-xl shadow-2xl w-full h-auto object-cover transition-all duration-500 hover:shadow-lg">
+            </div>
         </div>
-        <div class="w-full md:w-1/2">
-            <img src="images/project3.png" alt="Commercial Solar Installation"class="rounded-xl shadow-2xl w-full h-auto object-cover transition-all duration-500 hover:shadow-lg">
-        </div>
-    </div>
 </section>
 
 

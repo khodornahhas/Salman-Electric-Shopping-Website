@@ -74,7 +74,7 @@
                 </svg>
                 <div>
                     <h3 class="text-lg font-bold text-gray-900">Email Us</h3>
-                    <p><a href="mailto:sales@yourdomain.com" class="text-gray-600 hover:text-blue-600">sales@yourdomain.com</a></p>
+                    <p><a href="mailto:selectronlb@gmail.com" class="text-gray-600 hover:text-blue-600">selectronlb@gmail.com</a></p>
                 </div>
             </div>
 
@@ -116,29 +116,6 @@
                     Send Message
                 </button>
             </form>
-        </div>
-    </div>
-
-    <div class="mt-16 text-center">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">Follow Us</h3>
-        <div class="flex justify-center space-x-6">
-            <a href="#" class="text-gray-500 hover:text-blue-600" aria-label="Facebook">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M22 12a10 10 0 10-11.5 9.95v-7.04H8v-2.91h2.5V9.41c0-2.48 1.48-3.85 3.76-3.85 1.09 0 2.23.2 2.23.2v2.45h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87H17l-.4 2.91h-2.1v7.04A10 10 0 0022 12z"/>
-                </svg>
-            </a>
-
-            <a href="#" class="text-gray-500 hover:text-blue-400" aria-label="Twitter">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 19c7.5 0 11.6-6.2 11.6-11.6v-.5A8.2 8.2 0 0022 4.6a8.1 8.1 0 01-2.3.6 4.1 4.1 0 001.8-2.2 8.2 8.2 0 01-2.6 1 4.1 4.1 0 00-7 3.8A11.6 11.6 0 013 4.1a4.1 4.1 0 001.3 5.5 4.1 4.1 0 01-1.8-.5v.1a4.1 4.1 0 003.3 4 4.1 4.1 0 01-1.8.1 4.1 4.1 0 003.8 2.8 8.3 8.3 0 01-6.1 1.7A11.7 11.7 0 008 19"/>
-                </svg>
-            </a>
-
-            <a href="#" class="text-gray-500 hover:text-pink-600" aria-label="Instagram">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M7 2C4.8 2 3 3.8 3 6v12c0 2.2 1.8 4 4 4h10c2.2 0 4-1.8 4-4V6c0-2.2-1.8-4-4-4H7zm10 2c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.5-.5a1 1 0 100 2 1 1 0 000-2z"/>
-                </svg>
-            </a>
         </div>
     </div>
 </div>

@@ -74,32 +74,32 @@
         
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             <div class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 mx-auto">
-                    <img src="{{ asset('images/service.png') }}" alt="Friendly Service" class="w-8 h-8">
+                <div class="flex items-center justify-center mb-4 mx-auto">
+                    <img src="{{ asset('images/service.png') }}" alt="Friendly Service" class="w-16 h-16">
                 </div>
                 <h3 class="text-lg font-semibold text-gray-800 text-center mb-2">Friendly Service</h3>
                 <p class="text-sm sm:text-base text-gray-500 text-center">Our team is always ready to help.</p>
             </div>
             
             <div class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 mx-auto">
-                    <img src="{{ asset('images/quality.png') }}" alt="High Quality" class="w-8 h-8">
+                <div class="flex items-center justify-center mb-4 mx-auto">
+                    <img src="{{ asset('images/quality.png') }}" alt="High Quality" class="w-16 h-16">
                 </div>
                 <h3 class="text-lg font-semibold text-gray-800 text-center mb-2">Top Quality</h3>
                 <p class="text-sm sm:text-base text-gray-500 text-center">We only sell trusted products.</p>
             </div>
             
             <div class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 mx-auto">
-                    <img src="{{ asset('images/affordable.png') }}" alt="Affordable Prices" class="w-8 h-8">
+                <div class="flex items-center justify-center mb-4 mx-auto">
+                    <img src="{{ asset('images/affordable.png') }}" alt="Affordable Prices" class="w-16 h-16">
                 </div>
                 <h3 class="text-lg font-semibold text-gray-800 text-center mb-2">Affordable Prices</h3>
                 <p class="text-sm sm:text-base text-gray-500 text-center">Great value without compromise.</p>
             </div>
             
             <div class="feature-card bg-white p-6 rounded-xl shadow-md border border-gray-100 transition-all duration-300" data-aos="fade-up" data-aos-delay="400">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 mx-auto">
-                    <img src="{{ asset('images/experience.png') }}" alt="Years of Experience" class="w-8 h-8">
+                <div class="flex items-center justify-center mb-4 mx-auto">
+                    <img src="{{ asset('images/experience.png') }}" alt="Years of Experience" class="w-16 h-16">
                 </div>
                 <h3 class="text-lg font-semibold text-gray-800 text-center mb-2">Experienced Team</h3>
                 <p class="text-sm sm:text-base text-gray-500 text-center">Professional knowledge in electrical systems.</p>
