@@ -212,11 +212,11 @@
         }
     }
 </style>
-<div class="bg-blue-600 text-white font-bold py-4 px-4 md:pl-32 text-left mb-6 text-[20px]" style="margin-top: 40px; margin-bottom:50px; font-family: 'Open Sans', sans-serif;">
-    <div class="flex items-center space-x-4">
-        <a href="{{ url('/home') }}" class="hover:underline opacity-40">Home</a>
-        <span class="opacity-40">&gt;</span>
-        <span class="opacity-100">Cart</span>
+<div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
+    <div class="max-w-7xl mx-auto">
+        <a href="{{ url('/home') }}" class="hover:underline opacity-70 transition-opacity duration-300">Home</a>
+        <span class="opacity-50 mx-2"> &gt; </span>
+        <span class="opacity-90">Cart</span>
     </div>
 </div>
 

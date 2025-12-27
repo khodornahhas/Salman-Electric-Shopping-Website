@@ -24,7 +24,7 @@
   }
 </style>
 <div class="flex justify-center items-center min-h-screen bg-gray-50 p-4">
-  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg transform transition duration-500 ease-in-out hover:scale-[1.02]">
+  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg transform transition duration-500 ease-in-out ">
     <h2 class="text-3xl font-extrabold text-gray-900 mb-6 border-b-2 border-blue-600 pb-2">
       Confirm Your Order
     </h2>
@@ -69,7 +69,7 @@
         <input type="hidden" name="{{ $key }}" value="{{ $value }}">
       @endforeach
 
-      <button type="submit" id="submitButton" class="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300 min-w-[120px]">
+      <button type="submit" id="submitButton"class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 sm:px-6 sm:py-3 rounded-lg shadow-md transition duration-300 whitespace-nowrap text-sm sm:text-base">
         <span id="buttonText" class="flex items-center space-x-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />

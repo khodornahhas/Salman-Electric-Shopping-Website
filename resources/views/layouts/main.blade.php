@@ -4,6 +4,21 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="@yield('meta_description', 'Your one-stop shop for solar systems, lamps, lighting, inverters, batteries, and 3D printing equipment.')">
+    <meta name="keywords" content="@yield('meta_keywords', 'solar, lighting, inverters, batteries, 3D printing, Salman Electric')">
+
+    <meta property="og:title" content="@yield('title', 'Salman Electric')">
+    <meta property="og:description" content="@yield('meta_description', 'Your one-stop shop for solar systems, lamps, lighting, inverters, batteries, and 3D printing equipment.')">
+    <meta property="og:image" content="@yield('meta_image', asset('images/salman.png'))">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', 'Salman Electric')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Your one-stop shop for solar systems, lamps, lighting, inverters, batteries, and 3D printing equipment.')">
+    <meta name="twitter:image" content="@yield('meta_image', asset('images/salman.png'))">
+
     <link rel="icon" type="image/png" href="{{ asset('images/salman.png') }}?v={{ time() }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -14,9 +29,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script defer src="{{ asset('js/wishlist.js') }}"></script>
-
     @yield('head') 
 </head>
+
 
 <style>
   body {
@@ -435,8 +450,8 @@
 </style>
 
 <body>
+  
   <header class="sticky top-0 z-50 bg-white  tracking-wide font-[Urbanist]">
-
      <div class="hidden md:block py-2 text-sm ">
         <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div class="flex items-center justify-between">
@@ -464,42 +479,69 @@
               alt="logo" 
               class="block sm:hidden">
         </a>
-  
+
         <div id="collapseMenu" class="hidden lg:block">
           <ul class="flex gap-x-4 lg:gap-x-6 xl:gap-x-8">
+
             <li>
-              <a href="{{ route('home') }}" 
-                class="block text-[16px] lg:text-[18px] font-bold {{ request()->routeIs('home') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+              <a href="{{ route('home') }}"
+                class="block text-[16px] lg:text-[18px] font-semibold
+                        transition-colors duration-300 ease-in-out
+                        {{ request()->routeIs('home')
+                            ? 'text-blue-700'
+                            : 'text-black hover:text-blue-700' }}">
                 Home
               </a>
             </li>
+
             <li>
-              <a href="{{ route('shop') }}" 
-                class="block text-[16px] lg:text-[18px] font-bold {{ request()->routeIs('shop') || request()->routeIs('shop.*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+              <a href="{{ route('shop') }}"
+                class="block text-[16px] lg:text-[18px] font-semibold
+                        transition-colors duration-300 ease-in-out
+                        {{ request()->routeIs('shop') || request()->routeIs('shop.*')
+                            ? 'text-blue-700'
+                            : 'text-black hover:text-blue-700' }}">
                 Shop
               </a>
             </li>
+
             <li>
-              <a href="{{ route('about') }}" 
-                class="block text-[16px] lg:text-[18px] font-bold {{ request()->routeIs('about') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+              <a href="{{ route('about') }}"
+                class="block text-[16px] lg:text-[18px] font-semibold
+                        transition-colors duration-300 ease-in-out
+                        {{ request()->routeIs('about')
+                            ? 'text-blue-700'
+                            : 'text-black hover:text-blue-700' }}">
                 About
               </a>
             </li>
+
             <li>
-              <a href="{{ route('contact') }}" 
-                class="block text-[16px] lg:text-[18px] font-bold {{ request()->routeIs('contact') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+              <a href="{{ route('contact') }}"
+                class="block text-[16px] lg:text-[18px] font-semibold
+                        transition-colors duration-300 ease-in-out
+                        {{ request()->routeIs('contact')
+                            ? 'text-blue-700'
+                            : 'text-black hover:text-blue-700' }}">
                 Contact
               </a>
             </li>
+
             <li>
-              <a href="{{ route('portfolio') }}" 
-                class="block text-[16px] lg:text-[18px] font-bold {{ request()->routeIs('portfolio') || request()->routeIs('portfolio.*') ? 'text-blue-700' : 'text-black hover:text-blue-700' }}">
+              <a href="{{ route('portfolio') }}"
+                class="block text-[16px] lg:text-[18px] font-semibold
+                        transition-colors duration-300 ease-in-out
+                        {{ request()->routeIs('portfolio') || request()->routeIs('portfolio.*')
+                            ? 'text-blue-700'
+                            : 'text-black hover:text-blue-700' }}">
                 Portfolio
               </a>
             </li>
+
           </ul>
         </div>
       </div>
+
 
       <div class="flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
 
@@ -530,14 +572,14 @@
           <div class="mobile-icons flex items-center gap-1 sm:gap-2 lg:gap-3 xl:gap-4">
               <a href="{{ route('wishlist.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
                   <i class='bx bx-heart text-lg sm:text-xl lg:text-2xl'></i>
-                  <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
+                  <span id="heart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[11px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
                       {{ auth()->check() ? auth()->user()->wishlists()->count() : 0 }}
                   </span>
               </a>
 
               <a href="{{ route('cart.index') }}" class="relative p-1 sm:p-1.5 lg:p-2 text-gray-700 hover:text-blue-500 transition-colors duration-200">
                   <i class='bx bx-cart text-lg sm:text-xl lg:text-2xl'></i>
-                  <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center">
+                  <span id="cart-count"class="absolute -top-1 -right-1 bg-blue-600 text-white text-[11px] xs:text-xs rounded-full h-4 w-4 xs:h-5 xs:w-5 flex items-center justify-center translate-y-[0px]">
                       {{ App\Http\Controllers\CartController::getCartCount() }}
                   </span>
               </a>
@@ -759,7 +801,7 @@
     </div>
     
     <div class="flex flex-col items-center md:items-start md:ml-[25px]">
-      <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Keep In Touch</h3>
+      <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Stay In Touch</h3>
       <ul class="space-y-2 text-base">
         <li><a href="{{ route('about') }}" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 transition-colors">About Us</a></li>
         <li><a href="{{ route('contact') }}" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 transition-colors">Contact Us</a></li>
@@ -767,7 +809,7 @@
     </div>
 
     <div class="flex flex-col items-center md:items-start">
-      <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Useful Links</h3>
+      <h3 class="font-bold text-lg uppercase mb-4 text-gray-900">Other Links</h3>
       <ul class="space-y-2 text-base">
         <li><a href="{{ route('privacy') }}" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 transition-colors">Privacy Policy</a></li>
       </ul>
@@ -778,6 +820,7 @@
       <ul class="space-y-2 text-base">
         <li><a href="tel:+96176765561" class="hover:text-blue-600 transition-colors">+961 76 765 561</a></li>
         <li><a href="tel:+96181966742" class="hover:text-blue-600 transition-colors">+961 03 813 154</a></li>
+        <li><a href="tel:+96181966742" class="hover:text-blue-600 transition-colors">selectronlb@gmail.com</a></li>
       </ul>
     </div>
 
@@ -1140,7 +1183,7 @@
                       const imageUrl = p.image ? "{{ asset('storage/') }}/" + p.image : '/placeholder-image.jpg';
                       
                       html += `
-                      <a href="/product-items/${p.id}" class="flex items-center px-4 py-3 hover:bg-gray-50 border-b" onclick="closeMobileMenu()">
+                      <a href="/product-details/${p.id}" class="flex items-center px-4 py-3 hover:bg-gray-50 border-b" onclick="closeMobileMenu()">
                           <div class="flex-shrink-0 w-12 h-12 bg-gray-200 rounded-md overflow-hidden mr-3">
                               <img src="${imageUrl}" alt="${p.name}" class="w-full h-full object-cover">
                           </div>

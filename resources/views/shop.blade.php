@@ -1,13 +1,32 @@
 @extends('layouts.main')
 @section('head')
-    <title>Salman Electric - Shop</title>
+    <title>Salman Electric - Shop Solar, Batteries, Lighting & More</title>
+    <meta name="description" content="Browse Salman Electric’s shop in Lebanon. Solar systems, batteries, LED lighting, 3D printing equipment, and more. Quality products at great prices.">
+    <meta name="keywords" content="solar, batteries, inverters, LED lighting, 3D printing, chargers, cables, UPS, Salman Electric">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Salman Electric - Shop">
+    <meta property="og:description" content="Explore our wide range of solar systems, batteries, LED lighting, and 3D printing equipment in Lebanon.">
+    <meta property="og:image" content="{{ asset('images/salman.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Salman Electric - Shop">
+    <meta name="twitter:description" content="Browse our solar systems, batteries, lighting, and 3D printing equipment in Lebanon.">
+    <meta name="twitter:image" content="{{ asset('images/salman.png') }}">
+
+    <link rel="canonical" href="{{ url()->current() }}">
+
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 @endsection
+
 @section('content')
 <head>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -579,13 +598,12 @@
                         @endforeach
                     </div>
             </div>
-    
-            @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                <div class="mt-1 hidden md:block">
+        </div>    
+          @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                <div class="mt-4">
                     {{ $products->onEachSide(1)->links('pagination::tailwind') }}
                 </div>
             @endif
-        </div>    
 
         <div>
             <select name="sort" id="sort-select" class="p-2 border rounded text-sm">

@@ -1,15 +1,40 @@
 @extends('layouts.main')
 @section('head')
-    <title>Salman Electric - Home</title>
+    <title>Salman Electric - Solar Systems, Batteries, LED Lighting & 3D Printing in Lebanon</title>
+    <meta name="description" content="Salman Electric in Lebanon – Solar systems, batteries, inverters, LED lighting, and 3D printing equipment. Quality products & service.">
+    <meta property="og:title" content="Salman Electric - Home">
+    <meta property="og:description" content="Your one-stop shop for solar systems, inverters, batteries, lighting, and 3D printing equipment in Lebanon.">
+    <meta property="og:image" content="{{ asset('images/salman.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Salman Electric - Home">
+    <meta name="twitter:description" content="Your one-stop shop for solar systems, inverters, batteries, lighting, and 3D printing equipment in Lebanon.">
+    <meta name="twitter:image" content="{{ asset('images/salman.png') }}">
+
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta name="robots" content="index, follow">
+
 @endsection
+
 @section('content')
 <style>
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none;  
+        scrollbar-width: none;     
+    }
     .swiper {
         width: 100%;
         padding: 20px 0;
@@ -384,7 +409,7 @@
     ],
 }" class="relative overflow-hidden pb-8"> 
     
-    <div class="relative h-[25rem] md:h-[25rem] lg:h-[35rem]">
+    <div class="relative h-[25rem] md:h-[25rem] lg:h-[45rem] xl:h-[39rem]">
         <template x-for="(slide, index) in slides" :key="slide.id">
             <div 
                 x-show="activeSlide === index"
@@ -428,6 +453,7 @@
                         </a>
                     </div>
                 </div>
+                
             </div>
         </template>    
     </div>
@@ -552,7 +578,7 @@
                 this.isHovered = false;
                 this.interval = setInterval(() => {
                     this.next();
-                }, 5000);
+                }, 8000);
             },
             
             init() {
@@ -561,7 +587,7 @@
                 
                 this.interval = setInterval(() => {
                     this.next();
-                }, 5000);
+                }, 8000);
                 
                 this.$el.addEventListener('alpine:destroy', () => {
                     clearInterval(this.interval);
@@ -571,13 +597,13 @@
         }" 
         x-init="init()"
         class="relative">
-            <div class="relative overflow-hidden pb-2"
-                 @mouseenter="pauseAutoplay()"
-                 @mouseleave="resumeAutoplay()">
-                <div class="flex transition-transform duration-500 ease-in-out"
-                     :style="`transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
+            <div class="relative pb-2 overflow-x-auto sm:overflow-hidden snap-x snap-mandatory scrollbar-hide"
+            @mouseenter="pauseAutoplay()"
+            @mouseleave="resumeAutoplay()">
+
+                <div class="flex transition-transform duration-500 ease-in-out sm:transition-transform" :style="window.innerWidth < 640 ? 'transform: none' : `transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
                    <template x-for="(product, index) in slidesWithClones" :key="index">
-                    <div class="flex-shrink-0 px-3 transition-all duration-300"
+                    <div class="flex-shrink-0 px-3 transition-all duration-300 snap-start" 
                         :class="{
                             'w-full': visibleSlides === 1,
                             'w-1/2': visibleSlides === 2,
@@ -654,7 +680,7 @@
         </div>
 
         <div class="text-center mt-8">
-            <a href="#" 
+            <a href="{{ route('shop') }}" 
             class="inline-block bg-[#007BFF] hover:bg-[#0056b3] text-white font-medium py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-md">
                 Show More
             </a>
@@ -662,134 +688,127 @@
     </div>
 </section>
 
+
 <!-- On Sale Products Section -->
 <section class="bg-white py-12">
     <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl  mt-6 mb-10"style="font-family: 'Open Sans', sans-serif;">On Sale</h2>
+        <h2 class="text-4xl mt-6 mb-10" style="font-family: 'Open Sans', sans-serif;">
+            On Sale
+        </h2>
 
         <div x-data="{
             activeSlide: 0,
-            slides: {{ $saleProducts->toJson() }}, 
+            slides: {{ $saleProducts->toJson() }},
             visibleSlides: 4,
             sliding: false,
             interval: null,
-            isHovered: false, 
-            
+            isHovered: false,
+
             get slidesWithClones() {
                 if (this.slides.length <= this.visibleSlides) return this.slides;
-                return [
-                    ...this.slides,
-                    ...this.slides.slice(0, this.visibleSlides)
-                ];
+                return [...this.slides, ...this.slides.slice(0, this.visibleSlides)];
             },
-            
+
             prev() {
                 if (this.sliding || this.slides.length <= this.visibleSlides) return;
                 this.sliding = true;
-
-                if (this.currentSlideGroup === 0) {
-                    this.activeSlide = (this.totalSlideGroups - 1) * this.visibleSlides;
-                } else {
-                    this.activeSlide -= this.visibleSlides;
-                }
-
+                this.activeSlide =
+                    this.currentSlideGroup === 0
+                        ? (this.totalSlideGroups - 1) * this.visibleSlides
+                        : this.activeSlide - this.visibleSlides;
                 setTimeout(() => this.sliding = false, 500);
             },
 
             next() {
                 if (this.sliding || this.slides.length <= this.visibleSlides || this.isHovered) return;
                 this.sliding = true;
-
-                if (this.currentSlideGroup >= this.totalSlideGroups - 1) {
-                    this.activeSlide = 0;
-                } else {
-                    this.activeSlide += this.visibleSlides;
-                }
-
+                this.activeSlide =
+                    this.currentSlideGroup >= this.totalSlideGroups - 1
+                        ? 0
+                        : this.activeSlide + this.visibleSlides;
                 setTimeout(() => this.sliding = false, 500);
             },
-            
+
             get totalSlideGroups() {
                 return Math.ceil(this.slides.length / this.visibleSlides);
             },
-            
+
             get currentSlideGroup() {
-                if (this.activeSlide >= this.slides.length) {
-                    return 0; // When showing cloned items
-                }
+                if (this.activeSlide >= this.slides.length) return 0;
                 return Math.floor(this.activeSlide / this.visibleSlides);
             },
-            
-            goToSlideGroup(groupIndex) {
-                this.activeSlide = groupIndex * this.visibleSlides;
+
+            goToSlideGroup(i) {
+                this.activeSlide = i * this.visibleSlides;
             },
-            
+
             updateVisibleSlides() {
-                this.visibleSlides = window.innerWidth < 640 ? 1 : 
-                                    window.innerWidth < 768 ? 2 :
-                                    window.innerWidth < 1024 ? 3 : 4;
+                this.visibleSlides =
+                    window.innerWidth < 640 ? 1 :
+                    window.innerWidth < 768 ? 2 :
+                    window.innerWidth < 1024 ? 3 : 4;
             },
-            
+
             pauseAutoplay() {
                 this.isHovered = true;
                 clearInterval(this.interval);
             },
-            
+
             resumeAutoplay() {
                 this.isHovered = false;
-                this.interval = setInterval(() => {
-                    this.next();
-                }, 5000);
+                this.interval = setInterval(() => this.next(), 8000);
             },
-            
+
             init() {
                 this.updateVisibleSlides();
                 window.addEventListener('resize', () => this.updateVisibleSlides());
-                
-                this.interval = setInterval(() => {
-                    this.next();
-                }, 5000);
-                
-                this.$el.addEventListener('alpine:destroy', () => {
-                    clearInterval(this.interval);
-                    window.removeEventListener('resize', this.updateVisibleSlides);
-                });
+                this.interval = setInterval(() => this.next(), 8000);
             }
-        }" 
+        }"
         x-init="init()"
         class="relative">
-            <div class="relative overflow-hidden pb-2"
+
+            <div class="relative pb-2
+                        overflow-x-auto sm:overflow-hidden
+                        snap-x snap-mandatory
+                        scrollbar-hide"
                  @mouseenter="pauseAutoplay()"
                  @mouseleave="resumeAutoplay()">
-                <div class="flex transition-transform duration-500 ease-in-out"
-                     :style="`transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
+
+                <div class="flex transition-transform duration-500 ease-in-out sm:transition-transform"
+                     :style="window.innerWidth < 640
+                        ? 'transform: none'
+                        : `transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
+
                     <template x-for="(product, index) in slidesWithClones" :key="index">
-                        <div class="flex-shrink-0 px-3 transition-all duration-300"
+                        <div class="flex-shrink-0 px-3 transition-all duration-300 snap-start"
                              :class="{
-                                 'w-full': visibleSlides === 1,
-                                 'w-1/2': visibleSlides === 2,
-                                 'w-1/3': visibleSlides === 3,
-                                 'w-1/4': visibleSlides === 4
+                                'w-full': visibleSlides === 1,
+                                'w-1/2': visibleSlides === 2,
+                                'w-1/3': visibleSlides === 3,
+                                'w-1/4': visibleSlides === 4
                              }">
-                            <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col 
-                            shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
-                                <div class="relative h-64 p-0 flex items-center justify-center bg-white">
+
+                            <div class="bg-white rounded-lg overflow-hidden h-full flex flex-col
+                                        shadow-[0_2px_8px_rgba(0,0,0,0.1)]
+                                        hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+
+                                <div class="relative h-64 flex items-center justify-center bg-white">
                                     <template x-if="product.image">
                                         <a :href="'/product-details/' + product.id">
                                             <img
                                                 :src="'{{ asset('storage') }}/' + product.image"
                                                 :alt="product.name"
-                                                class="w-52 h-52 object-contain transition-transform duration-300 hover:scale-105"
-                                                x-init="console.log('Image debug', { id: product.id, raw: product.image, final: '{{ asset('storage') }}/' + product.image })"
-                                            />
-
+                                                class="w-52 h-52 object-contain transition-transform duration-300 hover:scale-105">
                                         </a>
                                     </template>
 
                                     <template x-if="!product.image">
                                         <div class="w-full h-full flex items-center justify-center text-gray-300">
                                             <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14
+                                                         m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                             </svg>
                                         </div>
                                     </template>
@@ -802,50 +821,58 @@
                                 </div>
 
                                 <div class="p-5 flex-grow flex flex-col">
-                                    <div class="border-t border-gray-200 mb-4"></div>           
-                                    <h3 class="font-medium text-gray-800 text-center mb-4"style="font-family: 'Open Sans', sans-serif;font-size:17px;" x-text="product.name"></h3>                                  
+                                    <div class="border-t border-gray-200 mb-4"></div>
+
+                                    <h3 class="font-medium text-gray-800 text-center mb-4"
+                                        style="font-family: 'Open Sans', sans-serif; font-size:17px;"
+                                        x-text="product.name"></h3>
+
                                     <div class="border-t border-gray-200 mt-auto mb-4"></div>
-                                    
-                                    <div class="flex justify-center items-center">
-                                    <template x-if="product.is_on_sale && product.sale_price !== null">
-                                        <div class="text-center">
-                                            <span class="text-gray-400 line-through text-sm" x-text="'$' + Number(product.price).toFixed(2)"></span>
-                                            <span class="text-[#B70113] font-bold text-lg ml-2" x-text="'$' + Number(product.sale_price).toFixed(2)"></span>
-                                        </div>
-                                    </template>
-                                    <template x-if="!product.is_on_sale || product.sale_price === null">
-                                        <span class="text-[#B70113] font-bold text-lg" x-text="'$' + Number(product.price).toFixed(2)"></span>
-                                    </template>
+
+                                    <div class="flex justify-center">
+                                        <template x-if="product.is_on_sale && product.sale_price !== null">
+                                            <div>
+                                                <span class="text-gray-400 line-through text-sm"
+                                                      x-text="'$' + Number(product.price).toFixed(2)"></span>
+                                                <span class="text-[#B70113] font-bold text-lg ml-2"
+                                                      x-text="'$' + Number(product.sale_price).toFixed(2)"></span>
+                                            </div>
+                                        </template>
+                                        <template x-if="!product.is_on_sale || product.sale_price === null">
+                                            <span class="text-[#B70113] font-bold text-lg"
+                                                  x-text="'$' + Number(product.price).toFixed(2)"></span>
+                                        </template>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </template>
                 </div>
             </div>
 
-           <div class="flex justify-center mt-12 space-x-2 hidden sm:flex" x-show="slides.length > visibleSlides">
+            <div class="flex justify-center mt-12 space-x-2 hidden sm:flex" x-show="slides.length > visibleSlides">
                 <template x-for="(_, index) in totalSlideGroups" :key="index">
-                    <button @click="goToSlideGroup(index)" 
+                    <button @click="goToSlideGroup(index)"
                             class="w-3 h-3 rounded-full transition-all"
                             :class="{
-                                'bg-[#007BFF]': currentSlideGroup === index,  <!-- electric blue active -->
+                                'bg-[#007BFF]': currentSlideGroup === index,
                                 'bg-gray-300': currentSlideGroup !== index
-                            }"
-                            :aria-label="'Go to slide ' + (index + 1)">
+                            }">
                     </button>
                 </template>
             </div>
         </div>
 
-       <div class="text-center mt-8">
-            <a href="#" 
-            class="inline-block bg-[#007BFF] hover:bg-[#0056b3] text-white font-medium py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-md">
+        <div class="text-center mt-8">
+            <a href="{{ route('shop') }}"
+               class="inline-block bg-[#007BFF] hover:bg-[#0056b3] text-white font-medium py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-md">
                 Show More
             </a>
         </div>
     </div>
 </section>
+
 
 <!-- Latest Products Section -->
 <section class="bg-white py-12">
@@ -920,13 +947,13 @@
 
             resumeAutoplay() {
                 this.isHovered = false;
-                this.interval = setInterval(() => this.next(), 5000);
+                this.interval = setInterval(() => this.next(), 8000);
             },
 
             init() {
                 this.updateVisibleSlides();
                 window.addEventListener('resize', () => this.updateVisibleSlides());
-                this.interval = setInterval(() => this.next(), 5000);
+                this.interval = setInterval(() => this.next(), 8000);
                 this.$el.addEventListener('alpine:destroy', () => {
                     clearInterval(this.interval);
                     window.removeEventListener('resize', this.updateVisibleSlides);
@@ -936,19 +963,27 @@
         x-init="init()"
         class="relative">
 
-            <div class="relative overflow-hidden pb-2"
+            <div class="relative pb-2
+                        overflow-x-auto sm:overflow-hidden
+                        snap-x snap-mandatory
+                        scrollbar-hide"
                  @mouseenter="pauseAutoplay()"
                  @mouseleave="resumeAutoplay()">
-                <div class="flex transition-transform duration-500 ease-in-out"
-                     :style="`transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
+
+                <div class="flex transition-transform duration-500 ease-in-out sm:transition-transform"
+                     :style="window.innerWidth < 640
+                        ? 'transform: none'
+                        : `transform: translateX(-${(activeSlide * 100) / visibleSlides}%)`">
+
                     <template x-for="(product, index) in slidesWithClones" :key="index">
-                        <div class="flex-shrink-0 px-3 transition-all duration-300"
+                        <div class="flex-shrink-0 px-3 transition-all duration-300 snap-start"
                              :class="{
                                  'w-full': visibleSlides === 1,
                                  'w-1/2': visibleSlides === 2,
                                  'w-1/3': visibleSlides === 3,
                                  'w-1/4': visibleSlides === 4
                              }">
+
                             <div class="bg-white rounded-lg overflow-hidden transition-all duration-300 h-full flex flex-col 
                                         shadow-[0_2px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
                                 <div class="relative h-64 p-0 flex items-center justify-center bg-white">
@@ -995,6 +1030,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </template>
                 </div>
@@ -1005,7 +1041,7 @@
                     <button @click="goToSlideGroup(index)" 
                             class="w-3 h-3 rounded-full transition-all"
                             :class="{
-                                'bg-[#007BFF]': currentSlideGroup === index,  <!-- electric blue active -->
+                                'bg-[#007BFF]': currentSlideGroup === index,
                                 'bg-gray-300': currentSlideGroup !== index
                             }"
                             :aria-label="'Go to slide ' + (index + 1)">
@@ -1014,11 +1050,12 @@
             </div>
 
             <div class="text-center mt-8">
-                <a href="#" 
+                <a href="{{ route('shop') }}"
                    class="inline-block bg-[#007BFF] hover:bg-[#0056b3] text-white font-medium py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-md">
                     Show More
                 </a>
             </div>
+
         </div>
     </div>
 </section>

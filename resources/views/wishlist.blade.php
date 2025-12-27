@@ -11,20 +11,20 @@
 @endsection
 
 @section('content')
-<div class="bg-blue-600 text-white font-bold py-4 px-4 md:pl-32 text-left mb-6 text-[20px]" style="margin-top: 40px; font-family: 'Open Sans', sans-serif;">
-    <div class="flex items-center space-x-4">
-        <a href="{{ url('/home') }}" class="hover:underline opacity-40">Home</a>
-        <span class="opacity-40">&gt;</span>
-        <span class="opacity-100">Wishlist</span>
+<div class="bg-blue-600 text-white font-bold py-4 px-4 md:px-16 text-left mt-[30px]">
+    <div class="max-w-7xl mx-auto">
+        <a href="{{ url('/home') }}" class="hover:underline opacity-70 transition-opacity duration-300">Home</a>
+        <span class="opacity-50 mx-2"> &gt; </span>
+        <span class="opacity-90">Wishlist</span>
     </div>
 </div>
 
 <div class="pt-6 mb-20 sm:mb-40 md:mb-80 flex justify-center">
     <div class="w-full max-w-7xl p-4 sm:p-6"> 
-        <h2 class="text-2xl font-semibold mb-14 text-center">My Wishlist</h2>
+        <h2 class="text-2xl font-semibold mb-4 text-center">My Wishlist</h2>
 
         @if($wishlists->isEmpty())
-            <p class="text-center text-gray-600 mb-6">No items in your wishlist.</p>
+            <p class="text-center text-gray-600">No items in your wishlist.</p>
             <div class="flex justify-center">
                 <a href="{{ route('shop') }}" 
                    class="px-6 py-3 bg-gray-200 text-gray-800 font-semibold rounded-full shadow-sm hover:bg-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105">

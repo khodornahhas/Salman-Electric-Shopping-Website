@@ -1046,8 +1046,19 @@
             <span class="material-icons-outlined">add_shopping_cart</span> Pending Orders
           </a>
         </li>
+        <li class="sidebar-list-item">
+                <a href="#"
+                onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();"
+                class="text-red-600 hover:text-red-800">
+                    <span class="material-icons-outlined">logout</span>
+                    Logout
+                </a>
+            </li>
       </ul>
     </aside>
+    <form id="admin-logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+      @csrf
+    </form>
     <main>
       @yield('content')
     </main>

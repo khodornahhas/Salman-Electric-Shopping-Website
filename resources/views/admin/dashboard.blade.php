@@ -998,7 +998,9 @@
     </head>
     <body>
     <div class="grid-container">
-
+        <form id="admin-logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+            @csrf
+        </form>
       <header class="header">
         <div class="menu-icon" onclick="openSidebar()">
           <span class="material-icons-outlined">menu</span>
@@ -1078,8 +1080,15 @@
                   Pending Orders
               </a>
           </li>
+          <li class="sidebar-list-item">
+                <a href="#"
+                onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();"
+                class="text-red-600 hover:text-red-800">
+                    <span class="material-icons-outlined">logout</span>
+                    Logout
+                </a>
+            </li>
         </ul>
-
       </aside>
 
       <main class="main-container">

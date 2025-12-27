@@ -35,6 +35,19 @@
             50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
         }
+        @keyframes bgFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+            }
+
+            .animate-bgFadeIn {
+            animation: bgFadeIn 0.8s ease-out forwards;
+            }
+
     </style>
 </head>
 <body>
@@ -47,32 +60,36 @@
         </div>
     </div>
 
-    <header class="relative overflow-hidden py-20 bg-white text-gray-900">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-0 left-20 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
-            <div class="absolute bottom-0 right-20 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
-        </div>
-        
+    <div class="relative bg-[url('/images/try4.jpeg')] bg-cover bg-center bg-no-repeat">
+
+    <!-- Optional overlay for readability -->
+    <div class="absolute inset-0 bg-white/50"></div>
+
+    <!-- HEADER -->
+    <header class="relative overflow-hidden py-20 text-gray-900">
         <div class="container mx-auto px-6 relative z-10" data-aos="fade-up">
             <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                Our Portfolio</span>
+                Our Portfolio
             </h1>
             <p class="text-xl md:text-2xl max-w-2xl mb-8 text-gray-700">
                 Showcasing our electrical excellence and innovative solutions that power businesses and homes
             </p>
             <div class="flex space-x-4">
-                <a href="#projects" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <a href="#projects"
+                   class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
                     View Projects
                 </a>
-                <a href="/about" class="px-8 py-3 border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105">
+                <a href="/about"
+                   class="px-8 py-3 border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105">
                     About Us
                 </a>
             </div>
         </div>
     </header>
 
+    <!-- STATS SECTION -->
+    <section class="py-12 -mt-16 relative z-10">
 
-    <section class="py-0 bg-white">
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                 <div class="p-6" data-aos="fade-up" data-aos-delay="100">
@@ -94,6 +111,9 @@
             </div>
         </div>
     </section>
+
+</div>
+
 
     <section id="projects" class="max-w-7xl mx-auto px-4 md:px-16 py-16 space-y-24">
         <div class="text-center py-0">
@@ -161,14 +181,14 @@
 </section>
 
 
-    <section class="py-20 bg-gradient-to-r from-blue-800 to-blue-600 text-white">
+    <section class="py-20 bg-blue-800 to-blue-600 text-white">
         <div class="container mx-auto px-6 text-center">
             <div class="max-w-3xl mx-auto" data-aos="fade-up">
                 <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Power Your Next Project?</h2>
-                <p class="text-xl mb-8 text-blue-100">Contact Us below to bring electrical solutions to your home or business</p>
+                <p class="text-xl mb-8 text-blue-100">Contact Us below for more inquiries</p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
                     <a href="/contact" class="px-8 py-4 border-2 border-white hover:bg-white hover:text-blue-900 font-bold rounded-full transition-all duration-300 transform hover:scale-105">
-                        Call Us Now
+                        Contact Us
                     </a>
                 </div>
             </div>

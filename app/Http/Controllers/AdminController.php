@@ -42,9 +42,8 @@ class AdminController extends Controller
     public function dashboard() {
         $productCount = \App\Models\Product::count();
         $orderCount = \App\Models\Order::count();
-        $userCount = \App\Models\User::count();
+        $userCount = \App\Models\User::where('is_admin', 0)->count();
         $messageCount = 0; 
-
         return view('admin.dashboard', compact('productCount', 'orderCount', 'userCount', 'messageCount'));
     }
     public function products(Request $request) {
@@ -70,7 +69,7 @@ class AdminController extends Controller
             $query->orderBy('price', 'desc');
         }
 
-        $products = $query->paginate(4)->appends($request->query());
+        $products = $query->paginate(10)->appends($request->query());
 
        if ($request->ajax()) {
             return view('admin.partials.products-table', compact('products'))->render();
@@ -81,10 +80,9 @@ class AdminController extends Controller
     }
 
 
-
     public function users(Request $request)
     {
-        $query = User::withCount('orders');
+        $query = User::withCount('orders')->where('is_admin', 0);
 
         if ($request->has('search') && $request->search) {
             $search = $request->search;
@@ -338,11 +336,17 @@ class AdminController extends Controller
 
         return view('admin.partials.products-table', compact('products'))->render();
     }
+
     public function destroyUser(User $user)
     {
+        if ($user->is_admin) {
+            return back()->with('error', 'You cannot delete an admin user.');
+        }
         $user->delete();
         return back()->with('success', 'User deleted successfully.');
     }
+
+
     public function deleteOrder($id) {
         $order = Order::findOrFail($id);
         $order->delete();
